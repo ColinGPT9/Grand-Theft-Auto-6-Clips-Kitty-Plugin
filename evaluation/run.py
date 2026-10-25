@@ -91,7 +91,7 @@ def markdown_report(report: dict[str, Any]) -> str:
     lines = ["# Synthetic regression evaluation", "", f"Run: {report.get('generated_at_utc', 'unsaved')}", "",
              "These results cover original synthetic signal/transcript fixtures, not real gameplay or audience performance.",
              "The energy-only baseline is original reference code, not Clips Kitty's built-in finder.", "",
-             "| Detector | TP | FP | FN | Precision | Recall | Complete events | Duplicate rate |", 
+             "| Detector | TP | FP | FN | Precision | Recall | Complete events | Duplicate rate |",
              "|---|---:|---:|---:|---:|---:|---:|---:|"]
     for name, output in report["detectors"].items():
         m = output["summary"]
