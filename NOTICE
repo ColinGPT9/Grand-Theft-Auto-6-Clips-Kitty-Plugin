@@ -1,0 +1,21 @@
+Grand Theft Auto 6 Clips Kitty Plugin
+Copyright (c) 2026 ColinGPT9
+
+The original plugin code is available under the MIT License in LICENSE.
+The Clips Kitty SDK and its game-events scaffold are MIT-licensed by
+ColinGPT9. See TEMPLATE-LICENSE.txt for the scaffold's license notice.
+The SDK is a host-provided dependency and is not vendored here.
+
+Clips Kitty's main application is a separate AGPL-3.0-or-later work. This
+plugin does not redistribute application internals. Changes made to the
+main application retain that application's licensing.
+
+This is an unofficial, independently developed plugin. Game and service
+names identify compatibility and are the property of their respective
+owners. No endorsement or affiliation is claimed. This repository includes
+no Rockstar gameplay, logos, proprietary competitor code, model weights,
+third-party datasets, or account credentials.
+
+Research links identify external sources; they do not grant permission to
+download, redistribute, or use their videos. Consult docs/license-audit.md
+before adding dependencies, models, datasets, or demonstration footage.

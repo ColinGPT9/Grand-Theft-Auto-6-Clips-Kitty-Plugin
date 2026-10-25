@@ -1,0 +1,111 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/ColinGPT9/clips-studio/main/sdk/python/clipskitty_sdk/schema/clipskitty.schema.json
+manifest_version: 1
+id: colingpt9/gta-vi-highlights
+name: Grand Theft Auto 6 Clips Kitty Plugin
+version: 0.1.0
+kind: pipeline
+capability: highlight_detection
+description: >
+  An unofficial, independently developed GTA-style highlight pipeline. Finds
+  explicit chase, crash, stunt, combat, dialogue and reaction cues in the host
+  transcript, corroborated by measured picture and sound changes and permitted
+  viewer nominations. It does not recognize vehicles or police from pixels and
+  has not been validated on GTA VI gameplay. Rendering stays in Clips Kitty.
+author: {name: ColinGPT9}
+license: MIT
+requires: {clips_kitty: '>=2.1.0', plugin_api: 1}
+run:
+  command: ['{python}', src/main.py]
+  timeout_minutes: 30
+execution: local
+inputs: [video, transcript, moments]
+outputs: [ranges, context, ratings, edits]
+events: [chase, crash, stunt, combat, npc_chaos, funny_dialogue, roleplay, reaction]
+games: [grand-theft-auto-vi, grand-theft-auto-v]
+settings:
+  min_score:
+    type: number
+    default: 42
+    minimum: 0
+    maximum: 100
+    title: Minimum evidence score
+  min_confidence:
+    type: number
+    default: 35
+    minimum: 0
+    maximum: 100
+    title: Minimum evidence confidence
+  max_highlights:
+    type: integer
+    default: 10
+    minimum: 0
+    maximum: 50
+    title: Maximum highlights per video
+  lead_in:
+    type: number
+    default: 8
+    minimum: 0
+    maximum: 60
+    title: Seconds of setup to preserve
+  payoff:
+    type: number
+    default: 10
+    minimum: 0
+    maximum: 60
+    title: Seconds of payoff and reaction to preserve
+  enabled_categories:
+    type: string
+    default: ''
+    max_length: 200
+    title: Categories separated by commas; leave empty for all
+  roleplay_enabled:
+    type: boolean
+    default: false
+    title: This source actually contains roleplay
+  use_media:
+    type: boolean
+    default: true
+    title: Measure picture and audio changes as supporting evidence
+  sample_fps:
+    type: number
+    default: 1
+    minimum: 0.25
+    maximum: 2
+    title: Picture samples per second
+  motion_threshold:
+    type: number
+    default: 0.12
+    minimum: 0.01
+    maximum: 1
+    title: Minimum sampled picture difference
+  louder_by_db:
+    type: number
+    default: 6
+    minimum: 1
+    maximum: 30
+    title: Audio increase above its surroundings
+  use_nominations:
+    type: boolean
+    default: true
+    title: Use permitted viewer nominations with verified timing
+  use_local_model:
+    type: boolean
+    default: false
+    title: Ask the existing local model to review grounded candidates
+  trim_to_event:
+    type: boolean
+    default: false
+    title: Suggest bounded trims while preserving setup and reaction
+  title_overlay:
+    type: boolean
+    default: false
+    title: Suggest a short factual event label on the video
+  write_report:
+    type: boolean
+    default: true
+    title: Save a local explanation report alongside this job
+permissions: [video.read, transcript.read, ffmpeg, ollama, twitch.context.read]
+network: []
+sends: []
+requirements: {gpu: none, os: [windows, macos, linux]}
+category: gaming
