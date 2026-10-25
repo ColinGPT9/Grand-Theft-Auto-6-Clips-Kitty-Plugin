@@ -180,7 +180,7 @@ commit can be fetched; no live marketplace listing or public release is claimed.
 - [SDK and host reuse audit](docs/SDK_AUDIT.md)
 - [Synthetic evaluation method](docs/EVALUATION.md) and [real-footage rubric](research/benchmark.md)
 - [Verified public sources and access limits](research/public-sources.md)
-- [REA investigation](research/rea-review.md) and [independent requirements](research/functional-requirements.md)
+- [Independent requirements](research/functional-requirements.md)
 - [Demo checklist](docs/demo.md) and [hackathon provenance](docs/provenance.md)
 - [Dependency, model, and media audit](docs/license-audit.md)
 
