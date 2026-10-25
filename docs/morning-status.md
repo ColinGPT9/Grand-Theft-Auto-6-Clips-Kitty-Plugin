@@ -43,10 +43,11 @@ footage evidence. The requested project display name includes **6**.
   fields were validated with the actual registry validator; the template's
   deliberate release-commit marker correctly fails installation validation.
 
-The display name includes **6**. The actual source remote still lacks `6`;
-The GitHub integration's rename permission returned HTTP 403. The intended new URL is not
-claimed as an existing renamed or published repository. Marketplace
-publication and hackathon submission remain pending.
+The owner renamed the repository to
+`ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`; GitHub API verification
+confirmed it on 2026-10-25. Plugin PR #1 is merged into `main`; the separate
+Clips Studio host PR #182 is still open. Marketplace publication and
+hackathon submission remain pending.
 
 ## Must be completed with real accounts or media
 

@@ -1,12 +1,10 @@
 # Hackathon provenance and submission notes
 
 Prepared 2026-10-24. The display name requested by the owner is **Grand
-Theft Auto 6 Clips Kitty Plugin**. The current checkout was originally
-provided as `ColinGPT9/Grand-Theft-Auto-Clips-Kitty-Plugin`; the owner's
-intended repository name is `ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`.
-Confirm the actual remote and public release URL before submitting or
-generating a registry entry. A local name change alone does not rename a
-GitHub repository.
+Theft Auto 6 Clips Kitty Plugin**. The owner renamed the repository to
+`ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`; GitHub API verification
+confirmed the new identity on 2026-10-25. Verify the immutable release
+commit before submitting or generating a registry entry.
 
 ## Existing work
 

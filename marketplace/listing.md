@@ -28,10 +28,10 @@ the catalog README and index. The SDK listing module contains an outdated
 docstring saying generated files must be included, but its current printed
 instructions and the actual catalog contribution guide agree on one file.
 
-The owner's intended repository URL includes `Auto-6`. The original
-checkout's remote lacked `6`. Confirm the actual GitHub rename and remote
-before generating the real listing; a planned URL does not prove a remote
-exists or contains the release.
+The confirmed repository is
+`https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`.
+The owner completed the rename, verified through GitHub's API on 2026-10-25.
+Verify the immutable release commit before generating the real listing.
 
 ## Generate after release preparation
 
