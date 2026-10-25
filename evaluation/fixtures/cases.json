@@ -1,0 +1,147 @@
+{
+  "name": "gta-authored-synthetic-v1",
+  "license": "MIT",
+  "provenance": "Original fictional dialogue, one-second loudness numbers, scene-change timestamps, and temporal annotations authored for this repository. No real GTA media, streamer speech, or Twitch metadata was copied. Model responses are absent from every case.",
+  "split_note": "The holdout partition is a public secondary regression set. It has been inspected by the authors and is not a blind test or evidence of generalization.",
+  "cases": [
+    {
+      "id": "chase_into_crash", "split": "development", "duration": 48,
+      "description": "A fictional police chase ends in a barrier collision and a spoken reaction.",
+      "transcript": [
+        {"start": 12, "end": 15, "text": "The cops are chasing me down this street."},
+        {"start": 19, "end": 22, "text": "We crashed into a barrier!"},
+        {"start": 23, "end": 26, "text": "I cannot stop laughing."}
+      ],
+      "audio_pulses": [[20, 22, -16]], "scene_cuts": [20],
+      "events": [{"id": "chase_crash", "category": "crash", "start": 10, "end": 27,
+                  "setup": [10, 18], "payoff": [19, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "failed_ramp_stunt", "split": "development", "duration": 48,
+      "description": "An attempted ramp jump misses its landing; the fictional speaker explains the failure.",
+      "transcript": [
+        {"start": 12, "end": 16, "text": "I am lining up the ramp."},
+        {"start": 19, "end": 22, "text": "I tried the jump but missed the landing."},
+        {"start": 23, "end": 25, "text": "That was hilarious."}
+      ],
+      "audio_pulses": [[20, 22, -18]], "scene_cuts": [20],
+      "events": [{"id": "ramp_failure", "category": "stunt", "start": 11, "end": 26,
+                  "setup": [11, 18], "payoff": [19, 22], "reaction": [23, 26]}]
+    },
+    {
+      "id": "npc_steals_car", "split": "development", "duration": 48,
+      "description": "Unexpected NPC theft described in invented dialogue, with no loudness peak.",
+      "transcript": [
+        {"start": 12, "end": 16, "text": "I left the door open for one second."},
+        {"start": 19, "end": 22, "text": "An NPC just stole my car!"},
+        {"start": 23, "end": 26, "text": "That was hilarious."}
+      ],
+      "audio_pulses": [], "scene_cuts": [20],
+      "events": [{"id": "npc_theft", "category": "npc_chaos", "start": 11, "end": 27,
+                  "setup": [11, 18], "payoff": [19, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "dialogue_punchline", "split": "development", "duration": 48,
+      "description": "Invented dialogue followed by an explicit funny-dialogue cue; no claim the text is objectively funny.",
+      "transcript": [
+        {"start": 12, "end": 17, "text": "The mechanic asked whether my car had insurance."},
+        {"start": 18, "end": 22, "text": "I said the doors are the only parts still insured. That was hilarious."},
+        {"start": 23, "end": 26, "text": "I cannot stop laughing."}
+      ],
+      "audio_pulses": [], "scene_cuts": [],
+      "events": [{"id": "insurance_punchline", "category": "funny_dialogue", "start": 11, "end": 27,
+                  "setup": [11, 18], "payoff": [18, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "roleplay_default_off", "split": "development", "duration": 48,
+      "description": "Ordinary fictional roleplay traffic stop excluded by the default creator policy.",
+      "transcript": [{"start": 19, "end": 23, "text": "This traffic stop is part of our roleplay scene."}],
+      "audio_pulses": [[20, 22, -17]], "scene_cuts": [20],
+      "events": []
+    },
+    {
+      "id": "roleplay_explicit_opt_in", "split": "development", "duration": 48,
+      "description": "The same traffic stop is eligible only when the creator enables roleplay.",
+      "config": {"roleplay_enabled": true},
+      "transcript": [{"start": 19, "end": 23, "text": "This traffic stop is part of our roleplay scene."}],
+      "audio_pulses": [[20, 22, -17]], "scene_cuts": [20],
+      "events": [{"id": "roleplay_stop", "category": "roleplay", "start": 11, "end": 28,
+                  "setup": [11, 18], "payoff": [19, 23], "reaction": [23, 28]}]
+    },
+    {
+      "id": "loud_noise_negative", "split": "development", "duration": 48,
+      "description": "A loud synthetic tone and a scene cut are not evidence of a game event.",
+      "transcript": [], "audio_pulses": [[20, 22, -10]], "scene_cuts": [20], "events": []
+    },
+    {
+      "id": "irrelevant_speech_negative", "split": "development", "duration": 48,
+      "description": "Unrelated fictional grocery-list speech over a loud tone.",
+      "transcript": [{"start": 18, "end": 24, "text": "The shopping list says carrots, bread, milk, and tea."}],
+      "audio_pulses": [[20, 22, -12]], "scene_cuts": [], "events": []
+    },
+    {
+      "id": "no_media_transcript_only", "split": "development", "duration": 48,
+      "description": "Explicit collision text remains available when media analysis is unavailable; no model is required.",
+      "media_available": false,
+      "transcript": [{"start": 19, "end": 22, "text": "We crashed into a truck."}],
+      "audio_pulses": [], "scene_cuts": [],
+      "events": [{"id": "spoken_collision", "category": "crash", "start": 11, "end": 27,
+                  "setup": [11, 18], "payoff": [19, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "untranscribed_crash_is_missed", "split": "development", "duration": 48,
+      "description": "Author annotation says a collision occurred, but only generic low-level signals reach the detector: a deliberate recall limitation.",
+      "transcript": [], "audio_pulses": [[20, 22, -16]], "scene_cuts": [20],
+      "events": [{"id": "unobserved_collision", "category": "crash", "start": 11, "end": 27,
+                  "setup": [11, 18], "payoff": [19, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "no_inputs", "split": "development", "duration": 48,
+      "description": "No transcript, media, chat, or model yields no candidate.",
+      "media_available": false, "transcript": [], "audio_pulses": [], "scene_cuts": [], "events": []
+    },
+    {
+      "id": "long_setup_boundary_limit", "split": "development", "duration": 48,
+      "description": "An unusually long setup tests completeness limits of a fixed lead-in; annotation is intentionally not optimized to detector padding.",
+      "transcript": [
+        {"start": 4, "end": 17, "text": "We need the entire explanation of this carefully planned route."},
+        {"start": 19, "end": 22, "text": "We crashed into a truck."}
+      ],
+      "audio_pulses": [[20, 22, -18]], "scene_cuts": [20],
+      "events": [{"id": "long_setup_collision", "category": "crash", "start": 4, "end": 27,
+                  "setup": [4, 18], "payoff": [19, 22], "reaction": [23, 27]}]
+    },
+    {
+      "id": "later_chase_secondary", "split": "holdout", "duration": 72,
+      "description": "A later police-chase cue with different timing and an extended quiet reaction.",
+      "transcript": [
+        {"start": 38, "end": 42, "text": "The cops are chasing me!"},
+        {"start": 44, "end": 47, "text": "I finally found the exit."}
+      ],
+      "audio_pulses": [[40, 43, -20]], "scene_cuts": [40],
+      "events": [{"id": "later_chase", "category": "chase", "start": 30, "end": 48,
+                  "setup": [30, 37], "payoff": [38, 42], "reaction": [43, 48]}]
+    },
+    {
+      "id": "hypothetical_negative_secondary", "split": "holdout", "duration": 60,
+      "description": "A hypothetical collision is not an observed event despite noise and cuts.",
+      "transcript": [{"start": 32, "end": 38, "text": "If we crashed into a truck, the delivery would be late."}],
+      "audio_pulses": [[34, 37, -14]], "scene_cuts": [35], "events": []
+    },
+    {
+      "id": "silent_npc_secondary", "split": "holdout", "duration": 60,
+      "description": "An NPC incident described in text when video and audio analysis are unavailable.",
+      "media_available": false,
+      "transcript": [{"start": 29, "end": 33, "text": "That NPC just stole my car."}],
+      "audio_pulses": [], "scene_cuts": [],
+      "events": [{"id": "later_npc_theft", "category": "npc_chaos", "start": 21, "end": 39,
+                  "setup": [21, 28], "payoff": [29, 33], "reaction": [34, 39]}]
+    },
+    {
+      "id": "unrelated_late_noise_secondary", "split": "holdout", "duration": 72,
+      "description": "An unrelated sound near the end cannot establish a GTA event.",
+      "transcript": [{"start": 55, "end": 61, "text": "Please turn the desk fan down a little."}],
+      "audio_pulses": [[58, 60, -13]], "scene_cuts": [58], "events": []
+    }
+  ]
+}
