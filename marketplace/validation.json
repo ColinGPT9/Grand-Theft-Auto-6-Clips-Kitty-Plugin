@@ -8,7 +8,8 @@
   "listing_fields_valid_with_actual_local_HEAD_for_shape_check_only": true,
   "shape_check_HEAD_not_a_release": "d9cb9b8f0f448bfaab09fa5bcae61a8f6ed1950c",
   "public_manifest_at_commit_checked": false,
-  "repository_rename_verified": false,
+  "repository_rename_verified": true,
+  "repository_rename_verified_utc_date": "2026-10-25",
   "published": false,
   "limitation": "Static schema/section validation only. Existing HEAD is not asserted to contain the new plugin; draft cannot install until regenerated from tested public release."
 }

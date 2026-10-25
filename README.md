@@ -10,14 +10,11 @@ nominations, and returns explainable moments to Clips Kitty for rendering.
 The Twitch context permission additionally requires the matching
 Connected Accounts SDK/host changes on Clips Studio's
 [`codex/twitch-connected-accounts` branch](https://github.com/ColinGPT9/clips-studio/tree/codex/twitch-connected-accounts).
-These are development branches awaiting review, not a released app or plugin.
+The host changes are awaiting review; this plugin's source is on `main`.
+Neither change is a released app or plugin version.
 
-The current source remote is
-[ColinGPT9/Grand-Theft-Auto-Clips-Kitty-Plugin](https://github.com/ColinGPT9/Grand-Theft-Auto-Clips-Kitty-Plugin).
-The intended name is `ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`.
-The GitHub integration lacks permission to rename repositories (HTTP 403).
-The implementation is on the `codex/gta6-highlights` review branch; select
-that branch to see the plugin files. No remote rename or release is claimed.
+The source repository is
+[ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin](https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin).
 
 ## What it does
 
@@ -60,7 +57,7 @@ The existing repository can be cloned with its current real URL:
 
 ```bash
 git clone --branch codex/twitch-connected-accounts https://github.com/ColinGPT9/clips-studio.git
-git clone --branch codex/gta6-highlights https://github.com/ColinGPT9/Grand-Theft-Auto-Clips-Kitty-Plugin.git
+git clone https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin.git
 ```
 
 With this plugin and `clips-studio` as sibling source directories, run from
@@ -71,7 +68,7 @@ folder because Clips Kitty copies the installation folder's contents.
 python3.11 -m venv .venv-gta6
 source .venv-gta6/bin/activate
 python -m pip install -e './clips-studio/sdk/python[yaml,test]'
-cd Grand-Theft-Auto-Clips-Kitty-Plugin
+cd Grand-Theft-Auto-6-Clips-Kitty-Plugin
 python -m clipskitty_sdk validate .
 python -m pytest -q
 ```
@@ -116,7 +113,7 @@ matching host environment with its usual video dependencies installed:
 ```bash
 cd ../clips-studio
 python scripts/demo_gta_plugin.py \
-  --plugin ../Grand-Theft-Auto-Clips-Kitty-Plugin \
+  --plugin ../Grand-Theft-Auto-6-Clips-Kitty-Plugin \
   --video /tmp/gta-demo.mp4 \
   --transcript /tmp/gta-demo.transcript.json \
   --synthetic-demo --output /tmp/gta-app-export
@@ -157,7 +154,7 @@ VOD-native clip requests. Credentials remain in the host. Native clip
 requests stay pending until Twitch returns a real public URL; timestamp
 links require verified source mapping.
 
-These changes are awaiting review on development branches. No authenticated livestream,
+The host changes are awaiting review in Clips Studio. No authenticated livestream,
 real native clip, or full Twitch-to-Discord result was verified in this task.
 Discord delivery needs the separately developed adapter and authorized
 server/channel configuration. An approved digest without a delivery adapter
@@ -180,7 +177,7 @@ commit can be fetched; no live marketplace listing or public release is claimed.
 - [SDK and host reuse audit](docs/SDK_AUDIT.md)
 - [Synthetic evaluation method](docs/EVALUATION.md) and [real-footage rubric](research/benchmark.md)
 - [Verified public sources and access limits](research/public-sources.md)
-- [REA investigation](research/rea-review.md) and [independent requirements](research/functional-requirements.md)
+- [Independent requirements](research/functional-requirements.md)
 - [Demo checklist](docs/demo.md) and [hackathon provenance](docs/provenance.md)
 - [Dependency, model, and media audit](docs/license-audit.md)
 

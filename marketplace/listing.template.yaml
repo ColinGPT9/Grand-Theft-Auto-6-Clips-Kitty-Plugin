@@ -1,6 +1,6 @@
 # DRAFT ONLY: not installable and not a catalog submission.
 # Regenerate with `python -m clipskitty_sdk listing` after the tested plugin
-# is committed and public. Verify the actual repository after the rename.
+# is committed and public. The repository rename is verified; pin a release commit.
 id: colingpt9/gta-vi-highlights
 repository: https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin
 path: .
