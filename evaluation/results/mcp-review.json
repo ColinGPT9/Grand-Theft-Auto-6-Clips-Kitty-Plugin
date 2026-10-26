@@ -1,0 +1,497 @@
+{
+  "recorded": "2026-10-26",
+  "plugin_version": "0.4.1",
+  "method": "Actual running app, stdio MCP queue/status/list/export; isolated config/history; non-blind development comparison.",
+  "job_count": 26,
+  "failed_jobs": 0,
+  "settings": {
+    "model": "ollama/gemma4:e4b",
+    "min_score": 55,
+    "max_clips": 2,
+    "layout": "existing automatic Gaming YOLO/OpenCV detector",
+    "captions": "enabled except both already-captioned Spanish arms",
+    "transcript": "actual cached local Whisper, identical per pair"
+  },
+  "model_image_probe": "failed; semantic image review skipped, no bypass",
+  "source_files": {
+    "src/gta_highlights/__init__.py": "7e6d6306f50349b8da412cd174a467fab2e95e59d5b9b434e754259da2bf6cd1",
+    "src/gta_highlights/adapter.py": "8e281697c11846ddfbd010e07ab671b583533169258a56d8db7450f7b80dd212",
+    "src/gta_highlights/detector.py": "fb5dcbb787c80202da670f60c4fa25bfbf7570c14cd447ad417a4bb78f34e1c5",
+    "src/gta_highlights/dialogue.py": "34b1c6f36d95273abb438e927929321a2d4a777a38ae861efea40268e3eaf98a",
+    "src/gta_highlights/observations.py": "b17ba3ce418171952cef548a7ed0c5f2c68fbcbe3c4fb2454b18c8011d214d8e",
+    "src/gta_highlights/scoring.py": "3f65149d18b4ceb322736117a443635918444356c5ce04f22c6d8939c527c1e0",
+    "src/gta_highlights/taxonomy.py": "c758dfbea943e57da39011b3caa45cd21e0a84a01810d1ce31c7ac608981d221",
+    "src/main.py": "cc19c658b605a0f69ba1ad9261ecb7037e396d013b928c12c37caa8e52577b05"
+  },
+  "review_video": {
+    "sha256": "5a36e2fd59710bbfd853e39e48e36cbd898b8a0fb0f4b4fc7b751eca385ef452",
+    "duration": 179.021333,
+    "bytes": 37357546,
+    "video": [
+      {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720,
+        "r_frame_rate": "30/1"
+      }
+    ],
+    "audio": true,
+    "decode": "passed"
+  },
+  "limitations": [
+    "Small development sample; not blind or statistically representative.",
+    "Prototype runs are included for traceability, not release claims.",
+    "Model sampling and shared isolated history can affect reruns.",
+    "First diagnostic arm titles included arm labels; later pairs used identical titles.",
+    "Transcript and title grounding does not verify humor or physical events.",
+    "No same-raw-VOD hosted Eklipse test; full watermarked edited reference is not recall ground truth.",
+    "No direct verified TikTok/Instagram test, GTA VI footage, live Twitch/OAuth or Discord message test.",
+    "Earlier Crulfy silent-background incident remains missed."
+  ],
+  "jobs": [
+    {
+      "job_id": 1,
+      "case": "facecam-stream",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 1,
+          "start_s": 126.75,
+          "end_s": 162.32,
+          "score": 68,
+          "mcp_export_sha256": "1613294dff3f0d4623a25d914b6506cce447d9fcd04bcc9d6061bc164851e09a"
+        },
+        {
+          "id": 2,
+          "start_s": 11.5,
+          "end_s": 26.5,
+          "score": 61,
+          "mcp_export_sha256": "40464f772f14d3fe646489f49a80ced8fc8b54faae5f0a9b83f4414848817e18"
+        }
+      ]
+    },
+    {
+      "job_id": 2,
+      "case": "facecam-stream",
+      "arm": "gta",
+      "plugin_version": "0.3.0",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 3,
+          "start_s": 134.54,
+          "end_s": 172.32,
+          "score": 72,
+          "mcp_export_sha256": "da440af49b863bf97e2394b8725206d7d8bd7470afdb1b9d4edcc7fbb5f6d787"
+        }
+      ]
+    },
+    {
+      "job_id": 3,
+      "case": "popular-short",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 4,
+          "start_s": 3.0,
+          "end_s": 18.0,
+          "score": 57,
+          "mcp_export_sha256": "cc062a347a11396e4ed90e17ebb414431aadd987b5b651ce32ed5b12cb2b3f66"
+        }
+      ]
+    },
+    {
+      "job_id": 4,
+      "case": "popular-short",
+      "arm": "gta",
+      "plugin_version": "0.3.0",
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 5,
+          "start_s": 0.0,
+          "end_s": 13.98,
+          "score": 80,
+          "mcp_export_sha256": "46f0751a86b1f8299cfa5989cb4c88fb6b6eb6d3a55619745d3f5287bd00cce9"
+        }
+      ]
+    },
+    {
+      "job_id": 5,
+      "case": "eklipse-export",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=gxX4JfV8fCA",
+      "source_sha256": "a7b2e7c833fd789b59f2a03cec12264cc5106cc276e1af0f00d486296c339bc6",
+      "release_result": true,
+      "clips": []
+    },
+    {
+      "job_id": 6,
+      "case": "twitch-celebration",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "source_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 6,
+          "start_s": 14.2,
+          "end_s": 33.97,
+          "score": 65,
+          "mcp_export_sha256": "584c82c0b14aa81f4008d5584d29759baa8ff9f76bc39bc84e5f8e2dc20ade18"
+        }
+      ]
+    },
+    {
+      "job_id": 7,
+      "case": "eklipse-export",
+      "arm": "gta",
+      "plugin_version": "0.3.0",
+      "source_url": "https://www.youtube.com/watch?v=gxX4JfV8fCA",
+      "source_sha256": "a7b2e7c833fd789b59f2a03cec12264cc5106cc276e1af0f00d486296c339bc6",
+      "release_result": false,
+      "clips": []
+    },
+    {
+      "job_id": 8,
+      "case": "twitch-celebration",
+      "arm": "gta",
+      "plugin_version": "0.3.0",
+      "source_url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "source_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 7,
+          "start_s": 0.0,
+          "end_s": 36.17,
+          "score": 77,
+          "mcp_export_sha256": "572bf3c0d1e7da0e129c31f52495579990e6f039ef424eb3c57310c76fc0b050"
+        }
+      ]
+    },
+    {
+      "job_id": 9,
+      "case": "facecam-stream",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 8,
+          "start_s": 11.5,
+          "end_s": 26.5,
+          "score": 64,
+          "mcp_export_sha256": "6ff12d9a1f558872f56650f477249ef33d2bd94f98795b0e5eef9570c592062a"
+        },
+        {
+          "id": 9,
+          "start_s": 138.22,
+          "end_s": 162.32,
+          "score": 59,
+          "mcp_export_sha256": "5f99fdfcb6d8d7acc6d0d1cb1a6a2b47dddf4aba3590d7cd252dc4aadffddef9"
+        }
+      ]
+    },
+    {
+      "job_id": 10,
+      "case": "facecam-stream",
+      "arm": "gta",
+      "plugin_version": "0.3.1",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": false,
+      "clips": []
+    },
+    {
+      "job_id": 11,
+      "case": "popular-short",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 10,
+          "start_s": 3.0,
+          "end_s": 18.0,
+          "score": 57,
+          "mcp_export_sha256": "cc062a347a11396e4ed90e17ebb414431aadd987b5b651ce32ed5b12cb2b3f66"
+        }
+      ]
+    },
+    {
+      "job_id": 12,
+      "case": "popular-short",
+      "arm": "gta",
+      "plugin_version": "0.3.1",
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 11,
+          "start_s": 0.0,
+          "end_s": 13.98,
+          "score": 80,
+          "mcp_export_sha256": "46f0751a86b1f8299cfa5989cb4c88fb6b6eb6d3a55619745d3f5287bd00cce9"
+        }
+      ]
+    },
+    {
+      "job_id": 13,
+      "case": "twitch-celebration",
+      "arm": "gta",
+      "plugin_version": "0.3.1",
+      "source_url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "source_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 12,
+          "start_s": 0.0,
+          "end_s": 36.17,
+          "score": 77,
+          "mcp_export_sha256": "572bf3c0d1e7da0e129c31f52495579990e6f039ef424eb3c57310c76fc0b050"
+        }
+      ]
+    },
+    {
+      "job_id": 14,
+      "case": "xqc-rp",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=RXgrwO09hrI",
+      "source_sha256": "e8c137fb97e5bd8c1a5d046c6b80331365bcaae9f3584c5fc987b3ecc4293ed2",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 13,
+          "start_s": 137.83,
+          "end_s": 157.83,
+          "score": 72,
+          "mcp_export_sha256": "98ad474ed6e0b7cd94a65be5bdadc8dae3685e4d7742ae7abdeb83d34c74d646"
+        },
+        {
+          "id": 14,
+          "start_s": 121.01,
+          "end_s": 144.67,
+          "score": 65,
+          "mcp_export_sha256": "6af742c029b7a63d15fc81b6efb9bd4df2798349644d8610eb0336704d12be7f"
+        }
+      ]
+    },
+    {
+      "job_id": 15,
+      "case": "xqc-rp",
+      "arm": "gta",
+      "plugin_version": "0.3.1",
+      "source_url": "https://www.youtube.com/watch?v=RXgrwO09hrI",
+      "source_sha256": "e8c137fb97e5bd8c1a5d046c6b80331365bcaae9f3584c5fc987b3ecc4293ed2",
+      "release_result": false,
+      "clips": []
+    },
+    {
+      "job_id": 16,
+      "case": "xqc-rp",
+      "arm": "gta",
+      "plugin_version": "0.4.0",
+      "source_url": "https://www.youtube.com/watch?v=RXgrwO09hrI",
+      "source_sha256": "e8c137fb97e5bd8c1a5d046c6b80331365bcaae9f3584c5fc987b3ecc4293ed2",
+      "release_result": false,
+      "clips": []
+    },
+    {
+      "job_id": 17,
+      "case": "facecam-stream",
+      "arm": "gta",
+      "plugin_version": "0.4.0",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 15,
+          "start_s": 19.68,
+          "end_s": 46.02,
+          "score": 65
+        }
+      ]
+    },
+    {
+      "job_id": 18,
+      "case": "popular-short",
+      "arm": "gta",
+      "plugin_version": "0.4.0",
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 16,
+          "start_s": 0.0,
+          "end_s": 13.98,
+          "score": 80
+        }
+      ]
+    },
+    {
+      "job_id": 19,
+      "case": "twitch-celebration",
+      "arm": "gta",
+      "plugin_version": "0.4.0",
+      "source_url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "source_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "release_result": false,
+      "clips": [
+        {
+          "id": 17,
+          "start_s": 0.0,
+          "end_s": 36.17,
+          "score": 77
+        }
+      ]
+    },
+    {
+      "job_id": 20,
+      "case": "xqc-rp",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://www.youtube.com/watch?v=RXgrwO09hrI",
+      "source_sha256": "e8c137fb97e5bd8c1a5d046c6b80331365bcaae9f3584c5fc987b3ecc4293ed2",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 18,
+          "start_s": 54.63,
+          "end_s": 90.85,
+          "score": 69,
+          "mcp_export_sha256": "1511141a05cda2e4da6b2fa911fba8ef642f1a6636494240861984d5535b8c7f"
+        }
+      ]
+    },
+    {
+      "job_id": 21,
+      "case": "facecam-stream",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "release_result": true,
+      "clips": []
+    },
+    {
+      "job_id": 22,
+      "case": "popular-short",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "source_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 19,
+          "start_s": 0.0,
+          "end_s": 13.98,
+          "score": 80,
+          "mcp_export_sha256": "46f0751a86b1f8299cfa5989cb4c88fb6b6eb6d3a55619745d3f5287bd00cce9"
+        }
+      ]
+    },
+    {
+      "job_id": 23,
+      "case": "twitch-celebration",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "source_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 20,
+          "start_s": 0.0,
+          "end_s": 36.17,
+          "score": 77,
+          "mcp_export_sha256": "572bf3c0d1e7da0e129c31f52495579990e6f039ef424eb3c57310c76fc0b050"
+        }
+      ]
+    },
+    {
+      "job_id": 24,
+      "case": "eklipse-export",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://www.youtube.com/watch?v=gxX4JfV8fCA",
+      "source_sha256": "a7b2e7c833fd789b59f2a03cec12264cc5106cc276e1af0f00d486296c339bc6",
+      "release_result": true,
+      "clips": []
+    },
+    {
+      "job_id": 25,
+      "case": "popular-vertical",
+      "arm": "gaming",
+      "plugin_version": null,
+      "source_url": "https://www.youtube.com/watch?v=-rOOTD6-Tfc",
+      "source_sha256": "28466b1f059a03c26b6b7c4fd724dca495775c106c1eed6736cb9ed602053681",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 21,
+          "start_s": 1.5,
+          "end_s": 16.92,
+          "score": 70,
+          "mcp_export_sha256": "e83c4a59fb1e82b6feb86ef2d61b70818088b3b83cb71ac3ad8fa8ac4b994ddd"
+        },
+        {
+          "id": 22,
+          "start_s": 31.86,
+          "end_s": 48.08,
+          "score": 67,
+          "mcp_export_sha256": "3e43feedb5e65f7005a8b87316f7db372c43a6e89939d6335e1c398215bec11e"
+        }
+      ]
+    },
+    {
+      "job_id": 26,
+      "case": "popular-vertical",
+      "arm": "gta",
+      "plugin_version": "0.4.1",
+      "source_url": "https://www.youtube.com/watch?v=-rOOTD6-Tfc",
+      "source_sha256": "28466b1f059a03c26b6b7c4fd724dca495775c106c1eed6736cb9ed602053681",
+      "release_result": true,
+      "clips": [
+        {
+          "id": 23,
+          "start_s": 0.0,
+          "end_s": 15.1,
+          "score": 71,
+          "mcp_export_sha256": "288b3a3e16ef6d4402e2569d7bf441f6fdc51ea97d1039479125f994468444d2"
+        },
+        {
+          "id": 24,
+          "start_s": 29.86,
+          "end_s": 48.58,
+          "score": 71,
+          "mcp_export_sha256": "83d30b19282914d5b26fe4b4cd2623aaf6457fe15d94def8b5b944d37126026f"
+        }
+      ]
+    }
+  ]
+}

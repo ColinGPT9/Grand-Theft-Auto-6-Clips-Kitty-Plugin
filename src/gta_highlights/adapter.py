@@ -42,7 +42,7 @@ def _config(job):
         lead_in=number_setting(settings, "lead_in", 8, 0, 60),
         payoff=number_setting(settings, "payoff", 10, 0, 60),
         max_highlights=int(count),
-        roleplay_enabled=enabled(settings, "roleplay_enabled"),
+        roleplay_enabled=enabled(settings, "roleplay_enabled", True),
         enabled_categories=categories,
     )
 
@@ -95,7 +95,9 @@ def _notes(highlight):
             quote = " ".join(row.text.split())
             notes.append(f'Commentary at {row.start:g}–{row.end:g}s says: "{quote}"'[:160])
             break
-    notes.append(f"Category follows transcript cues: {CATEGORY_LABELS[highlight.category]}; heuristic score {highlight.score * 100:.1f}/100, evidence confidence {highlight.confidence:.0%}."[:160])
+    selected = any(row.source == "source-grounded local-model dialogue selection" for row in highlight.evidence)
+    basis = "Model judgement of source dialogue" if selected else "Category follows transcript cues"
+    notes.append(f"{basis}: {CATEGORY_LABELS[highlight.category]}; heuristic score {highlight.score * 100:.1f}/100, evidence confidence {highlight.confidence:.0%}."[:160])
     names = {"video_motion": "sampled frame difference", "video_scene_change": "large sampled frame difference",
              "video_color_change": "mean brightness change", "audio_spike": "LUFS spike above local median",
              "chat": "host-mapped audience nomination", "model": "validated optional model corroboration"}
@@ -103,6 +105,8 @@ def _notes(highlight):
         matching = [row for row in highlight.evidence if row.kind == kind]
         if matching:
             row = max(matching, key=lambda item: item.confidence)
+            if kind == "model" and not row.verified:
+                description = "local-model dialogue judgement, not independent confirmation"
             notes.append(f"Supporting signal: {description} at source {row.start:g}s."[:160])
     return notes[:5]
 
@@ -185,6 +189,12 @@ def main(job):
         if corroboration:
             evidence.extend(corroboration)
             highlights = detect(evidence, duration, config)
+        dialogue = []
+        if not highlights and enabled(job.settings, "use_local_model") and (job.wants("find") or job.moments):
+            from .dialogue import find_dialogue
+
+            dialogue = find_dialogue(job, evidence, duration, config, notes)
+            highlights = dialogue
         job.progress(0.8, "Scoring supported GTA moments")
         found = rated = understood = edited = 0
         if job.wants("find"):
@@ -204,6 +214,8 @@ def main(job):
             # Detection must be supported by an event cue inside this handed
             # moment; a neighboring event's padded window is insufficient.
             candidates = detect(nearby, duration, replace(config, max_highlights=max(1, config.max_highlights)))
+            if not candidates:
+                candidates = [item for item in dialogue if _contains_supported_action(item, moment.start, moment.end)]
             if not candidates:
                 continue
             highlight = max(candidates, key=lambda item: (item.score, item.confidence))

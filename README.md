@@ -3,9 +3,11 @@
 An unofficial **MIT** Grand Theft Auto highlight detector for **Clips Kitty**,
 targeting **GTA V (GTA 5)** gameplay and **GTA VI (GTA 6)** support. It finds explicit
 event cues in the host transcript, adds measured audio/picture evidence and
-permitted viewer nominations, and returns explainable clip suggestions.
+permitted viewer nominations, and returns explainable clip suggestions. When
+explicit action rules find nothing, the existing local model can suggest a
+source-grounded GTA dialogue exchange with setup and payoff.
 
-**Version:** `0.3.0` · **ID:** `colingpt9/gta-vi-highlights`
+**Version:** `0.4.1` · **ID:** `colingpt9/gta-vi-highlights`
 **Compatibility:** Python 3.11, plugin API 1, SDK 1.3.0, Clips Kitty `>=2.1.0`.
 Use [Clips Studio main](https://github.com/ColinGPT9/clips-studio);
 Connected Accounts/Twitch support is merged. Store packaging is outside this release.
@@ -17,9 +19,10 @@ Connected Accounts/Twitch support is merged. Store packaging is outside this rel
   captions, editor and publishing. The generic Gaming finder is not also run.
   Detector defaults are used without extra settings fields. Sports does not
   offer gaming detectors or accept their rate/understand/edit stages.
-- Finds chase, crash, stunt, combat, NPC chaos, dialogue, reaction and opt-in
-  roleplay cues. Mission/heist status and survival-wave progress have their own
-  event category. Rejects historical stories, hypothetical plans and retractions
+- Finds chase, crash, stunt, combat, NPC chaos, dialogue, reaction and
+  roleplay cues. Mission/heist outcomes and completed survival runs have their
+  own event category; routine wave-count chatter is excluded. Rejects historical
+  stories, hypothetical plans and retractions
   conservatively.
 - Preserves supported transcript utterances and nearby setup/reaction within
   duration limits. Distinct events survive overlapping windows.
@@ -30,7 +33,9 @@ Connected Accounts/Twitch support is merged. Store packaging is outside this rel
 - Supports **find**, **understand**, **rate**, and opt-in **edit** suggestions.
   Scores rank evidence; they are not probabilities or predicted views.
 
-The detector needs explicit semantic transcript evidence. Motion and loudness
+The detector needs source transcript evidence. Physical event labels require
+explicit cues; dialogue suggestions are marked as model judgements for review.
+Motion and loudness
 do not identify police, vehicles, collisions or faces from pixels. It misses
 untranscribed incidents. No GTA VI gameplay or real-world accuracy claim is supported.
 
@@ -58,8 +63,25 @@ webhook, credential storage, OAuth flow or publisher. Manifest `network` and
 
 Runtime imports are its own code, Python's standard library and the MIT SDK.
 No additional model, downloader, decoder stack or renderer is installed.
-Local-model corroboration is on by default and cannot create an
-unsupported event.
+Local-model corroboration and dialogue fallback are on by default. Dialogue
+selection uses at most three transcript windows, requires GTA/RP context and
+validates source IDs and payoff words (case/punctuation normalized). It cannot
+infer physical events. Its judgement of humor
+and game context is not independently verified. Unavailable models fall back
+to the explicit event rules.
+
+If your main AI setting uses a cloud provider, a compatible host can choose an
+already-installed Ollama model for this pipeline alone. For example, in the
+host configuration:
+
+```yaml
+plugins:
+  local_models:
+    colingpt9/gta-vi-highlights: ollama/gemma4:e4b
+```
+
+This does not download weights or change other workflows. Use your installed
+model name. See the host's [local-model configuration](https://github.com/ColinGPT9/clips-studio/blob/main/docs/developers/pipeline-development.md).
 
 ## Install and test
 
@@ -118,9 +140,9 @@ through the host renderer.
 | `lead_in` / `payoff` | 8 / 10 seconds | Setup and reaction allowance |
 | `max_highlights` | 10 | Maximum outputs, also bounded by host |
 | `enabled_categories` | empty | All categories, or comma-separated IDs |
-| `roleplay_enabled` | false | Explicitly enable for RP sources |
+| `roleplay_enabled` | true | Include source-supported GTA RP interactions |
 | `use_media` / `use_nominations` | true / true | Available supporting measurements/context |
-| `use_local_model` | true | Existing local-model corroboration |
+| `use_local_model` | true | Existing local-model corroboration and dialogue fallback |
 | `trim_to_event` / `title_overlay` | false / false | Optional edit suggestions |
 | `write_report` | true | Local schema-2 explanation JSON |
 
@@ -129,7 +151,7 @@ fabricated observations.
 
 ## Verification and contest evidence
 
-**210 tests pass** locally against the real SDK. On unchanged synthetic
+**251 tests pass** locally against the real SDK. On unchanged synthetic
 fixtures, mean setup coverage increased from **86.71% to 93.06%**; detection
 counts remained TP 9 / FP 0 / FN 1. Thirty additional authored adversarial
 cases now pass. Their public holdout was visible during implementation and
@@ -138,6 +160,8 @@ is not blind validation. [Full comparison](docs/QUALITY_IMPROVEMENTS.md).
 [Release verification](docs/morning-status.md) records SDK/media checks.
 [Real footage review](docs/REAL_FOOTAGE_REVIEW.md) records actual public YouTube
 facecam stream excerpts, Twitch clips, frozen comparisons and remaining misses.
+[App/MCP comparison](docs/MCP_REVIEW.md) records actual queued/exported jobs,
+the GTA-versus-Gaming review video and the final dialogue/progress refinements.
 [Contest checklist](docs/demo.md) separates them from pending live Twitch,
 authorized Discord, rights-cleared gameplay and the public demo/session ID.
 Discord delivery is tested in the host with mocked responses; no real

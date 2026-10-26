@@ -1,5 +1,8 @@
 # Real GTA footage review
 
+Historical 0.3.0 review. For the current 0.4.1 actual-app/MCP comparison, failure
+regressions and review video method, see [MCP review](MCP_REVIEW.md).
+
 Recorded 2026-10-25. This is development evaluation, not a blind test or a
 claim of superiority over another service. Media and full transcripts stay
 outside this repository; this report contains references and derived measurements.

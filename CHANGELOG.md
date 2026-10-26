@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.4.1 - 2026-10-26
+
+- Add a bounded existing-local-model fallback for GTA dialogue when explicit
+  action rules find no event. Validate source IDs, literal payoff quotes,
+  full setup/payoff bounds and categories; label model judgement for review.
+- Reject donor thanks, routine progress, unsupported physical labels and
+  malformed model output from that optional fallback.
+- Require roleplay context in the source/title, use opaque segment IDs to
+  prevent timestamp confusion, and normalize only punctuation/case in quotes.
+- Enable supported GTA RP interactions by default without extra Gaming fields.
+- Require a mission/heist outcome or completed survival run for milestone cues.
+  Routine wave counts no longer promote subscriber-thanks chatter as a GTA event.
+- Preserve the existing local model and Clips Kitty's shared Gaming vision,
+  automatic layout detector, framing and renderer.
+- Validate the change through actual app/MCP comparison jobs and keep the
+  published Eklipse export/reference clips separate from hosted model accuracy.
+
 ## 0.3.0 - 2026-10-25
 
 - Specialize GTA finding inside the shared Gaming workflow, with detector defaults
