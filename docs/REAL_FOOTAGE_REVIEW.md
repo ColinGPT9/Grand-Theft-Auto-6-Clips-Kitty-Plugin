@@ -3,6 +3,11 @@
 Historical 0.3.0 review. For the current 0.4.1 actual-app/MCP comparison, failure
 regressions and review video method, see [MCP review](MCP_REVIEW.md).
 
+Update 2026-10-26: Public Eklipse-produced GTA exports were subsequently found
+and visually reviewed. They are useful editing references, but their raw source
+VOD and hosted detector decisions are unknown; see the MCP review. The earlier
+same-input hosted comparison remains unavailable.
+
 Recorded 2026-10-25. This is development evaluation, not a blind test or a
 claim of superiority over another service. Media and full transcripts stay
 outside this repository; this report contains references and derived measurements.
@@ -78,11 +83,12 @@ Mixed chatting/GTA is allowed; a platform game tag is not a factual event label.
 ## Eklipse comparison status
 
 The requested baseline is Eklipse's actual hosted GTA output on identical source
-footage. It is **not completed**. No Eklipse GTA model weights or supported public
-inference API were established. An account or existing project/results link is
-needed before a same-input comparison can be recorded. The owner confirmed they
-do not have Eklipse access. No generated Eklipse result, score or superiority claim
-has been invented, and the authored energy-only reference is not Eklipse.
+footage. That same-input inference comparison is **not completed**. Public
+Eklipse-produced GTA exports were found and reviewed later; they do not expose
+the original VOD or hosted detector decisions. No Eklipse GTA model weights or
+supported public inference API were established. The owner confirmed they do
+not have Eklipse access. No hosted score or superiority claim has been invented,
+and the authored energy-only reference is not Eklipse.
 
 Eklipse's [engine description](https://blog.eklipse.gg/streaming-tips/how-gameplay-intelligence-works-2.html)
 describes genre tuning and scene context. Its [YouTube import guide](https://eklipse.gg/help/how-to-make-a-highlight-reel-from-youtube-videos-with-eklipse/)
