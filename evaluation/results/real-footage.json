@@ -1,0 +1,235 @@
+{
+  "date": "2026-10-25",
+  "comparison": "Published 0.2.0 versus 0.3.0 source on short videos; generic Gaming versus final specialized GTA finding on facecam streams",
+  "model": "gemma4:e4b",
+  "media_assets": "Kept outside the product repository; no frames or videos redistributed",
+  "short_settings": {
+    "max_highlights": 3,
+    "use_local_model": true
+  },
+  "shorts": [
+    {
+      "id": "Uqub0AtkX5s",
+      "url": "https://www.youtube.com/watch?v=Uqub0AtkX5s",
+      "creator": "DarkViperAU Clips",
+      "media_sha256": "0b27626fb57585ab03d1a8b314494136104a83a9cf148d6a125ec87170c23aab",
+      "transcript_sha256": "28a2838ac66026e01d773b318a328882ad9d7f7a84ec6d64e38cab318858327f",
+      "before": [],
+      "after": [
+        {
+          "start": 0.0,
+          "end": 13.98,
+          "label": "crash",
+          "score": 79.64
+        }
+      ],
+      "local_model_corroborated": 1
+    },
+    {
+      "id": "-rOOTD6-Tfc",
+      "url": "https://www.youtube.com/watch?v=-rOOTD6-Tfc",
+      "creator": "Vista Gamer",
+      "media_sha256": "28466b1f059a03c26b6b7c4fd724dca495775c106c1eed6736cb9ed602053681",
+      "transcript_sha256": "b08b2e8b7dba4653d776fb0ce335597bf991800c42f4d9aa655fd2d2dad1408e",
+      "before": [],
+      "after": [
+        {
+          "start": 0.0,
+          "end": 15.1,
+          "label": "crash",
+          "score": 71.11
+        },
+        {
+          "start": 29.86,
+          "end": 48.58,
+          "label": "combat",
+          "score": 71.03
+        }
+      ],
+      "local_model_corroborated": 2
+    },
+    {
+      "id": "buddha-heist",
+      "url": "https://clips.twitch.tv/HotConsiderateClintmullinsWOOP--hrFMzuxC8xBa8AH",
+      "creator": "buddha",
+      "media_sha256": "db93e88474ecce0d8088772bb3f8aa58d2a854b0b35ccd762a473065c432d1a7",
+      "transcript_sha256": "53c04ddc654dd2a7d9bd1c55bb4120ecd30af3ca00ca45de9ff54dee9400f1f4",
+      "before": [],
+      "after": [
+        {
+          "start": 0.0,
+          "end": 36.17,
+          "label": "reaction",
+          "score": 76.5
+        }
+      ],
+      "local_model_corroborated": 1
+    },
+    {
+      "id": "DZuaN6kcKXw",
+      "url": "https://www.youtube.com/watch?v=DZuaN6kcKXw",
+      "creator": "Crulfy",
+      "media_sha256": "d9d36ca417c10ae83969b427f5a93494443de345c26f497250c613846aefc84d",
+      "transcript_sha256": "4a9bf1dd09f75771f033f2044f93f507f926be4f2d97db05c36bd056a1058deb",
+      "before": [],
+      "after": [],
+      "local_model_corroborated": 0
+    }
+  ],
+  "limitations": [
+    "Development examples were examined while tuning; no blind or exhaustive event accuracy test.",
+    "Mostly silent action remains unsupported by transcript cues.",
+    "Gemma4 local vision probe failed in the host, so vision confirmation was skipped.",
+    "No live viewer nominations, account OAuth, native clip creation, Discord sends or contest submission were performed.",
+    "Final specialized GTA selected one mission-progress candidate in part 217 and none in part 218. Counts do not establish superior coverage.",
+    "The mission window contains unrelated conversation; the host generated a subscriber-thanks title, so boundaries and metadata still need review.",
+    "Eklipse same-input hosted output comparison is pending account or results access."
+  ],
+  "development_diagnostics": [
+    {
+      "sample": "op3LIcOB4GU-300-480",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_interval": [
+        300,
+        480
+      ],
+      "creator": "DarkViperAU Livestreams",
+      "media_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "arms": {
+        "gaming": [
+          {
+            "start": 138.22,
+            "end": 162.32,
+            "score": 59,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ],
+        "gaming-gta": [
+          {
+            "start": 11.5,
+            "end": 26.5,
+            "score": 61,
+            "origin": "signal",
+            "gaming_layout": "split"
+          },
+          {
+            "start": 138.22,
+            "end": 162.32,
+            "score": 64,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ]
+      },
+      "gta_candidates": 0,
+      "warning": "Separate normal Gaming model runs can vary. An extra normal Gaming result is not an additional GTA detection."
+    },
+    {
+      "sample": "p4QDaQdZmXA-300-480",
+      "source_url": "https://www.youtube.com/watch?v=p4QDaQdZmXA",
+      "source_interval": [
+        300,
+        480
+      ],
+      "creator": "DarkViperAU Livestreams",
+      "media_sha256": "d6583c86dc7f308001a5fdc42fccdcf025a8f480acd77c24fb666a01e61f83f9",
+      "arms": {
+        "gaming": [
+          {
+            "start": 137.52,
+            "end": 156.59,
+            "score": 64,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ],
+        "gaming-gta": [
+          {
+            "start": 137.52,
+            "end": 156.59,
+            "score": 64,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ]
+      },
+      "gta_candidates": 0,
+      "warning": "Separate normal Gaming model runs can vary. An extra normal Gaming result is not an additional GTA detection."
+    }
+  ],
+  "development_diagnostics_note": "Rejected additive integration, retained only as a development record; not the final implementation or evidence of a GTA gain.",
+  "facecam_streams": [
+    {
+      "sample": "op3LIcOB4GU-300-480",
+      "source_url": "https://www.youtube.com/watch?v=op3LIcOB4GU",
+      "source_interval": [
+        300,
+        480
+      ],
+      "creator": "DarkViperAU Livestreams",
+      "media_sha256": "2b7f7df3973e4f42f6ae58d26846361f28fe50202f970b2129e8be1c71cb88b8",
+      "transcript_sha256": "d300426c7799b23391cbead70e49efb8525902d73e84cf0a026c7e0d9bfbeb26",
+      "arms": {
+        "generic_gaming": [
+          {
+            "start": 138.22,
+            "end": 162.32,
+            "score": 59,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ],
+        "specialized_gta": [
+          {
+            "start": 134.54,
+            "end": 172.32,
+            "score": 76,
+            "label": "milestone",
+            "gaming_layout": "split",
+            "host_title": "Thanking for generous support and future plans",
+            "export": {
+              "width": 1080,
+              "height": 1920,
+              "audio": true,
+              "duration": 41.1,
+              "sha256": "f3b456e7a25b339b78cddc0da24d9aa957318a409d2ad5da89d88f22e5c34abc"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "sample": "p4QDaQdZmXA-300-480",
+      "source_url": "https://www.youtube.com/watch?v=p4QDaQdZmXA",
+      "source_interval": [
+        300,
+        480
+      ],
+      "creator": "DarkViperAU Livestreams",
+      "media_sha256": "d6583c86dc7f308001a5fdc42fccdcf025a8f480acd77c24fb666a01e61f83f9",
+      "transcript_sha256": "ed11eee0cee9e7b60d7286f25738cc8a023d0c9ac594fd3d537d724fecd1496b",
+      "arms": {
+        "generic_gaming": [
+          {
+            "start": 137.52,
+            "end": 156.59,
+            "score": 64,
+            "origin": "transcript",
+            "gaming_layout": "split"
+          }
+        ],
+        "specialized_gta": []
+      }
+    }
+  ],
+  "plugin_source_sha256": {
+    "src/gta_highlights/__init__.py": "7e6d6306f50349b8da412cd174a467fab2e95e59d5b9b434e754259da2bf6cd1",
+    "src/gta_highlights/adapter.py": "c37b81e716bbee86858c8f9bab240f94006d64672904c0a58fb35e836ad6f3bb",
+    "src/gta_highlights/detector.py": "fb5dcbb787c80202da670f60c4fa25bfbf7570c14cd447ad417a4bb78f34e1c5",
+    "src/gta_highlights/observations.py": "b17ba3ce418171952cef548a7ed0c5f2c68fbcbe3c4fb2454b18c8011d214d8e",
+    "src/gta_highlights/scoring.py": "3f65149d18b4ceb322736117a443635918444356c5ce04f22c6d8939c527c1e0",
+    "src/gta_highlights/taxonomy.py": "933ed66f1a73cd74108bcf0e6a3b0f0ec3b659a0b61b51749da69ab6582188b4",
+    "src/main.py": "cc19c658b605a0f69ba1ad9261ecb7037e396d013b928c12c37caa8e52577b05"
+  }
+}

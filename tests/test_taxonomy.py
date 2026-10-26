@@ -12,6 +12,36 @@ def categories(text, **kwargs):
 
 
 @pytest.mark.parametrize(("text", "expected"), [
+    ("I hit the ramp and immediately spun out.", "crash"),
+    ("We lost control of our truck!", "crash"),
+    ("Chocamos contra un taxi.", "crash"),
+    ("No, que chocamos contra una pared!", "crash"),
+    ("Estoy intentando escapar de los agentes, no, que chocamos!", "crash"),
+    ("La policia nos persigue.", "chase"),
+    ("Escapamos de la policia.", "chase"),
+    ("Nos estan disparando.", "combat"),
+    ("Holy crap!", "reaction"),
+    ("That was so crazy!", "reaction"),
+    ("No me lo puedo creer!", "reaction"),
+    ("No chocamos, pero ahora chocamos contra un poste.", "crash"),
+])
+def test_stream_commentary_phrases_keep_their_supported_category(text, expected):
+    assert expected in categories(text)
+
+
+@pytest.mark.parametrize("text", [
+    "No chocamos contra un taxi.", "Nunca chocamos.", "No, que no chocamos!",
+    "Si chocamos nos atrapan.", "Vamos a chocar.", "Voy a chocar.",
+    "Ayer chocamos.", "Anoche chocamos.", "Cada vez chocamos.",
+    "En mi sueno chocamos.", "Chocamos. No paso.",
+    "Imagine I spun out.", "I am going to spin out.", "I never spun out.",
+    "Yesterday I spun out.", "My game crashed.", "Ordinary driving today.",
+])
+def test_stream_commentary_still_rejects_plans_history_negation_and_software(text):
+    assert not categories(text)
+
+
+@pytest.mark.parametrize(("text", "expected"), [
     ("The cops are chasing me!", "chase"),
     ("We escaped the police.", "chase"),
     ("We crashed into a truck!", "crash"),
@@ -117,4 +147,17 @@ def test_empty_input_has_no_cues():
 
 
 def test_category_list_is_stable_and_complete():
-    assert CATEGORIES == ("chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue", "roleplay", "reaction")
+    assert CATEGORIES == ("chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue", "roleplay", "reaction", "milestone")
+
+
+@pytest.mark.parametrize("text", ["Mission passed!", "We completed the heist.", "Three waves down.",
+                                  "Two waves down, if my math is correct."])
+def test_current_mission_progress_is_a_distinct_game_event(text):
+    assert categories(text) == {"milestone"}
+
+
+@pytest.mark.parametrize("text", ["If we completed the heist we would leave.", "Tomorrow: mission complete!",
+                                  "Yesterday we completed the heist.", "We never completed the heist.",
+                                  "How to get mission passed.", "If my math is correct, three waves down."])
+def test_progress_mentions_without_a_current_assertion_are_not_events(text):
+    assert not categories(text)

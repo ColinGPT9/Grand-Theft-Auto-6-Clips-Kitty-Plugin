@@ -21,7 +21,7 @@ PLUGIN = Path(__file__).resolve().parents[1]
 
 def job_at(tmp_path, segments=None, *, settings=None, steps=None, moments=None, video=None):
     tmp_path.mkdir(parents=True, exist_ok=True)
-    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.2.0"},
+    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.3.0"},
             "settings": {"use_media": False, **(settings or {})},
             "limits": {"min_duration": 12, "max_duration": 60},
             "steps": steps or ["find"], "moments": moments or [],

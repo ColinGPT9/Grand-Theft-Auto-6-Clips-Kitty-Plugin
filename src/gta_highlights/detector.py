@@ -195,14 +195,18 @@ def _reason(best: _Seed, support: tuple[Evidence, ...], components: tuple[tuple[
     return reason + "."
 
 
-def _groups(seeds: list[_Seed], config: Config) -> Iterable[list[_Seed]]:
+def _groups(seeds: list[_Seed], config: Config, action_rows=()) -> Iterable[list[_Seed]]:
     grouped: list[_Seed] = []
     end = 0.0
     for seed in seeds:
         repeated = bool(grouped) and _semantic(seed.evidence) == _semantic(grouped[-1].evidence)
         # Separate explicit actions survive even if their padded clips overlap.
         # Identical nearby descriptions are conservatively one incident.
-        same_incident = repeated and seed.evidence.start - end <= 10
+        reaction = seed.cue.category == "reaction"
+        gap = max(10, min(20, config.payoff * 2)) if reaction else 10
+        same_incident = repeated and seed.evidence.start - end <= gap
+        if reaction and any(row.start >= end and row.end <= seed.evidence.start for row in action_rows):
+            same_incident = False
         if grouped and (not same_incident or seed.evidence.end - grouped[0].evidence.start > config.max_duration):
             yield grouped
             grouped = []
@@ -334,9 +338,12 @@ def detect(evidence: list[Evidence], duration: float, config: Config | None = No
             if config.enabled_categories and cue.category not in config.enabled_categories:
                 continue
             seeds.setdefault(cue.category, []).append(_Seed(row, cue))
+    action_rows = tuple(row for row in rows if row.kind == "transcript"
+                        and any(cue.category not in {"reaction", "funny_dialogue"}
+                                for cue in classify_text(row.text, roleplay_enabled=config.roleplay_enabled)))
     candidates = []
     for category in sorted(seeds):
-        for group in _groups(seeds[category], config):
+        for group in _groups(seeds[category], config, action_rows):
             best = max(group, key=lambda item: (item.confidence, item.evidence.end, item.evidence.start))
             core_start = min(seed.evidence.start for seed in group)
             core_end = min(duration, max(seed.evidence.end for seed in group))
@@ -366,7 +373,7 @@ def detect(evidence: list[Evidence], duration: float, config: Config | None = No
                 continue
             titles = {"crash": "Vehicle incident", "chase": "Pursuit commentary", "stunt": "Stunt attempt",
                       "combat": "Combat commentary", "npc_chaos": "NPC incident", "funny_dialogue": "Dialogue payoff",
-                      "roleplay": "Roleplay scene", "reaction": "Creator reaction"}
+                      "roleplay": "Roleplay scene", "reaction": "Creator reaction", "milestone": "Mission progress"}
             components = breakdown.components + structure
             reason = _reason(best, support, breakdown.components)
             reason += " Structure: " + ", ".join(f"{name} {value:+.3f}" for name, value in structure) + "."
