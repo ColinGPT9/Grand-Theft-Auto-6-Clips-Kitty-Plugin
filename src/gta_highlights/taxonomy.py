@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 CATEGORIES = (
     "chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue",
-    "roleplay", "reaction",
+    "roleplay", "reaction", "milestone",
 )
 CATEGORY_LABELS = {
     "chase": "Chase",
@@ -24,6 +24,7 @@ CATEGORY_LABELS = {
     "funny_dialogue": "Funny dialogue",
     "roleplay": "Roleplay",
     "reaction": "Reaction",
+    "milestone": "Mission progress",
 }
 
 
@@ -46,6 +47,11 @@ _RULES = (
     ("crash", 0.88, r"crashed (?:right |straight )?into\b(?: [\w']+){0,4}"),
     ("crash", 0.84, r"(?:car|truck|bike|vehicle) (?:(?:just|completely) )?(?:flipped|rolled|exploded)"),
     ("crash", 0.86, r"(?:head on collision|massive pileup|huge pileup|multi car pileup)"),
+    ("crash", 0.84, r"(?:spun out|spinning out|lost control of (?:the|my|our) (?:car|truck|bike))"),
+    ("crash", 0.88, r"(?:chocamos|choqu[eé]|se estrell[oó] (?:el|mi|nuestro) (?:auto|coche|carro))"),
+    ("chase", 0.86, r"(?:la polic[ií]a|los polic[ií]as) (?:me|nos) (?:persigue|persiguen|est[aá]n persiguiendo)"),
+    ("chase", 0.86, r"(?:escapamos|escap[eé]|huimos) de (?:la polic[ií]a|los polic[ií]as)"),
+    ("combat", 0.83, r"(?:nos|me) (?:disparan|est[aá]n disparando|emboscaron)"),
     ("stunt", 0.91, r"(?:landed|nailed|stuck) (?:(?:that|the|a) )?(?:jump|stunt|backflip|frontflip|landing)"),
     ("stunt", 0.91, r"stunt jump (?:complete|completed|successful)"),
     ("stunt", 0.86, r"pulled off (?:(?:that|the|a) )?(?:stunt|jump|backflip|barrel roll)"),
@@ -66,6 +72,10 @@ _RULES = (
     ("roleplay", 0.80, r"(?:traffic stop|under arrest|you have the right to remain silent|in character|roleplay scene)"),
     ("reaction", 0.79, r"(?:no way|oh my god|oh my goodness|what just happened|are you kidding me)"),
     ("reaction", 0.82, r"i (?:can't|cannot|can not) believe (?:that|this|it)"),
+    ("reaction", 0.79, r"(?:holy (?:shit|crap)|that was (?:fucking |so |absolutely )?crazy|no me lo (?:creo|puedo creer))"),
+    ("milestone", 0.86, r"(?:mission|heist) (?:passed|complete|completed|failed)"),
+    ("milestone", 0.84, r"(?:passed|completed|finished|failed) (?:the|this|that|a) (?:mission|heist)"),
+    ("milestone", 0.82, r"(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten) waves? (?:down|cleared|survived)"),
 )
 _COMPILED_RULES = tuple(
     (category, strength, re.compile(r"\b(?:" + pattern + r")\b"))
@@ -74,37 +84,42 @@ _COMPILED_RULES = tuple(
 
 _NORMALIZATION = str.maketrans({"’": "'", "‘": "'", "‐": " ", "‑": " ", "–": " ", "—": " ", "-": " "})
 _SENTENCES = re.compile(r"[^.!?;\n]+[.!?;]?")
-_CONTRAST = re.compile(r"\b(?:but|however|yet)\b")
+_CONTRAST = re.compile(r"\b(?:but|however|yet|pero)\b")
 _HYPOTHETICAL = re.compile(
     r"\b(?:if|unless|suppose|supposing|imagine|hypothetically|wish|wishing|"
-    r"would|could|might|maybe|perhaps|should)\b"
+    r"would|could|might|maybe|perhaps|should|si|imagina|quiz[aá]s|tal vez|ojal[aá])\b"
 )
 _PLANNING = re.compile(
     r"\b(?:going to|gonna|will|shall|about to|plan to|planning to|want to|"
-    r"wanna|trying to|try to|let's|lets|tomorrow|next time|is coming)\b"
+    r"wanna|trying to|try to|let's|lets|tomorrow|next time|is coming|"
+    r"vamos a|voy a|iba a|quiero|ma[nñ]ana|la pr[oó]xima vez)\b"
 )
 _INSTRUCTION = re.compile(
     r"\b(?:how to|how do (?:i|we|you)|tutorial|tips for|to avoid|you can|"
     r"when you|whenever|usually|every time|remember when|remember that|last time|yesterday|"
     r"last (?:week|month|year|night)|(?:days?|weeks?|months?|years?) ago|"
-    r"retelling|in my dream|in the (?:movie|story)|my plan)\b"
+    r"retelling|in my dream|in the (?:movie|story)|my plan|ayer|anoche|la semana pasada|"
+    r"en mi sue[nñ]o|recuerdo cuando|cada vez|c[oó]mo evitar)\b"
 )
 _RETRACTED = re.compile(
     r"\b(?:not real|fake|did not happen|didn't happen|never happened|"
     r"just a joke|only joking|just kidding|"
     r"(?:isn't|wasn't|aren't|weren't|is not|was not|are not|were not) (?:real|happening|true)|"
-    r"(?:won't|will not|doesn't|does not) happen)\b"
+    r"(?:won't|will not|doesn't|does not) happen|no pas[oó]|no ocurri[oó]|era una broma|fue un sue[nñ]o)\b"
 )
 _NEGATION = re.compile(
     r"\b(?:no|not|never|without|don't|doesn't|didn't|isn't|aren't|wasn't|"
     r"weren't|hasn't|haven't|hadn't|can't|cannot|couldn't|wouldn't|won't|"
-    r"ain't|stop saying|stopped saying)\b"
+    r"ain't|stop saying|stopped saying|nunca|jam[aá]s|sin)\b"
 )
 
 
 def _clauses(text: str):
     """Keep conditional context across commas; reset at explicit contrast."""
     normalized = text.lower().translate(_NORMALIZATION)
+    # A trailing count qualification does not turn an asserted progress
+    # update into a future plan. Titles deliberately omit the wave number.
+    normalized = re.sub(r"\bif my math is correct\b.*$", "", normalized)
     # A historical/planned frame can span several sentences in one supplied
     # utterance. Only explicit contrast/current-time language resets it.
     framed = False
@@ -117,9 +132,12 @@ def _clauses(text: str):
         for clause in _CONTRAST.split(sentence):
             clause = re.sub(r"\s+", " ", clause).strip(" ,.!?;")
             if clause:
+                # Spanish "no, que ..." is an alarmed interjection. A real
+                # negator inside the following clause remains effective.
+                clause = re.sub(r"\bno,\s+(?=que\b)", "", clause)
                 if re.search(r"\bcrashed (?:straight |right )?into (?:no|none)\b", clause):
                     continue
-                if re.search(r"\b(?:but|however|yet)\b", sentence) or re.search(r"\b(?:now|right now|this time)\b", clause):
+                if _CONTRAST.search(sentence) or re.search(r"\b(?:now|right now|this time|ahora)\b", clause):
                     framed = False
                 if _INSTRUCTION.search(clause) or _PLANNING.search(clause) or _HYPOTHETICAL.search(clause):
                     framed = True

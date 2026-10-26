@@ -175,3 +175,26 @@ def test_temporal_iou_handles_overlap_disjoint_and_points():
     assert temporal_iou(0, 10, 5, 15) == pytest.approx(1 / 3)
     assert temporal_iou(0, 1, 2, 3) == 0
     assert temporal_iou(1, 1, 1, 1) == 0
+
+
+def test_current_spanish_collision_after_an_ongoing_escape_is_not_a_future_plan():
+    rows = [speech(1, 4, "Estoy intentando escapar de los guardias."),
+            speech(4.3, 5.2, "No, que chocamos contra un poste!")]
+    found = detect(rows, 60)
+    assert len(found) == 1 and found[0].category == "crash"
+    assert found[0].start <= 4.3 and found[0].end >= 5.2
+
+
+def test_repeated_celebration_keeps_one_complete_reaction_window():
+    rows = [speech(5, 6, "Holy crap!"), speech(24, 25, "Holy crap!"),
+            speech(27, 28, "That was so crazy!")]
+    found = detect(rows, 40)
+    assert len(found) == 1 and found[0].category == "reaction"
+    assert found[0].start <= 5 and found[0].end >= 28
+
+
+def test_reactions_separated_by_a_supported_action_do_not_merge():
+    rows = [speech(5, 6, "Holy crap!"), speech(16, 18, "We crashed into a fence."),
+            speech(24, 25, "Holy crap!")]
+    found = detect(rows, 45, Config(enabled_categories=("reaction",)))
+    assert all(not (h.action_start <= 5 and h.action_end >= 25) for h in found)
