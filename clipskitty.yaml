@@ -2,13 +2,14 @@
 manifest_version: 1
 id: colingpt9/gta-vi-highlights
 name: Grand Theft Auto 6 Clips Kitty Plugin
-version: 0.3.0
+version: 0.4.1
 kind: pipeline
 capability: highlight_detection
 description: >
   An unofficial, independently developed GTA-style highlight pipeline. Finds
-  explicit chase, crash, stunt, combat, dialogue and reaction cues in the host
-  transcript, corroborated by measured picture and sound changes and permitted
+  explicit chase, crash, stunt, combat and reaction cues, plus source-grounded
+  dialogue suggestions from the existing local model. Uses the host transcript,
+  measured picture and sound changes and permitted
   viewer nominations. It does not recognize vehicles or police from pixels and
   has not been validated on GTA VI gameplay. Rendering stays in Clips Kitty.
 author: {name: ColinGPT9}
@@ -60,8 +61,8 @@ settings:
     title: Categories separated by commas; leave empty for all
   roleplay_enabled:
     type: boolean
-    default: false
-    title: This source actually contains roleplay
+    default: true
+    title: Include supported GTA roleplay interactions
   use_media:
     type: boolean
     default: true
@@ -91,7 +92,7 @@ settings:
   use_local_model:
     type: boolean
     default: true
-    title: Ask the existing local model to review grounded candidates
+    title: Use the existing local model for review and grounded dialogue
   trim_to_event:
     type: boolean
     default: false

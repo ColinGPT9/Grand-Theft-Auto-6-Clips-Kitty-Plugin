@@ -75,7 +75,9 @@ _RULES = (
     ("reaction", 0.79, r"(?:holy (?:shit|crap)|that was (?:fucking |so |absolutely )?crazy|no me lo (?:creo|puedo creer))"),
     ("milestone", 0.86, r"(?:mission|heist) (?:passed|complete|completed|failed)"),
     ("milestone", 0.84, r"(?:passed|completed|finished|failed) (?:the|this|that|a) (?:mission|heist)"),
-    ("milestone", 0.82, r"(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten) waves? (?:down|cleared|survived)"),
+    ("milestone", 0.88, r"(?:final|last) wave (?:cleared|complete|completed|survived)"),
+    ("milestone", 0.88, r"survived (?:the )?(?:final|last) wave"),
+    ("milestone", 0.88, r"all (?:(?:\d+|one|two|three|four|five|six|seven|eight|nine|ten) )?waves (?:cleared|completed|survived)"),
 )
 _COMPILED_RULES = tuple(
     (category, strength, re.compile(r"\b(?:" + pattern + r")\b"))
@@ -117,9 +119,6 @@ _NEGATION = re.compile(
 def _clauses(text: str):
     """Keep conditional context across commas; reset at explicit contrast."""
     normalized = text.lower().translate(_NORMALIZATION)
-    # A trailing count qualification does not turn an asserted progress
-    # update into a future plan. Titles deliberately omit the wave number.
-    normalized = re.sub(r"\bif my math is correct\b.*$", "", normalized)
     # A historical/planned frame can span several sentences in one supplied
     # utterance. Only explicit contrast/current-time language resets it.
     framed = False

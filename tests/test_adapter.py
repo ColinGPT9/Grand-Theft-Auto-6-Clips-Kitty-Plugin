@@ -21,7 +21,7 @@ PLUGIN = Path(__file__).resolve().parents[1]
 
 def job_at(tmp_path, segments=None, *, settings=None, steps=None, moments=None, video=None):
     tmp_path.mkdir(parents=True, exist_ok=True)
-    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.3.0"},
+    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.4.1"},
             "settings": {"use_media": False, **(settings or {})},
             "limits": {"min_duration": 12, "max_duration": 60},
             "steps": steps or ["find"], "moments": moments or [],
@@ -52,6 +52,25 @@ def test_sdk_job_supports_transcript_only_and_absent_all_evidence(tmp_path):
     empty = job_at(tmp_path / "empty")
     adapter.main(empty)
     assert result(empty)["ranges"] == []
+
+
+def test_routine_wave_count_with_supporter_thanks_is_not_a_gta_highlight(tmp_path):
+    job = job_at(tmp_path, [event(4, 18, "Thanks for the gifted subs. Two waves down and lots still to do.")])
+    adapter.main(job)
+    assert result(job)["ranges"] == []
+
+
+def test_sdk_find_can_recover_source_grounded_dialogue_without_an_action_keyword(tmp_path, monkeypatch):
+    segments = [event(5, 8, "Our crew needs a navigator who can read."),
+                event(9, 12, "I can read. Just not maps."),
+                event(13, 16, "That explains why the boat is in the car park.")]
+    answer = {"exchanges": [{"start_id": "s0", "payoff_id": "s1", "end_id": "s2",
+                             "quote": "I can read. Just not maps.", "category": "funny_dialogue", "strength": 5}]}
+    monkeypatch.setattr(adapter.local_model, "ask", lambda *_a, **_k: json.dumps(answer))
+    job = job_at(tmp_path, segments, settings={"use_local_model": True}, steps=["find", "understand"])
+    adapter.main(job)
+    (clip,) = result(job)["ranges"]
+    assert clip["label"] == "funny_dialogue" and clip["start"] <= 5 and clip["end"] >= 16
 
 
 def test_truncated_support_is_reported_for_review_without_a_find_range(tmp_path):

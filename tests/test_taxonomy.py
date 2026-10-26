@@ -150,14 +150,18 @@ def test_category_list_is_stable_and_complete():
     assert CATEGORIES == ("chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue", "roleplay", "reaction", "milestone")
 
 
-@pytest.mark.parametrize("text", ["Mission passed!", "We completed the heist.", "Three waves down.",
-                                  "Two waves down, if my math is correct."])
+@pytest.mark.parametrize("text", ["Mission passed!", "We completed the heist.", "Final wave cleared!",
+                                  "We survived the last wave!", "All six waves survived."])
 def test_current_mission_progress_is_a_distinct_game_event(text):
     assert categories(text) == {"milestone"}
 
 
 @pytest.mark.parametrize("text", ["If we completed the heist we would leave.", "Tomorrow: mission complete!",
                                   "Yesterday we completed the heist.", "We never completed the heist.",
-                                  "How to get mission passed.", "If my math is correct, three waves down."])
+                                  "How to get mission passed.", "If my math is correct, three waves down.",
+                                  "Three waves down.", "Two waves down, if my math is correct.",
+                                  "Three waves down, only a bazillion mods to go.",
+                                  "We could survive the final wave tomorrow.",
+                                  "Yesterday we survived the final wave."])
 def test_progress_mentions_without_a_current_assertion_are_not_events(text):
     assert not categories(text)
