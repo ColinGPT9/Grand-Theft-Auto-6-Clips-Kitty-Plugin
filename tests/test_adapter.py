@@ -21,7 +21,7 @@ PLUGIN = Path(__file__).resolve().parents[1]
 
 def job_at(tmp_path, segments=None, *, settings=None, steps=None, moments=None, video=None):
     tmp_path.mkdir(parents=True, exist_ok=True)
-    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.1.0"},
+    data = {"plugin": {"id": "colingpt9/gta-vi-highlights", "version": "0.2.0"},
             "settings": {"use_media": False, **(settings or {})},
             "limits": {"min_duration": 12, "max_duration": 60},
             "steps": steps or ["find"], "moments": moments or [],
@@ -52,6 +52,38 @@ def test_sdk_job_supports_transcript_only_and_absent_all_evidence(tmp_path):
     empty = job_at(tmp_path / "empty")
     adapter.main(empty)
     assert result(empty)["ranges"] == []
+
+
+def test_truncated_support_is_reported_for_review_without_a_find_range(tmp_path):
+    job = job_at(tmp_path, [event(20, 100)], settings={"write_report": True})
+    job.data["limits"]["max_duration"] = 20
+    adapter.main(job)
+    assert result(job)["ranges"] == []
+    report = json.loads((job.output_dir / "gta-highlight-explanations.json").read_text())
+    candidate = report["highlights"][0]
+    assert candidate["selection_status"] == "review_only"
+    assert candidate["supported_utterance"] == {"start": 20, "end": 100}
+    assert candidate["review_warnings"]
+
+
+def test_report_explains_score_and_uses_a_grounded_range_title(tmp_path):
+    job = job_at(tmp_path, [event()], settings={"write_report": True})
+    adapter.main(job)
+    report = json.loads((job.output_dir / "gta-highlight-explanations.json").read_text())
+    candidate = report["highlights"][0]
+    assert report["schema_version"] == 2
+    assert candidate["selection_status"] == "eligible"
+    assert candidate["available_modalities"] == ["transcript"]
+    assert sum(candidate["score_components"].values()) == pytest.approx(candidate["score"], abs=0.0001)
+    assert result(job)["ranges"][0]["title"] == candidate["title"]
+
+
+def test_edit_does_not_trim_a_supporting_utterance_that_exceeds_limits(tmp_path):
+    job = job_at(tmp_path, [event(20, 100)], steps=["edit"],
+                 moments=[{"id": "m1", "start": 0, "end": 120}],
+                 settings={"trim_to_event": True})
+    adapter.main(job)
+    assert "moments" not in result(job)
 
 
 def test_malformed_transcript_rows_are_ignored_without_making_fake_events(tmp_path):

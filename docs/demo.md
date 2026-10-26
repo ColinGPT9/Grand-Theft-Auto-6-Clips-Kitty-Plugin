@@ -1,74 +1,66 @@
-# Real demonstration checklist
+# Demo and contest checklist
 
-Project: **Grand Theft Auto 6 Clips Kitty Plugin**. This is an unofficial
-MIT plugin built on pre-existing Clips Kitty and its MIT SDK. Demonstrate
-GTA V footage only when authorized, and label it clearly. GTA VI readiness
-is a design goal; no GTA VI footage or accuracy was tested here.
+Use a compatible Clips Studio source checkout and its normal video dependencies.
+The plugin uses only the MIT SDK; rendering stays in the host.
 
-## Prerequisites
+## Reproducible synthetic export
 
-- A running compatible Clips Kitty host, this plugin installed and enabled,
-  FFmpeg/FFprobe, and an authorized local source with a usable transcript.
-- A real Twitch developer application and a broadcaster account consenting
-  to the required scopes. Use the host's account connection; do not paste
-  tokens or client secrets into a recording or plugin setting.
-- A playable Twitch VOD for that source, plus a checked local-source-to-VOD
-  time mapping. Seek through a generated link and confirm the selected
-  event actually plays at that offset.
-- A consenting viewer/test account using an actual nomination command and
-  the host's real chat/EventSub connection. Confirm the event reaches the
-  source's timeline and changes priority or score compared with no nomination.
-- An authorized Discord bot installed in a test server, a selected channel,
-  and permission to send messages and embed links. Keep automatic delivery
-  disabled until the creator explicitly opts in.
-- Permission to show all footage, music, usernames, chat, marks, and assets
-  in a public demo. Redact secrets and unnecessary viewer information.
+Generate the original media and run all SDK stages using the commands in
+[README](../README.md). Finder and moment-rating jobs are separate; edits
+are a third job. Missing semantic evidence returns zero highlights.
 
-No credentials, provider permissions, public video upload, or gameplay rights
-are supplied by this repository. Unit mocks and synthetic media do not
-complete the real service steps below.
+From the host checkout, run the generic exporter:
 
-## Under-three-minute recording outline
+```powershell
+python scripts/demo_plugin_export.py --plugin "<plugin checkout>" `
+  --video "<scratch>/demo.mp4" --transcript "<scratch>/demo.transcript.json" `
+  --synthetic-demo --max-clips 1 --output "<scratch>/horizontal"
+python scripts/demo_plugin_export.py --plugin "<plugin checkout>" `
+  --video "<scratch>/demo.mp4" --transcript "<scratch>/demo.transcript.json" `
+  --synthetic-demo --max-clips 1 --vertical --output "<scratch>/vertical"
+```
 
-| Time | Show | Proof to retain |
-| --- | --- | --- |
-| 0:00–0:20 | A viewer missed a stream and needs a catch-up | Brief, original problem statement |
-| 0:20–0:45 | Installed plugin, supported SDK, event preferences | Actual host installation and manifest validation |
-| 0:45–1:15 | Real Twitch viewer uses `!chaos`, `!clip`, or `!funny` | Accepted nomination and before/after priority or score |
-| 1:15–1:50 | Evidence-backed GTA event and generated clip | Source timestamp, factual category/reason, playable export |
-| 1:50–2:20 | Manually approved catch-up reaches Discord | Real sent message; click timestamp/native clip and verify event |
-| 2:20–2:40 | Codex development and meaningful checks | Actual tests/session history; no fabricated session ID |
-| 2:40–2:55 | MIT source, installation, prepared marketplace listing | Accurate publication state and current repository URL |
+Keep output outside both source folders. Each checked export is 21 seconds
+(source 11–32), with audio, burned authored captions, a provenance manifest
+and isolated history. Decoded frames were inspected for caption placement
+in horizontal and vertical layouts. This is an integration demonstration,
+not actual gameplay, speech transcription or a clip-quality benchmark.
 
-Leave several seconds of margin: a video exactly three minutes may fail a
-strict “under three minutes” requirement. The listed submission requirements
-come from the supplied brief until current official rules are verified.
-Check [public source research](../research/public-sources.md) for rule access
-status; a blocked rules page is not confirmation of eligibility or deadline.
+## Live demonstration still required
 
-## Before calling the demo complete
+Use footage you can show, a real consenting Twitch account, permitted viewer
+nominations and checked source/VOD calibration. Credentials stay in the
+host's Connected Accounts. Use a saved authorized Discord webhook destination
+in Clips Studio; approve the frozen destination/items before sending.
+The plugin never sends the message. No live service result is claimed by
+the synthetic checks.
 
-- [ ] Run actual SDK validation and a real host plugin subprocess.
-- [ ] Analyze rights-cleared source and visually inspect a playable export.
-- [ ] Show missing evidence does not fabricate a game event.
-- [ ] Receive a live viewer nomination; demonstrate its bounded effect.
-- [ ] Observe stream/VOD discovery through the reused host workflow.
-- [ ] Verify source-to-VOD mapping by seeking the generated timestamp link.
-- [ ] Create a native Twitch clip only with the required authorization;
-  retrieve its real status/URL, otherwise show the documented VOD fallback.
-- [ ] Preview and explicitly approve a digest to a selected test channel.
-- [ ] Check the real Discord message, links, duplicate protection, and disconnect.
-- [ ] Review the current official hackathon rules and eligibility window.
-- [ ] Disclose existing host/SDK work and new work using [provenance.md](provenance.md).
-- [ ] Retrieve the real Codex session ID using the session's `/status` or
-  currently documented UI; record it privately for submission.
-- [ ] Publish an accessible source commit and public demo only after review.
+| Time | Show |
+|---|---|
+| 0:00–0:20 | Missed-stream catch-up problem and the standalone GTA plugin |
+| 0:20–0:45 | Installed plugin, event preferences and source transcript |
+| 0:45–1:15 | Actual Twitch viewer nomination and bounded supporting evidence |
+| 1:15–1:50 | Selected GTA V event, factual reason and playable export |
+| 1:50–2:20 | Approved host digest reaches Discord; click and verify the link |
+| 2:20–2:40 | Actual Codex development and meaningful test evidence |
+| 2:40–2:55 | Source, setup, license and accurate release status |
 
-## Failure cases worth showing briefly
+The [official rules](https://twitchcon-codex.devpost.com/rules), verified
+2026-10-25, require a public YouTube demo under three minutes showing Twitch
+operation and Codex development. [Provenance](provenance.md) records the
+submission window, reused foundations and required session ID.
 
-An unavailable VOD leaves a clear unavailable/pending state. Unsupported
-native clip permissions produce a timestamp link rather than an invented
-clip URL. Missing local model/transcript produces an honest limitation.
-Provider rate limits and reconnects do not cause duplicate analysis or
-duplicate messages. A viewer's repeated command cannot unconditionally
-force a highlight.
+## Before submission
+
+- [x] SDK validation and actual plugin subprocess.
+- [x] Generated-media exports, captions and isolated history.
+- [x] Missing evidence produces no invented GTA event.
+- [ ] Rights-cleared GTA V source and human review.
+- [ ] Live nomination and verified source/VOD link.
+- [ ] Authorized native clip/public URL, or correctly mapped timestamp fallback.
+- [ ] Actual approved Discord message through Clips Studio.
+- [ ] Actual Codex session ID and public YouTube demo URL.
+- [ ] Final Devpost entry and organizer eligibility check.
+
+Do not replace unavailable native clips with invented URLs, equate request
+acceptance with publication, or label mock-provider tests as live Twitch proof.

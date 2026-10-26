@@ -1,0 +1,681 @@
+{
+  "name": "original-clean-room-quality-v1",
+  "license": "MIT",
+  "provenance": "Original fictional English sentences and timestamp annotations authored before implementation changes. No footage or copied speech. Holdout cases frozen before changes; public author-visible regressions, not blind generalization.",
+  "cases": [
+    {
+      "id": "last_week",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "We crashed into a truck last week.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "historical_frame",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "Yesterday was wild. We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "retelling",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "I am retelling the story where we crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "future_frame",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "Here is my plan. We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "retracted",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "We crashed into a truck! Actually that never happened.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "negative_object",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "We crashed into no cars.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "future_noun",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "A shootout will happen soon.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "actual_after_contrast",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "Yesterday we crashed, but now we crashed into a barrier.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "crash"
+        ]
+      }
+    },
+    {
+      "id": "late_reaction_utterance",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 32,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 40,
+          "end": 46,
+          "kind": "transcript",
+          "text": "Oh my god! I cannot believe this!",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "crash"
+        ],
+        "contains": [
+          27,
+          46
+        ],
+        "action": [
+          30,
+          32
+        ],
+        "metadata": true
+      }
+    },
+    {
+      "id": "long_action_fits",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 20,
+          "end": 50,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "contains": [
+          20,
+          50
+        ],
+        "action": [
+          20,
+          50
+        ]
+      },
+      "config": {
+        "min_duration": 10,
+        "max_duration": 35
+      }
+    },
+    {
+      "id": "impossible_action_limit",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 20,
+          "end": 50,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "action": [
+          20,
+          50
+        ],
+        "warning": "action exceeds"
+      },
+      "config": {
+        "min_duration": 10,
+        "max_duration": 15
+      }
+    },
+    {
+      "id": "utterance_setup",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 19,
+          "end": 28,
+          "kind": "transcript",
+          "text": "Why does the mechanic want my receipt?",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "I said the car is the receipt. That was hilarious.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "funny_dialogue"
+        ],
+        "contains": [
+          19,
+          33
+        ]
+      }
+    },
+    {
+      "id": "isolated_laughter",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 32,
+          "kind": "transcript",
+          "text": "I cannot stop laughing.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "reaction"
+        ]
+      }
+    },
+    {
+      "id": "same_incident_repeat",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 32,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 40,
+          "end": 42,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "contains": [
+          30,
+          42
+        ]
+      }
+    },
+    {
+      "id": "distinct_overlap",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 32,
+          "kind": "transcript",
+          "text": "We crashed into a wall.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 38,
+          "end": 40,
+          "kind": "transcript",
+          "text": "We crashed into a bus.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 2,
+        "categories": [
+          "crash",
+          "crash"
+        ]
+      }
+    },
+    {
+      "id": "pursuit_without_payoff",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 33,
+          "kind": "transcript",
+          "text": "The cops are chasing me!",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "chase"
+        ],
+        "max_score": 0.55
+      }
+    },
+    {
+      "id": "reaction_other_incident",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 32,
+          "kind": "transcript",
+          "text": "We crashed into a wall.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 38,
+          "end": 40,
+          "kind": "transcript",
+          "text": "I landed that jump!",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 41,
+          "end": 45,
+          "kind": "transcript",
+          "text": "Oh my god!",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 2,
+        "before": 38
+      }
+    },
+    {
+      "id": "loudness_motion_only",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 35,
+          "kind": "audio_spike",
+          "verified": true
+        },
+        {
+          "start": 30,
+          "end": 35,
+          "kind": "video_motion",
+          "verified": true
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "nomination_only",
+      "split": "development",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 30,
+          "end": 30,
+          "kind": "chat",
+          "text": "clip that crash!"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "short_media",
+      "split": "development",
+      "duration": 5,
+      "evidence": [
+        {
+          "start": 1,
+          "end": 2,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "contains": [
+          1,
+          2
+        ],
+        "action": [
+          1,
+          2
+        ],
+        "metadata": true
+      }
+    },
+    {
+      "id": "historical_month",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 55,
+          "end": 59,
+          "kind": "transcript",
+          "text": "Last month we landed that jump.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "future_scheduled",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 55,
+          "end": 59,
+          "kind": "transcript",
+          "text": "A police chase starts tomorrow.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "dream_report",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 55,
+          "end": 59,
+          "kind": "transcript",
+          "text": "In my dream we crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "negated_suffix",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 55,
+          "end": 59,
+          "kind": "transcript",
+          "text": "A shootout is not happening here.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "hypothetical",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 55,
+          "end": 59,
+          "kind": "transcript",
+          "text": "Suppose the pedestrian went flying.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "quiet_payoff_holdout",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 43,
+          "end": 50,
+          "kind": "transcript",
+          "text": "The clerk asked how I paid for repairs.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 52,
+          "end": 56,
+          "kind": "transcript",
+          "text": "I told her I sold the spare wheel. That punchline cracked me up.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "funny_dialogue"
+        ],
+        "contains": [
+          43,
+          56
+        ],
+        "metadata": true
+      }
+    },
+    {
+      "id": "nearby_distinct_holdout",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 44,
+          "end": 46,
+          "kind": "transcript",
+          "text": "That car just flipped.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 53,
+          "end": 55,
+          "kind": "transcript",
+          "text": "We crashed into a taxi.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 2,
+        "categories": [
+          "crash",
+          "crash"
+        ]
+      }
+    },
+    {
+      "id": "eof_out_of_range",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 97,
+          "end": 105,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 0
+      }
+    },
+    {
+      "id": "holdout_reaction_tail",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 51,
+          "end": 54,
+          "kind": "transcript",
+          "text": "An NPC just stole my car.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 63,
+          "end": 68,
+          "kind": "transcript",
+          "text": "Are you kidding me?",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1,
+        "categories": [
+          "npc_chaos"
+        ],
+        "contains": [
+          51,
+          68
+        ]
+      }
+    },
+    {
+      "id": "holdout_top_n",
+      "split": "holdout",
+      "duration": 100,
+      "evidence": [
+        {
+          "start": 10,
+          "end": 12,
+          "kind": "transcript",
+          "text": "We crashed into a truck.",
+          "source": "original synthetic commentary"
+        },
+        {
+          "start": 70,
+          "end": 72,
+          "kind": "transcript",
+          "text": "An NPC just stole my car.",
+          "source": "original synthetic commentary"
+        }
+      ],
+      "expected": {
+        "count": 1
+      },
+      "config": {
+        "max_highlights": 1
+      }
+    }
+  ]
+}

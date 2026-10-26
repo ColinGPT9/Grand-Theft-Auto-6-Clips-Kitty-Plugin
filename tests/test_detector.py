@@ -94,11 +94,9 @@ def test_maximum_length_keeps_peak_and_reaction_tail():
     assert result.end == 55
 
 
-def test_evidence_beyond_eof_is_ignored_and_straddling_eof_is_clamped():
+def test_evidence_beyond_eof_and_straddling_eof_is_rejected():
     assert detect([speech(120, 125)], 120) == []
-    result = detect([speech(119, 130)], 120)[0]
-    assert result.end == result.peak == 120
-    assert result.start >= 0
+    assert detect([speech(119, 130)], 120) == []
     assert detect([speech()], 0) == []
 
 

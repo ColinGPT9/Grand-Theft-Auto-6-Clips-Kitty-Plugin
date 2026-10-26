@@ -28,8 +28,8 @@ jobs:
           python-version: "3.11"
 
       - name: Install the Clips Kitty SDK, with PyYAML and pytest
-        # Pin the matching Connected Accounts SDK while its host PR is reviewed.
-        run: python -m pip install "clipskitty-sdk[yaml,test] @ git+https://github.com/ColinGPT9/clips-studio@0fac8c9195d236fb1933d0d5195ff819af14796f#subdirectory=sdk/python"
+        # Immutable merged host/SDK baseline, independent of developer branches.
+        run: python -m pip install "clipskitty-sdk[yaml,test] @ git+https://github.com/ColinGPT9/clips-studio@5b87c6a7da509e3f34a8dfbefc031258107e439a#subdirectory=sdk/python"
 
       - name: Install FFmpeg, for the sample video
         if: runner.os == 'Linux'

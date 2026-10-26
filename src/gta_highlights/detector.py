@@ -10,8 +10,9 @@ those observations and quote the transcript instead of inventing a scene.
 from __future__ import annotations
 
 import math
+import re
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 from .scoring import MEDIA_KINDS, Evidence, is_nomination, score_evidence
 from .taxonomy import CATEGORIES, Cue, classify_text
@@ -71,6 +72,13 @@ class Highlight:
     confidence: float
     reason: str
     evidence: tuple[Evidence, ...]
+    action_start: float = 0.0
+    action_end: float = 0.0
+    score_components: tuple[tuple[str, float], ...] = ()
+    available_modalities: tuple[str, ...] = ()
+    review_warnings: tuple[str, ...] = ()
+    title: str = ""
+    suppressed_reasons: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -104,6 +112,15 @@ def _window(start: float, end: float, peak: float, duration: float, config: Conf
     first = max(0.0, start - config.lead_in)
     last = min(duration, end + config.payoff)
     if last - first > config.max_duration:
+        if end - start <= config.max_duration:
+            # The complete action has priority over padding. Distribute the
+            # remaining budget across setup and aftermath without cutting it.
+            budget = config.max_duration - (end - start)
+            before = min(config.lead_in, budget / 2, start)
+            first = start - before
+            last = min(duration, end + budget - before)
+            first = max(0.0, min(first, last - config.max_duration))
+            return first, last
         # Preserve the event endpoint/payoff instead of truncating it by
         # blindly keeping the earliest setup of a long transcript segment.
         last = min(duration, peak + config.payoff)
@@ -133,10 +150,10 @@ def _support(rows: tuple[Evidence, ...], anchors: frozenset[Evidence], category:
         if row.confidence == 0 or not _overlaps(row, first, last):
             continue
         if row.kind == "transcript":
-            # Other explicit event/reaction cues preserve context for a
-            # chase-to-crash chain. They do not change the primary semantic
-            # confidence or contribute an extra score weight.
-            if row in anchors or classify_text(row.text, roleplay_enabled=config.roleplay_enabled):
+            # Fully contained utterances retain the premise as well as
+            # event/reaction cues. Their text is context, not independent
+            # recognition, and cannot inflate semantic confidence.
+            if row in anchors or (row.start >= first and row.end <= last):
                 support.append(row)
             continue
         if row.kind in MEDIA_KINDS and row.verified:
@@ -182,7 +199,11 @@ def _groups(seeds: list[_Seed], config: Config) -> Iterable[list[_Seed]]:
     grouped: list[_Seed] = []
     end = 0.0
     for seed in seeds:
-        if grouped and (seed.evidence.start - end > config.merge_gap or seed.evidence.end - grouped[0].evidence.start > config.max_duration):
+        repeated = bool(grouped) and _semantic(seed.evidence) == _semantic(grouped[-1].evidence)
+        # Separate explicit actions survive even if their padded clips overlap.
+        # Identical nearby descriptions are conservatively one incident.
+        same_incident = repeated and seed.evidence.start - end <= 10
+        if grouped and (not same_incident or seed.evidence.end - grouped[0].evidence.start > config.max_duration):
             yield grouped
             grouped = []
         grouped.append(seed)
@@ -200,9 +221,10 @@ def temporal_iou(a_start: float, a_end: float, b_start: float, b_end: float) -> 
 
 def _duplicate(candidate: _Candidate, previous: _Candidate, merge_gap: float) -> bool:
     a, b = candidate.highlight, previous.highlight
-    overlap = temporal_iou(a.start, a.end, b.start, b.end)
+    intersection = max(0.0, min(a.end, b.end) - max(a.start, b.start))
+    shorter = min(a.end - a.start, b.end - b.start)
+    overlap = intersection / shorter if shorter > 0 else 0.0
     shared_anchor = bool(candidate.anchors & previous.anchors)
-    same_category = a.category == b.category
     shared_support = bool(set(a.evidence) & set(b.evidence))
     core_gap = max(candidate.core_start, previous.core_start) - min(candidate.core_end, previous.core_end)
     adjacent_chain = core_gap <= merge_gap
@@ -210,11 +232,61 @@ def _duplicate(candidate: _Candidate, previous: _Candidate, merge_gap: float) ->
     # Different categories may describe one chain (a chase ending in a
     # crash). Shared source observations and substantial temporal overlap
     # make one reviewable moment, while separate events retain their clips.
-    return ((shared_anchor and overlap >= 0.30)
-            or (adjacent_chain and shared_support and overlap >= 0.30)
-            or (reaction_context and shared_support and overlap >= 0.30)
-            or (overlap >= 0.55 and (same_category or shared_support))
-            or overlap >= 0.85)
+    identical = bool({_semantic(row) for row in candidate.anchors} & {_semantic(row) for row in previous.anchors})
+    pursuit_chain = "chase" in (a.category, b.category) and adjacent_chain
+    return ((shared_anchor and overlap >= 0.65)
+            or (identical and abs(a.peak - b.peak) <= 10)
+            or (pursuit_chain and shared_support and overlap >= 0.30)
+            or (reaction_context and shared_support and overlap >= 0.30))
+
+
+def _semantic(row: Evidence) -> str:
+    return " ".join(re.findall(r"\w+", row.text.casefold()))
+
+
+def _dialogue_context(row: Evidence, rows: tuple[Evidence, ...]) -> bool:
+    if any(_semantic(row) == " ".join(re.findall(r"\w+", cue.phrase.casefold()))
+           for cue in classify_text(row.text) if cue.category == "funny_dialogue"):
+        return False
+    if re.search(r"\b(?:said|asked|told|punchline|joke|replied)\b", row.text, re.I):
+        return True
+    return any(other.kind == "transcript" and other != row and other.end <= row.start
+               and row.start - other.end <= 5
+               and re.search(r"\b(?:said|asked|told|why|what|how|whether)\b", other.text, re.I)
+               for other in rows)
+
+
+def _context_window(rows, anchors, core_start, core_end, first, last, duration, config):
+    """Extend to nearby utterance boundaries; stop at a separate action."""
+    warnings = []
+    others = [row for row in rows if row.kind == "transcript" and row not in anchors]
+    action_rows = [row for row in others if any(c.category not in {"reaction", "funny_dialogue"}
+                                               for c in classify_text(row.text, roleplay_enabled=config.roleplay_enabled))]
+    next_action = min((row.start for row in action_rows if row.start >= core_end), default=duration)
+    # Keep a distinct later event out of this incident's aftermath.
+    last = max(core_end, min(last, next_action))
+    for row in others:
+        cues = classify_text(row.text, roleplay_enabled=config.roleplay_enabled)
+        if (not cues and row.end <= core_start and core_start - row.end <= 3
+                and row.start >= core_start - max(12, config.lead_in)):
+            if last - row.start <= config.max_duration:
+                first = min(first, row.start)
+        is_reaction = any(c.category in {"reaction", "funny_dialogue"} for c in cues)
+        if (is_reaction and core_end <= row.start <= core_end + config.payoff
+                and row.start < next_action and row.end <= next_action):
+            if row.end - first <= config.max_duration:
+                last = max(last, row.end)
+            else:
+                warnings.append("Relevant reaction cannot fit the requested duration; review boundaries.")
+    if core_end - core_start > config.max_duration:
+        warnings.append("Supported action exceeds the requested maximum duration; action is truncated and requires review.")
+    if first > core_start or last < core_end:
+        warnings.append("Selected window does not contain the full supported action; review required.")
+    if last - first < min(config.min_duration, duration):
+        first = max(0.0, last - min(config.min_duration, duration))
+        if last - first < min(config.min_duration, duration):
+            warnings.append("Requested minimum duration cannot fit before a separate action; review boundaries.")
+    return first, min(duration, last), warnings
 
 
 def detect(evidence: list[Evidence], duration: float, config: Config | None = None) -> list[Highlight]:
@@ -240,12 +312,25 @@ def detect(evidence: list[Evidence], duration: float, config: Config | None = No
     if duration == 0 or config.max_highlights == 0:
         return []
     # Events beginning at or past EOF have no source media to include.
-    rows = tuple(sorted({row for row in evidence if row.start < duration and row.confidence > 0}, key=_evidence_key))
+    # Do not turn an out-of-range utterance into a different, apparently
+    # complete event by silently clamping its supplied action interval.
+    rows = tuple(sorted({row for row in evidence if row.start < duration and row.end <= duration and row.confidence > 0}, key=_evidence_key))
+    modalities = tuple(sorted({"video" if row.kind.startswith("video_") else "audio" if row.kind == "audio_spike" else row.kind for row in rows}))
     seeds: dict[str, list[_Seed]] = {}
     for row in rows:
         if row.kind != "transcript":
             continue
+        prior = [other for other in rows if other.kind == "transcript" and other != row
+                 and other.end <= row.start and row.start - other.end <= 2]
+        preceding = max(prior, key=_evidence_key) if prior else None
+        if (preceding is not None and not classify_text(preceding.text, roleplay_enabled=config.roleplay_enabled)
+                and not classify_text(preceding.text + " " + row.text, roleplay_enabled=config.roleplay_enabled)):
+            # ASR commonly splits a hypothetical/historical frame away from
+            # its event clause. Nearby low-level signals cannot rescue it.
+            continue
         for cue in classify_text(row.text, roleplay_enabled=config.roleplay_enabled):
+            if cue.category == "funny_dialogue" and not _dialogue_context(row, rows):
+                cue = replace(cue, category="reaction")
             if config.enabled_categories and cue.category not in config.enabled_categories:
                 continue
             seeds.setdefault(cue.category, []).append(_Seed(row, cue))
@@ -258,21 +343,50 @@ def detect(evidence: list[Evidence], duration: float, config: Config | None = No
             peak = min(duration, best.evidence.end)
             first, last = _window(core_start, core_end, peak, duration, config)
             anchors = frozenset(seed.evidence for seed in group)
+            first, last, warnings = _context_window(rows, anchors, core_start, core_end, first, last, duration, config)
             support = _support(rows, anchors, category, first, last, config)
             breakdown = score_evidence(support, semantic_confidence=best.confidence)
-            if breakdown.score < config.min_score or breakdown.confidence < config.min_confidence or last <= first:
+            # Quiet complete dialogue remains eligible. Missing modalities
+            # supply zero rather than an inferred audiovisual bonus.
+            setup = any(row.kind == "transcript" and row.end <= core_start
+                        and core_start - row.end <= 3 and row.start >= first for row in rows)
+            reaction = any(row.kind == "transcript" and row.start >= core_end and row.end <= last
+                           and any(c.category in {"reaction", "funny_dialogue"} for c in classify_text(row.text)) for row in support if row not in anchors)
+            payoff = category != "chase" or any(re.search(r"\b(?:escaped|lost|outran|evaded)\b", row.text, re.I) for row in anchors)
+            structure = (("setup_completeness", 0.025 if setup else 0.0),
+                         ("reaction_inclusion", 0.04 if reaction else 0.0),
+                         ("payoff_completeness", 0.0 if payoff else -0.06),
+                         ("novelty", 0.0))
+            score = round(max(0, min(1, breakdown.score + sum(value for _, value in structure))), 4)
+            if not payoff:
+                warnings.append("Pursuit has no supported escalation or resolution; lower priority.")
+            if modalities == ("transcript",):
+                warnings.append("Transcript-only evidence; audiovisual event accuracy is unverified.")
+            if score < config.min_score or breakdown.confidence < config.min_confidence or last <= first:
                 continue
-            highlight = Highlight(first, last, peak, category, breakdown.score, breakdown.confidence, _reason(best, support, breakdown.components), support)
+            titles = {"crash": "Vehicle incident", "chase": "Pursuit commentary", "stunt": "Stunt attempt",
+                      "combat": "Combat commentary", "npc_chaos": "NPC incident", "funny_dialogue": "Dialogue payoff",
+                      "roleplay": "Roleplay scene", "reaction": "Creator reaction"}
+            components = breakdown.components + structure
+            reason = _reason(best, support, breakdown.components)
+            reason += " Structure: " + ", ".join(f"{name} {value:+.3f}" for name, value in structure) + "."
+            highlight = Highlight(first, last, peak, category, score, breakdown.confidence, reason, support,
+                                  core_start, core_end, components, modalities, tuple(dict.fromkeys(warnings)), titles[category])
             candidates.append(_Candidate(highlight, core_start, core_end, anchors))
     # Rank before suppression so the strongest explanation survives. Stable
     # ties and a final chronological sort make the result reproducible.
     ranked = sorted(candidates, key=lambda item: (-item.highlight.score, -item.highlight.confidence, item.highlight.start, item.highlight.category))
     selected: list[_Candidate] = []
     for candidate in ranked:
-        if not any(_duplicate(candidate, previous, config.merge_gap) for previous in selected):
+        duplicate = next((i for i, previous in enumerate(selected) if _duplicate(candidate, previous, config.merge_gap)), None)
+        if duplicate is None:
             selected.append(candidate)
-            if len(selected) >= config.max_highlights:
-                break
+        else:
+            previous = selected[duplicate]
+            explanation = f"Suppressed {candidate.highlight.category} action {candidate.core_start:g}-{candidate.core_end:g}s as the same supported incident."
+            selected[duplicate] = replace(previous, highlight=replace(previous.highlight,
+                    suppressed_reasons=previous.highlight.suppressed_reasons + (explanation,)))
+    selected = selected[:config.max_highlights]
     return [item.highlight for item in sorted(selected, key=lambda item: (item.highlight.start, item.highlight.end, item.highlight.category))]
 
 
