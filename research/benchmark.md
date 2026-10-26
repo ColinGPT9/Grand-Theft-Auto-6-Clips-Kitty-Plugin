@@ -65,7 +65,12 @@ Keep exports outside this repository unless rights permit redistribution.
 5. Change one documented rule for an observed failure.
 6. Rerun the same cases plus held-out cases; report regressions as well as gains.
 
-Current real-footage iteration log: **0 cases, 0 reviewed exports, no quality
-improvement measured**. Public reference URLs and any verified metadata
-belong in [public-sources.md](public-sources.md); they do not substitute for
-permission to process the source footage.
+The initial plan above preceded the real-footage evaluation. Current SDK and
+app cases, source hashes, inspected exports, misses and limitations are in
+[Real footage review](../docs/REAL_FOOTAGE_REVIEW.md) and its linked JSON results.
+These are development cases, not a blind quality or engagement measurement.
+
+The requested Eklipse baseline remains unavailable: the owner has no hosted
+account/results access. Public GTA and GTA 6 tool pages provide workflow
+requirements; an already selected clip's crop/caption export cannot measure
+the hosted VOD finder's recall or ranking. No Eklipse result is fabricated.

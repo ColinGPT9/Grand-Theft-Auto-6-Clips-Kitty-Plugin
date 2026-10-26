@@ -77,8 +77,8 @@ Mixed chatting/GTA is allowed; a platform game tag is not a factual event label.
 The requested baseline is Eklipse's actual hosted GTA output on identical source
 footage. It is **not completed**. No Eklipse GTA model weights or supported public
 inference API were established. An account or existing project/results link is
-needed before a same-input comparison can be recorded. The access question is
-pending with the owner. No generated Eklipse result, score or superiority claim
+needed before a same-input comparison can be recorded. The owner confirmed they
+do not have Eklipse access. No generated Eklipse result, score or superiority claim
 has been invented, and the authored energy-only reference is not Eklipse.
 
 Eklipse's [engine description](https://blog.eklipse.gg/streaming-tips/how-gameplay-intelligence-works-2.html)
@@ -87,6 +87,19 @@ uses the hosted app and account workflow. These public descriptions supply
 comparison dimensions, not model code. Save its actual project/version, source
 intervals and exports before comparing event support, setup/payoff, duplicates,
 facecam/game retention, captions and unnecessary quiet material.
+
+The owner also supplied Eklipse's [GTA use-case page](https://eklipse.gg/use-case/gta/)
+and [GTA 6 clip tool](https://eklipse.gg/tool/gta-6-clips-tool/), reviewed on
+2026-10-25. The latter describes a free browser tool that reframes, captions and
+exports an already selected clip through its shared GTA tool. It explicitly
+leaves automatic GTA VI detection unconfirmed. Its output can inform editing
+review, but cannot establish VOD event-finding or ranking accuracy. We did not
+run that browser editor or infer any proprietary model implementation from it.
+
+The final integration remains GTA-specific finding and ranking with the host's
+existing FFmpeg and renderer, as confirmed by the owner. FFmpeg installation in
+CI provisions an ephemeral test runner; the plugin does not install a second
+FFmpeg or renderer into Clips Kitty.
 
 ## Remaining limits
 
