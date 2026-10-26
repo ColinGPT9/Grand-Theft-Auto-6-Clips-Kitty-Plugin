@@ -47,6 +47,7 @@ def evaluate(document=None):
         results.append({"id": case["id"], "split": case["split"], "checks": checks,
                         "passed": all(checks.values()), "predictions": [asdict(h) for h in found]})
     return {"fixture_name": document["name"], "fixture_sha256": hashlib.sha256(FIXTURES.read_bytes()).hexdigest(),
+            "fixture_sha256_lf": hashlib.sha256(FIXTURES.read_bytes().replace(b"\r\n", b"\n")).hexdigest(),
             "limitations": "Authored transcript/signal metadata only. Public holdout is not blind. No GTA VI accuracy, rendered output or entertainment quality measured.",
             "summary": {split: {"cases": sum(r["split"] == split for r in results),
                                 "passed": sum(r["split"] == split and r["passed"] for r in results)}

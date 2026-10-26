@@ -19,7 +19,7 @@ def speech(start, end, text):
 def test_all_frozen_quality_cases_pass_with_identical_before_after_input_hashes():
     report = evaluate()
     before = json.loads((Path(__file__).parents[1] / "evaluation/results/quality-before.json").read_text(encoding="utf-8"))
-    assert report["fixture_sha256"] == before["fixture_sha256"]
+    assert report["fixture_sha256_lf"] == before["fixture_sha256_lf"]
     assert all(row["passed"] for row in report["cases"])
 
 

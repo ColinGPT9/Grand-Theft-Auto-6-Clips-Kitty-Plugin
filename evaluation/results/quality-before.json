@@ -1154,5 +1154,7 @@
       ]
     }
   ],
-  "source_sha256": "6f021d8f653afd20693958757b976ebbabc49e9e14d2982e4ca1005d6723c2cc"
+  "source_sha256": "6f021d8f653afd20693958757b976ebbabc49e9e14d2982e4ca1005d6723c2cc",
+  "fixture_sha256_lf": "83bd462d46c3169dcd348671eaddb97490e209a1aa74ebe3a964c9db93dae7c9",
+  "fixture_hash_note": "Original raw hash preserved; LF-normalized hash added after verifying original CRLF bytes. Predictions/source hashes unchanged."
 }
