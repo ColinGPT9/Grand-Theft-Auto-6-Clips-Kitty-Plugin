@@ -63,3 +63,7 @@ No REA runtime, model, binary, or dependency is included in the plugin distribut
 ## Repeatability and later persistent integration
 
 The `/tmp` package, npm cache, setup plan, and Evidence are local working artifacts and may disappear. The versions, commands, digests, and limitations above preserve the audit trail. A later machine can repeat the commands in temporary storage; installed dependency resolution may differ unless its lock file is also retained. To connect a persistent Codex session, first run the scoped setup dry run on that machine, inspect its exact destinations and proposed launch command, then approve only the desired configuration and restart Codex. This task leaves that persistent configuration decision unapplied while completing the authorized CLI investigation.
+
+## Windows continuation
+
+See [the pinned isolated Windows run](rea-windows-run.md) for the 2026-10-25 installation, portable runtime checksum, setup dry-run and authorized partial static analysis. No global Codex configuration was applied.

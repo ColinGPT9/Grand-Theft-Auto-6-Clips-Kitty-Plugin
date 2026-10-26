@@ -89,7 +89,7 @@ def _overlaps(row, moment):
 
 
 def _notes(highlight):
-    notes = []
+    notes = [f"Review: {warning}"[:160] for warning in highlight.review_warnings]
     for row in highlight.evidence:
         if row.kind == "transcript":
             quote = " ".join(row.text.split())
@@ -105,6 +105,13 @@ def _notes(highlight):
             row = max(matching, key=lambda item: item.confidence)
             notes.append(f"Supporting signal: {description} at source {row.start:g}s."[:160])
     return notes[:5]
+
+
+def _contains_supported_action(highlight, start=None, end=None):
+    """Require the complete supporting utterance, not inferred visual timing."""
+    first = highlight.start if start is None else start
+    last = highlight.end if end is None else end
+    return first <= highlight.action_start + 1e-6 and last >= highlight.action_end - 1e-6
 
 
 def _host_support(moment, highlight):
@@ -142,11 +149,18 @@ def _write_report(job, highlights, notes):
             # Calibration metadata is optional and may disappear on disconnect.
             # Never copy a host error or credential-bearing response into reports.
             pass
-    payload = {"schema_version": 1, "timeline_basis": "source_media", "vod_alignment": "unverified",
+    payload = {"schema_version": 2, "timeline_basis": "source_media", "vod_alignment": "unverified",
                "source": source_info,
                "notes": notes, "highlights": [
         {"start": item.start, "end": item.end, "peak": item.peak, "category": item.category,
          "score": item.score, "confidence": item.confidence, "reason": item.reason,
+         "title": item.title,
+         "supported_utterance": {"start": item.action_start, "end": item.action_end},
+         "score_components": dict(item.score_components),
+         "available_modalities": list(item.available_modalities),
+         "review_warnings": list(item.review_warnings),
+         "suppressed_reasons": list(item.suppressed_reasons),
+         "selection_status": "eligible" if _contains_supported_action(item) else "review_only",
          "evidence": [{"start": row.start, "end": row.end, "kind": row.kind,
                        "confidence": row.confidence, "source": row.source,
                        "verified": row.verified, "tags": list(row.tags)} for row in item.evidence]}
@@ -175,8 +189,11 @@ def main(job):
         found = rated = understood = edited = 0
         if job.wants("find"):
             for highlight in highlights:
+                if not _contains_supported_action(highlight):
+                    notes.append("A candidate was withheld because the duration limit cuts its supporting utterance; inspect the optional report.")
+                    continue
                 moment = job.add_range(highlight.start, highlight.end, score=round(highlight.score * 100, 2),
-                                       label=highlight.category, reason=highlight.reason)
+                                       label=highlight.category, title=highlight.title, reason=highlight.reason)
                 found += 1
                 if job.wants("understand"):
                     for note in _notes(highlight):
@@ -204,7 +221,8 @@ def main(job):
             if job.wants("edit") and (trim or title_overlay):
                 first, last = max(moment.start, highlight.start), min(moment.end, highlight.end)
                 keep = max(1.0, config.min_duration)
-                can_trim = trim and last - first >= keep and (first > moment.start or last < moment.end)
+                can_trim = (trim and last - first >= keep and (first > moment.start or last < moment.end)
+                            and _contains_supported_action(highlight, first, last))
                 if can_trim or title_overlay:
                     suggestion = job.suggest_edit(moment)
                     actions = []

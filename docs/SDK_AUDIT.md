@@ -39,7 +39,7 @@ title overlay. Clips Kitty retains rendering, history, source acquisition and
 publishing.
 
 The development evaluation tools deliberately run outside the plugin process.
-The SDK's conservative folder-wide linter currently reports two development-only
-import-path warnings for `evaluation/run.py` and `scripts/evaluate.py`; the runtime
+The SDK's conservative folder-wide linter currently reports three development-only
+import-path warnings for `evaluation/quality.py`, `evaluation/run.py` and `scripts/evaluate.py`; the runtime
 entry and its own modules use supported paths, and actual SDK subprocess tests
 exercise them. These warnings are not represented as failed runtime checks.

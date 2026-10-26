@@ -134,11 +134,7 @@ To complete the comparison, an operator should record individually accessible re
 
 ## Hackathon rules verification
 
-Both https://twitchcon-codex.devpost.com/ and https://twitchcon-codex.devpost.com/rules failed with network CONNECT 403. Current official eligibility, development window, deadline/time zone, intellectual property terms, submission fields, and demo constraints remain **unverified in this environment**. Do not claim compliance or an official deadline from this research.
-
-The user brief states a November 2, 2026 deadline, a public YouTube demo under three minutes, real Twitch functionality, meaningful Codex use/session ID, source/setup availability, and disclosure of the pre-existing Clips Kitty application/SDK. Treat these as the supplied preparation requirements until the official rules are checked. The brief's GTA VI release timing and launch-platform statements were not independently checked here; no detector accuracy on GTA VI gameplay is asserted.
-
-Before submission, open the official rules in a supported environment and record their last-updated date, official submission-period boundaries and time zone, eligibility, team limits, required fields, video length/publication rules, AI and prior-work disclosure rules, third-party asset requirements, and publication requirements. Record the actual Codex session ID through `/status` or the current client UI; do not invent a session ID from process names or environment variables.
+The earlier network failure was resolved on 2026-10-25. Official rules and FAQ were read directly. See [provenance](../docs/provenance.md) for verified submission requirements and dates. Public GTA V discovery continued in [video references](video-references.md); no actual video benchmark or live account result is claimed.
 
 ## Independent requirements passed to implementation
 

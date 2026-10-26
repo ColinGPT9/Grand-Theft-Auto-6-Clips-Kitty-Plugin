@@ -1,188 +1,141 @@
 # Grand Theft Auto 6 Clips Kitty Plugin
 
-An unofficial, independently developed **MIT** highlight plugin for GTA-style
-gameplay, built with the Clips Kitty SDK. It finds explicit event cues in the
-host transcript, adds measured audio/picture evidence and permitted viewer
-nominations, and returns explainable moments to Clips Kitty for rendering.
+An unofficial **MIT** GTA highlight pipeline for Clips Kitty. It finds explicit
+event cues in the host transcript, adds measured audio/picture evidence and
+permitted viewer nominations, and returns explainable clip suggestions.
 
-**Local version:** `0.1.0` · **Plugin ID:** `colingpt9/gta-vi-highlights` ·
-**Contract:** plugin API 1, SDK 1.3.0, manifest target Clips Kitty `>=2.1.0`.
-The Twitch context permission additionally requires the matching
-Connected Accounts SDK/host changes on Clips Studio's
-[`codex/twitch-connected-accounts` branch](https://github.com/ColinGPT9/clips-studio/tree/codex/twitch-connected-accounts).
-The host changes are awaiting review; this plugin's source is on `main`.
-Neither change is a released app or plugin version.
-
-The source repository is
-[ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin](https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin).
+**Version:** `0.2.0` · **ID:** `colingpt9/gta-vi-highlights`
+**Compatibility:** Python 3.11, plugin API 1, SDK 1.3.0, Clips Kitty `>=2.1.0`.
+Use [Clips Studio main](https://github.com/ColinGPT9/clips-studio);
+Connected Accounts/Twitch support is merged. Store packaging is outside this release.
 
 ## What it does
 
-- Classifies transcript cues into **chase, crash, stunt, combat, NPC chaos,
-  funny dialogue, roleplay, and reaction**. Roleplay requires explicit opt-in.
-- Corroborates those cues with sampled frame differences, brightness/scene
-  changes, and relative loudness. These measurements do not recognize police,
-  vehicles, explosions, or faces from pixels.
-- Uses mapped Twitch nominations as bounded supporting evidence when the
-  host supplies a verified source timeline. Repeated signals do not force
-  selection or publish anything.
-- Optionally asks the creator's existing local model to corroborate an
-  already grounded candidate. This is off by default; no model is installed
-  and no cloud fallback is used.
-- Supports all four SDK stages: **find**, **understand**, **rate**, and
-  **edit**. Optional trim/title suggestions are off by default; the host
-  retains approval and rendering.
-- Preserves setup and payoff windows, suppresses duplicate moments, and
-  writes a local `gta-highlight-explanations.json` report with evidence,
-  timestamps, heuristic score, and confidence.
+- Finds chase, crash, stunt, combat, NPC chaos, dialogue, reaction and opt-in
+  roleplay cues. Rejects historical stories, hypothetical plans and retractions
+  conservatively.
+- Preserves supported transcript utterances and nearby setup/reaction within
+  duration limits. Distinct events survive overlapping windows.
+- Produces factual titles, score components, observed modalities,
+  duplicate-suppression reasons and review warnings.
+- Withholds a find range when its supporting utterance would be truncated;
+  retains that candidate as review-only in the local explanation report.
+- Supports **find**, **understand**, **rate**, and opt-in **edit** suggestions.
+  Scores rank evidence; they are not probabilities or predicted views.
 
-The detector requires semantic source evidence; loudness, motion, chat, or a
-model alone cannot establish a GTA event. Commentary can describe something
-incorrectly, so categories remain reviewable hypotheses. No GTA VI footage
-or detection accuracy has been evaluated.
+The detector needs explicit semantic transcript evidence. Motion and loudness
+do not identify police, vehicles, collisions or faces from pixels. It misses
+untranscribed incidents. No GTA VI gameplay or real-world accuracy claim is supported.
 
-Clips Kitty owns source acquisition, cached transcription, models, captions,
-framing, rendering, history, accounts, and publishing. This plugin imports
-only its own modules, Python's standard library, and the MIT SDK. It adds no
-Whisper, Gemma, OpenCV, Torch, downloader, renderer, OAuth flow, or publisher.
+## Repository boundary
 
-## Install from source
+**This plugin owns GTA detection and suggestions. Clips Studio owns Twitch
+connections, VOD calibration, viewer nominations, Discord delivery,
+publishing, captions, rendering and history.** The plugin receives permissioned
+read-only Twitch context through the MIT SDK. It contains no Discord client,
+webhook, credential storage, OAuth flow or publisher. Manifest `network` and
+`sends` permissions are empty.
 
-Use Python **3.11**, FFmpeg/FFprobe, Git, and a matching Clips Kitty source
-checkout. The SDK is installed from `sdk/python`, not from a project package
-on PyPI. Use the matching host development branch until Connected Accounts
-is merged; a stock release does not provide `twitch.context.read`.
+Runtime imports are its own code, Python's standard library and the MIT SDK.
+No additional model, downloader, decoder stack or renderer is installed.
+Optional local-model corroboration is off by default and cannot create an
+unsupported event.
 
-The existing repository can be cloned with its current real URL:
+## Install and test
+
+Clone the host and plugin as siblings. Keep the environment outside the plugin
+because the host copies the installation folder.
 
 ```bash
-git clone --branch codex/twitch-connected-accounts https://github.com/ColinGPT9/clips-studio.git
+git clone https://github.com/ColinGPT9/clips-studio.git
 git clone https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin.git
-```
-
-With this plugin and `clips-studio` as sibling source directories, run from
-their parent directory. Keep the development environment outside the plugin
-folder because Clips Kitty copies the installation folder's contents.
-
-```bash
-python3.11 -m venv .venv-gta6
-source .venv-gta6/bin/activate
+python3.11 -m venv .venv-gta
+source .venv-gta/bin/activate
 python -m pip install -e './clips-studio/sdk/python[yaml,test]'
 cd Grand-Theft-Auto-6-Clips-Kitty-Plugin
 python -m clipskitty_sdk validate .
-python -m pytest -q
+python -m pytest
 ```
 
-On Windows use `py -3.11 -m venv .venv-gta6`, activate
-`.venv-gta6\Scripts\Activate.ps1`, and use the same subsequent Python
-commands. Start the matching Clips Kitty host, then install the local folder:
+On Windows use `py -3.11 -m venv .venv-gta` and activate
+`.venv-gta\Scripts\Activate.ps1`. Validation passes with three development
+import-path warnings; actual SDK subprocess tests pass.
+See [SDK audit](docs/SDK_AUDIT.md).
+
+Start a compatible host, install the folder, review permissions and enable
+the desired pipeline stage:
 
 ```bash
 python -m clipskitty_sdk install .
 ```
 
-Review the host's requested permissions and enable the plugin for the desired
-stage. It requests local media/transcript/FFmpeg access, optional local model
-access, and read-only Twitch context; `network` and `sends` are empty. The
-SDK validator currently reports two development-only import-path warnings;
-their scope and actual runtime checks are recorded in [SDK audit](docs/SDK_AUDIT.md).
+An older installed app may lack the required plugin APIs; this release does
+not update or package the application.
 
-## Run the reproducible technical demo
+## Reproduce the technical demo
 
-Generate original 48-second geometric footage, tones, and an authored
-fictional transcript outside the installation folder:
+Use absolute scratch paths outside both repositories and your actual FFmpeg path:
 
 ```bash
 python scripts/generate_demo.py /tmp/gta-demo.mp4 --ffmpeg /usr/bin/ffmpeg
-python -m clipskitty_sdk run . \
-  --video /tmp/gta-demo.mp4 \
-  --transcript /tmp/gta-demo.transcript.json
+python -m clipskitty_sdk run . --video /tmp/gta-demo.mp4 --transcript /tmp/gta-demo.transcript.json --steps find understand --job-dir /tmp/gta-find
+python -m clipskitty_sdk run . --video /tmp/gta-demo.mp4 --transcript /tmp/gta-demo.transcript.json --steps rate understand --moments /tmp/gta-find/result.json --job-dir /tmp/gta-rate
+python -m clipskitty_sdk run . --video /tmp/gta-demo.mp4 --transcript /tmp/gta-demo.transcript.json --steps edit --moments /tmp/gta-find/result.json --set trim_to_event=true --set title_overlay=true --job-dir /tmp/gta-edit
 python scripts/evaluate.py
-python scripts/evaluate.py --split holdout --output /tmp/gta-holdout.json
 ```
 
-Supply your actual absolute FFmpeg path on other systems. The authored
-transcript describes a chase and crash; the audio contains tones, not speech.
-The recorded run selects a crash range at **11–32 seconds**. In contrast,
-`python -m clipskitty_sdk run . --sample` correctly returns **zero** moments
-for the generic SDK sample, which has no GTA event evidence.
+The generated 48-second geometric video has tones and authored fictional
+commentary, not gameplay or speech. The plugin selects source **11–32 seconds**.
+The generic SDK `--sample` returns zero GTA moments.
+[Demo instructions](docs/demo.md) cover captioned MP4 and vertical export
+through the host renderer.
 
-To produce an actual MP4 through the existing application renderer, use the
-matching host environment with its usual video dependencies installed:
-
-```bash
-cd ../clips-studio
-python scripts/demo_gta_plugin.py \
-  --plugin ../Grand-Theft-Auto-6-Clips-Kitty-Plugin \
-  --video /tmp/gta-demo.mp4 \
-  --transcript /tmp/gta-demo.transcript.json \
-  --synthetic-demo --output /tmp/gta-app-export
-```
-
-This saves a captioned MP4, provenance manifest, SDK job, and isolated history.
-A completed local export is available at
-`/workspace/scratch/gta-plugin-demo/highlight-01.mp4`. This is technical
-SDK-to-host-export evidence, not real GTA footage, a transcription test, or
-a human review of clip quality. Generated media is kept outside this repository.
-
-## Configuration
-
-Use the host's plugin settings or SDK `--set name=value` for local runs.
+## Settings
 
 | Setting | Default | Purpose |
-| --- | --- | --- |
-| `min_score` / `min_confidence` | `42` / `35` | Minimum heuristic evidence thresholds, 0–100 |
-| `lead_in` / `payoff` | `8` / `10` seconds | Preserve context around an event, within host limits |
-| `max_highlights` | `10` | Bound output count; host clip limit also applies |
-| `enabled_categories` | empty | All categories; otherwise comma-separated category IDs |
-| `roleplay_enabled` | `false` | Enable only for a source that actually contains RP |
-| `use_media` / `use_nominations` | `true` / `true` | Add available measured/mapped supporting evidence |
-| `use_local_model` | `false` | Corroborate with the existing local model |
-| `trim_to_event` / `title_overlay` | `false` / `false` | Opt into edit suggestions |
-| `write_report` | `true` | Save the local explanation report |
+|---|---|---|
+| `min_score` / `min_confidence` | 42 / 35 | Evidence thresholds, 0–100 |
+| `lead_in` / `payoff` | 8 / 10 seconds | Setup and reaction allowance |
+| `max_highlights` | 10 | Maximum outputs, also bounded by host |
+| `enabled_categories` | empty | All categories, or comma-separated IDs |
+| `roleplay_enabled` | false | Explicitly enable for RP sources |
+| `use_media` / `use_nominations` | true / true | Available supporting measurements/context |
+| `use_local_model` | false | Existing local-model corroboration |
+| `trim_to_event` / `title_overlay` | false / false | Optional edit suggestions |
+| `write_report` | true | Local schema-2 explanation JSON |
 
-See [clipskitty.yaml](clipskitty.yaml) for complete settings and limits.
-Missing optional media, model, or audience context produces a note and retains
-available source evidence. Missing semantic evidence produces no invented
-highlight.
+See [clipskitty.yaml](clipskitty.yaml). Unavailable inputs do not become
+fabricated observations.
 
-## Twitch, catch-up delivery, and release status
+## Verification and contest evidence
 
-The separate Clips Studio host branch supports nomination collection, verified
-source/VOD calibration, manually approved/exportable digests, and authorized
-VOD-native clip requests. Credentials remain in the host. Native clip
-requests stay pending until Twitch returns a real public URL; timestamp
-links require verified source mapping.
+**168 tests pass** locally against the real SDK. On unchanged synthetic
+fixtures, mean setup coverage increased from **86.71% to 93.06%**; detection
+counts remained TP 9 / FP 0 / FN 1. Thirty additional authored adversarial
+cases now pass. Their public holdout was visible during implementation and
+is not blind validation. [Full comparison](docs/QUALITY_IMPROVEMENTS.md).
 
-The host changes are awaiting review in Clips Studio. No authenticated livestream,
-real native clip, or full Twitch-to-Discord result was verified in this task.
-Discord delivery needs the separately developed adapter and authorized
-server/channel configuration. An approved digest without a delivery adapter
-remains **unsent**. Automatic posting is off unless the creator opts in.
+[Release verification](docs/morning-status.md) records SDK/media checks.
+[Contest checklist](docs/demo.md) separates them from pending live Twitch,
+authorized Discord, rights-cleared gameplay and the public demo/session ID.
+Discord delivery is tested in the host with mocked responses; no real
+message or native Twitch clip is claimed here.
 
-The plugin's recorded verification passed **147 tests**, including **21
-adapter tests**. The [synthetic evaluation](evaluation/results/current.md)
-compares authored fixtures with an original energy-only reference, not the
-host's production finder. Its metrics do not establish real gameplay quality
-or virality. Authorized footage, visual review, real accounts, and a live
-demo remain required.
-
-The [marketplace contribution](marketplace/listing.md) uses the actual catalog
-schema and GTA section. It remains a draft until a tested public release
-commit can be fetched; no live marketplace listing or public release is claimed.
+The [Awesome Clips Kitty contribution](marketplace/listing.md) uses the existing
+catalog. No Store app upload is included.
 
 ## Documentation and license
 
-- [Morning status and remaining checks](docs/morning-status.md)
-- [SDK and host reuse audit](docs/SDK_AUDIT.md)
-- [Synthetic evaluation method](docs/EVALUATION.md) and [real-footage rubric](research/benchmark.md)
-- [Verified public sources and access limits](research/public-sources.md)
+- [Quality improvements](docs/QUALITY_IMPROVEMENTS.md)
+- [Provenance and contest requirements](docs/provenance.md)
+- [Public GTA V references](research/video-references.md)
 - [Independent requirements](research/functional-requirements.md)
-- [Demo checklist](docs/demo.md) and [hackathon provenance](docs/provenance.md)
-- [Dependency, model, and media audit](docs/license-audit.md)
+- [REA research](research/rea-review.md)
+- [License inventory](docs/license-audit.md)
+- [Evaluation method](docs/EVALUATION.md)
 
-Copyright 2026 ColinGPT9. Original plugin code is [MIT](LICENSE); the MIT
-scaffold notice is retained in [TEMPLATE-LICENSE.txt](TEMPLATE-LICENSE.txt).
-Clips Kitty's separate application retains its AGPL license. No Rockstar
-assets, proprietary competitor code, model weights, or gameplay are bundled.
-Game/service names identify compatibility; no endorsement is claimed.
+Original code and fictional fixtures are [MIT](LICENSE). The SDK scaffold
+notice is retained in [TEMPLATE-LICENSE.txt](TEMPLATE-LICENSE.txt).
+Clips Studio remains separately AGPL-licensed. No competitor implementation,
+gameplay assets or logos are bundled. Not affiliated with Rockstar Games,
+Take-Two, Twitch, Discord or Eklipse.

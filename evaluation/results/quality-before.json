@@ -1,0 +1,1160 @@
+{
+  "fixture_name": "original-clean-room-quality-v1",
+  "fixture_sha256": "a758f4c8b462169d2216b1f2640b5f952fe9b90082f0fc62df8adf3ffa9af516",
+  "limitations": "Authored transcript/signal metadata only. Public holdout is not blind. No GTA VI accuracy, rendered output or entertainment quality measured.",
+  "summary": {
+    "development": {
+      "cases": 20,
+      "passed": 6
+    },
+    "holdout": {
+      "cases": 10,
+      "passed": 5
+    }
+  },
+  "cases": [
+    {
+      "id": "last_week",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"We crashed into a truck last week.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck last week.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "historical_frame",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"Yesterday was wild. We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Yesterday was wild. We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retelling",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"I am retelling the story where we crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I am retelling the story where we crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "future_frame",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"Here is my plan. We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Here is my plan. We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "retracted",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"We crashed into a truck! Actually that never happened.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck! Actually that never happened.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "negative_object",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"We crashed into no cars.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into no cars.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "future_noun",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "actual_after_contrast",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–33s: \"Yesterday we crashed, but now we crashed into a barrier.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Yesterday we crashed, but now we crashed into a barrier.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "late_reaction_utterance",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "categories": false,
+        "complete_required_interval": false,
+        "action_provenance": false,
+        "review_metadata": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 42.0,
+          "peak": 32.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–32s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 40.0,
+              "end": 46.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Oh my god! I cannot believe this!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 32.0,
+          "end": 56.0,
+          "peak": 46.0,
+          "category": "reaction",
+          "score": 0.5084,
+          "confidence": 0.6724,
+          "reason": "Transcript cue for reaction at 40–46s: \"Oh my god! I cannot believe this!\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 40.0,
+              "end": 46.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Oh my god! I cannot believe this!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "long_action_fits",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "complete_required_interval": false,
+        "action_provenance": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 25.0,
+          "end": 60.0,
+          "peak": 50.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 20–50s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 20.0,
+              "end": 50.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "impossible_action_limit",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "action_provenance": false,
+        "constraint_explained": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 45.0,
+          "end": 60.0,
+          "peak": 50.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 20–50s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 20.0,
+              "end": 50.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "utterance_setup",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "complete_required_interval": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "funny_dialogue",
+          "score": 0.5456,
+          "confidence": 0.7216,
+          "reason": "Transcript cue for funny dialogue at 30–33s: \"I said the car is the receipt. That was hilarious.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I said the car is the receipt. That was hilarious.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "isolated_laughter",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 42.0,
+          "peak": 32.0,
+          "category": "funny_dialogue",
+          "score": 0.5518,
+          "confidence": 0.7298,
+          "reason": "Transcript cue for funny dialogue at 30–32s: \"I cannot stop laughing.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I cannot stop laughing.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "same_incident_repeat",
+      "split": "development",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "complete_required_interval": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 42.0,
+          "peak": 32.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–32s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 40.0,
+              "end": 42.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 32.0,
+          "end": 52.0,
+          "peak": 42.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 40–42s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 40.0,
+              "end": 42.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "distinct_overlap",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 42.0,
+          "peak": 32.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–32s: \"We crashed into a wall.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a wall.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 38.0,
+              "end": 40.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a bus.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 30.0,
+          "end": 50.0,
+          "peak": 40.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 38–40s: \"We crashed into a bus.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a wall.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 38.0,
+              "end": 40.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a bus.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pursuit_without_payoff",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "incomplete_priority": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 43.0,
+          "peak": 33.0,
+          "category": "chase",
+          "score": 0.5456,
+          "confidence": 0.7216,
+          "reason": "Transcript cue for chase at 30–33s: \"The cops are chasing me!\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 33.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "The cops are chasing me!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reaction_other_incident",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "unrelated_reaction_excluded": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 22.0,
+          "end": 42.0,
+          "peak": 32.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 30–32s: \"We crashed into a wall.\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a wall.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 38.0,
+              "end": 40.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I landed that jump!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 41.0,
+              "end": 45.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Oh my god!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 30.0,
+          "end": 50.0,
+          "peak": 40.0,
+          "category": "stunt",
+          "score": 0.5642,
+          "confidence": 0.7462,
+          "reason": "Transcript cue for stunt at 38–40s: \"I landed that jump!\".",
+          "evidence": [
+            {
+              "start": 30.0,
+              "end": 32.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a wall.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 38.0,
+              "end": 40.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I landed that jump!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 41.0,
+              "end": 45.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Oh my god!",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "loudness_motion_only",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "nomination_only",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "short_media",
+      "split": "development",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "complete_required_interval": true,
+        "action_provenance": false,
+        "review_metadata": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 0.0,
+          "end": 5.0,
+          "peak": 2.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 1–2s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 1.0,
+              "end": 2.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "historical_month",
+      "split": "holdout",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 47.0,
+          "end": 69.0,
+          "peak": 59.0,
+          "category": "stunt",
+          "score": 0.5642,
+          "confidence": 0.7462,
+          "reason": "Transcript cue for stunt at 55–59s: \"Last month we landed that jump.\".",
+          "evidence": [
+            {
+              "start": 55.0,
+              "end": 59.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Last month we landed that jump.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "future_scheduled",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "dream_report",
+      "split": "holdout",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 47.0,
+          "end": 69.0,
+          "peak": 59.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 55–59s: \"In my dream we crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 55.0,
+              "end": 59.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "In my dream we crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "negated_suffix",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "hypothetical",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": []
+    },
+    {
+      "id": "quiet_payoff_holdout",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "complete_required_interval": false,
+        "review_metadata": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 44.0,
+          "end": 66.0,
+          "peak": 56.0,
+          "category": "funny_dialogue",
+          "score": 0.5022,
+          "confidence": 0.6642,
+          "reason": "Transcript cue for funny dialogue at 52–56s: \"I told her I sold the spare wheel. That punchline cracked me up.\".",
+          "evidence": [
+            {
+              "start": 52.0,
+              "end": 56.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "I told her I sold the spare wheel. That punchline cracked me up.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nearby_distinct_holdout",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "categories": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": [
+        {
+          "start": 36.0,
+          "end": 56.0,
+          "peak": 46.0,
+          "category": "crash",
+          "score": 0.5208,
+          "confidence": 0.6888,
+          "reason": "Transcript cue for crash at 44–46s: \"That car just flipped.\".",
+          "evidence": [
+            {
+              "start": 44.0,
+              "end": 46.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "That car just flipped.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 53.0,
+              "end": 55.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a taxi.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 45.0,
+          "end": 65.0,
+          "peak": 55.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 53–55s: \"We crashed into a taxi.\".",
+          "evidence": [
+            {
+              "start": 44.0,
+              "end": 46.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "That car just flipped.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 53.0,
+              "end": 55.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a taxi.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eof_out_of_range",
+      "split": "holdout",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 88.0,
+          "end": 100.0,
+          "peak": 100.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 97–105s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 97.0,
+              "end": 105.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "holdout_reaction_tail",
+      "split": "holdout",
+      "checks": {
+        "count": false,
+        "valid_limits": true,
+        "categories": false,
+        "complete_required_interval": false,
+        "deterministic": true
+      },
+      "passed": false,
+      "predictions": [
+        {
+          "start": 43.0,
+          "end": 64.0,
+          "peak": 54.0,
+          "category": "npc_chaos",
+          "score": 0.5518,
+          "confidence": 0.7298,
+          "reason": "Transcript cue for npc chaos at 51–54s: \"An NPC just stole my car.\".",
+          "evidence": [
+            {
+              "start": 51.0,
+              "end": 54.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "An NPC just stole my car.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            },
+            {
+              "start": 63.0,
+              "end": 68.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Are you kidding me?",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        },
+        {
+          "start": 55.0,
+          "end": 78.0,
+          "peak": 68.0,
+          "category": "reaction",
+          "score": 0.4898,
+          "confidence": 0.6478,
+          "reason": "Transcript cue for reaction at 63–68s: \"Are you kidding me?\".",
+          "evidence": [
+            {
+              "start": 63.0,
+              "end": 68.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "Are you kidding me?",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "holdout_top_n",
+      "split": "holdout",
+      "checks": {
+        "count": true,
+        "valid_limits": true,
+        "deterministic": true
+      },
+      "passed": true,
+      "predictions": [
+        {
+          "start": 2.0,
+          "end": 22.0,
+          "peak": 12.0,
+          "category": "crash",
+          "score": 0.558,
+          "confidence": 0.738,
+          "reason": "Transcript cue for crash at 10–12s: \"We crashed into a truck.\".",
+          "evidence": [
+            {
+              "start": 10.0,
+              "end": 12.0,
+              "kind": "transcript",
+              "confidence": 1.0,
+              "text": "We crashed into a truck.",
+              "tags": [],
+              "source": "original synthetic commentary",
+              "verified": false
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source_sha256": "6f021d8f653afd20693958757b976ebbabc49e9e14d2982e4ca1005d6723c2cc",
+  "fixture_sha256_lf": "83bd462d46c3169dcd348671eaddb97490e209a1aa74ebe3a964c9db93dae7c9",
+  "fixture_hash_note": "Original raw hash preserved; LF-normalized hash added after verifying original CRLF bytes. Predictions/source hashes unchanged."
+}

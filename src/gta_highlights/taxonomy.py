@@ -85,7 +85,9 @@ _PLANNING = re.compile(
 )
 _INSTRUCTION = re.compile(
     r"\b(?:how to|how do (?:i|we|you)|tutorial|tips for|to avoid|you can|"
-    r"when you|whenever|usually|every time|remember when|last time|yesterday)\b"
+    r"when you|whenever|usually|every time|remember when|remember that|last time|yesterday|"
+    r"last (?:week|month|year|night)|(?:days?|weeks?|months?|years?) ago|"
+    r"retelling|in my dream|in the (?:movie|story)|my plan)\b"
 )
 _RETRACTED = re.compile(
     r"\b(?:not real|fake|did not happen|didn't happen|never happened|"
@@ -103,6 +105,11 @@ _NEGATION = re.compile(
 def _clauses(text: str):
     """Keep conditional context across commas; reset at explicit contrast."""
     normalized = text.lower().translate(_NORMALIZATION)
+    # A historical/planned frame can span several sentences in one supplied
+    # utterance. Only explicit contrast/current-time language resets it.
+    framed = False
+    if _RETRACTED.search(normalized):
+        return
     for sentence in _SENTENCES.findall(normalized):
         # A question about an event does not establish that it happened.
         # Familiar reaction questions do express a reaction, handled below.
@@ -110,7 +117,14 @@ def _clauses(text: str):
         for clause in _CONTRAST.split(sentence):
             clause = re.sub(r"\s+", " ", clause).strip(" ,.!?;")
             if clause:
-                yield clause, question
+                if re.search(r"\bcrashed (?:straight |right )?into (?:no|none)\b", clause):
+                    continue
+                if re.search(r"\b(?:but|however|yet)\b", sentence) or re.search(r"\b(?:now|right now|this time)\b", clause):
+                    framed = False
+                if _INSTRUCTION.search(clause) or _PLANNING.search(clause) or _HYPOTHETICAL.search(clause):
+                    framed = True
+                if not framed:
+                    yield clause, question
 
 
 def classify_text(text: str, *, roleplay_enabled: bool = False) -> tuple[Cue, ...]:
@@ -137,7 +151,7 @@ def classify_text(text: str, *, roleplay_enabled: bool = False) -> tuple[Cue, ..
                 # such as "didn't crash, but then crashed into ..." has its
                 # own clause, and can therefore recover a positive event.
                 prefix = " ".join(clause[:match.start()].split()[-8:])
-                if _NEGATION.search(prefix):
+                if _NEGATION.search(prefix) or (category != "reaction" and re.search(r"\b(?:no|not|never|none)\b", match.group(0))):
                     continue
                 cue = Cue(category, match.group(0), strength)
                 if category not in best or strength > best[category].strength:

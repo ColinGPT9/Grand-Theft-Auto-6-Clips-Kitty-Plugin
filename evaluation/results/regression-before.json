@@ -1,0 +1,1130 @@
+{
+  "schema_version": 1,
+  "fixture_set": "gta-authored-synthetic-v1",
+  "split": "all",
+  "matching": {
+    "minimum_temporal_iou": 0.25,
+    "minimum_payoff_coverage": 0.5,
+    "complete_component_coverage": 0.8
+  },
+  "limitations": [
+    "Original synthetic annotations and signals; no real GTA footage reviewed.",
+    "Baseline is an authored energy-only reference, not Clips Kitty's built-in finder.",
+    "Public holdout fixtures are regression checks, not a blind generalization claim.",
+    "No visual, audio, caption, watchability, or virality scores were assigned."
+  ],
+  "manual_review": {
+    "status": "not_performed",
+    "reason": "No authorized real footage was reviewed.",
+    "visual_framing": null,
+    "audio": null,
+    "captions": null,
+    "watchability": null
+  },
+  "detectors": {
+    "energy_only_baseline": {
+      "summary": {
+        "true_positives": 6,
+        "false_positives": 5,
+        "false_negatives": 4,
+        "predictions": 11,
+        "annotated_events": 10,
+        "complete_events": 3,
+        "duplicate_predictions": 0,
+        "overlapping_prediction_pairs": 0,
+        "case_count": 16,
+        "precision": 0.5454545454545454,
+        "recall": 0.6,
+        "event_completeness_rate": 0.3,
+        "duplicate_rate": 0.0,
+        "matched_mean_temporal_iou": 0.7078525,
+        "matched_mean_setup_coverage": 0.7440476666666666,
+        "matched_mean_payoff_coverage": 1.0,
+        "matched_mean_reaction_coverage": 1.0
+      },
+      "cases": [
+        {
+          "case_id": "chase_into_crash",
+          "split": "development",
+          "description": "A fictional police chase ends in a barrier collision and a spoken reaction.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.714286,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "chase_crash",
+                "event_index": 0,
+                "temporal_iou": 0.714286,
+                "component_coverage": {
+                  "setup": 0.75,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": false
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "failed_ramp_stunt",
+          "split": "development",
+          "description": "An attempted ramp jump misses its landing; the fictional speaker explains the failure.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.7,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "ramp_failure",
+                "event_index": 0,
+                "temporal_iou": 0.7,
+                "component_coverage": {
+                  "setup": 0.857143,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "npc_steals_car",
+          "split": "development",
+          "description": "Unexpected NPC theft described in invented dialogue, with no loudness peak.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 1,
+            "predictions": 0,
+            "annotated_events": 1,
+            "precision": null,
+            "recall": 0.0,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "dialogue_punchline",
+          "split": "development",
+          "description": "Invented dialogue followed by an explicit funny-dialogue cue; no claim the text is objectively funny.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 1,
+            "predictions": 0,
+            "annotated_events": 1,
+            "precision": null,
+            "recall": 0.0,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "roleplay_default_off",
+          "split": "development",
+          "description": "Ordinary fictional roleplay traffic stop excluded by the default creator policy.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 1,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 0,
+            "precision": 0.0,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "roleplay_explicit_opt_in",
+          "split": "development",
+          "description": "The same traffic stop is eligible only when the creator enables roleplay.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.8,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "roleplay_stop",
+                "event_index": 0,
+                "temporal_iou": 0.8,
+                "component_coverage": {
+                  "setup": 0.857143,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "loud_noise_negative",
+          "split": "development",
+          "description": "A loud synthetic tone and a scene cut are not evidence of a game event.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 1,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 0,
+            "precision": 0.0,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "irrelevant_speech_negative",
+          "split": "development",
+          "description": "Unrelated fictional grocery-list speech over a loud tone.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 1,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 0,
+            "precision": 0.0,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "no_media_transcript_only",
+          "split": "development",
+          "description": "Explicit collision text remains available when media analysis is unavailable; no model is required.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 1,
+            "predictions": 0,
+            "annotated_events": 1,
+            "precision": null,
+            "recall": 0.0,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "untranscribed_crash_is_missed",
+          "split": "development",
+          "description": "Author annotation says a collision occurred, but only generic low-level signals reach the detector: a deliberate recall limitation.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.75,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "unobserved_collision",
+                "event_index": 0,
+                "temporal_iou": 0.75,
+                "component_coverage": {
+                  "setup": 0.857143,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "no_inputs",
+          "split": "development",
+          "description": "No transcript, media, chat, or model yields no candidate.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "long_setup_boundary_limit",
+          "split": "development",
+          "description": "An unusually long setup tests completeness limits of a fixed lead-in; annotation is intentionally not optimized to detector padding.",
+          "predictions": [
+            {
+              "start": 12.0,
+              "end": 31.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.555556,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "long_setup_collision",
+                "event_index": 0,
+                "temporal_iou": 0.555556,
+                "component_coverage": {
+                  "setup": 0.428571,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": false
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "later_chase_secondary",
+          "split": "holdout",
+          "description": "A later police-chase cue with different timing and an extended quiet reaction.",
+          "predictions": [
+            {
+              "start": 32.0,
+              "end": 52.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.727273,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "later_chase",
+                "event_index": 0,
+                "temporal_iou": 0.727273,
+                "component_coverage": {
+                  "setup": 0.714286,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": false
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "hypothetical_negative_secondary",
+          "split": "holdout",
+          "description": "A hypothetical collision is not an observed event despite noise and cuts.",
+          "predictions": [
+            {
+              "start": 26.0,
+              "end": 46.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 1,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 0,
+            "precision": 0.0,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "silent_npc_secondary",
+          "split": "holdout",
+          "description": "An NPC incident described in text when video and audio analysis are unavailable.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 1,
+            "predictions": 0,
+            "annotated_events": 1,
+            "precision": null,
+            "recall": 0.0,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "unrelated_late_noise_secondary",
+          "split": "holdout",
+          "description": "An unrelated sound near the end cannot establish a GTA event.",
+          "predictions": [
+            {
+              "start": 50.0,
+              "end": 69.0,
+              "category": "energy_spike",
+              "reason": "relative loudness spike only"
+            }
+          ],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 1,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 0,
+            "precision": 0.0,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        }
+      ]
+    },
+    "gta_plugin": {
+      "summary": {
+        "true_positives": 9,
+        "false_positives": 0,
+        "false_negatives": 1,
+        "predictions": 9,
+        "annotated_events": 10,
+        "complete_events": 7,
+        "duplicate_predictions": 0,
+        "overlapping_prediction_pairs": 0,
+        "case_count": 16,
+        "precision": 1.0,
+        "recall": 0.9,
+        "event_completeness_rate": 0.7,
+        "duplicate_rate": 0.0,
+        "matched_mean_temporal_iou": 0.7005912222222224,
+        "matched_mean_setup_coverage": 0.8670634444444444,
+        "matched_mean_payoff_coverage": 1.0,
+        "matched_mean_reaction_coverage": 1.0
+      },
+      "cases": [
+        {
+          "case_id": "chase_into_crash",
+          "split": "development",
+          "description": "A fictional police chase ends in a barrier collision and a spoken reaction.",
+          "predictions": [
+            {
+              "start": 11.0,
+              "end": 32.0,
+              "category": "crash",
+              "score": 0.666,
+              "confidence": 0.7898,
+              "reason": "Transcript cue for crash at 19\u201322s: \"We crashed into a barrier!\"; supported by measured scene change at 20s, measured audio spike at 20s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.727273,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "chase_crash",
+                "event_index": 0,
+                "temporal_iou": 0.727273,
+                "component_coverage": {
+                  "setup": 0.875,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "failed_ramp_stunt",
+          "split": "development",
+          "description": "An attempted ramp jump misses its landing; the fictional speaker explains the failure.",
+          "predictions": [
+            {
+              "start": 15.0,
+              "end": 35.0,
+              "category": "funny_dialogue",
+              "score": 0.6536,
+              "confidence": 0.7734,
+              "reason": "Transcript cue for funny dialogue at 23\u201325s: \"That was hilarious.\"; supported by measured scene change at 20s, measured audio spike at 20s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.458333,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "ramp_failure",
+                "event_index": 0,
+                "temporal_iou": 0.458333,
+                "component_coverage": {
+                  "setup": 0.428571,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": false
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "npc_steals_car",
+          "split": "development",
+          "description": "Unexpected NPC theft described in invented dialogue, with no loudness peak.",
+          "predictions": [
+            {
+              "start": 11.0,
+              "end": 32.0,
+              "category": "npc_chaos",
+              "score": 0.5998,
+              "confidence": 0.7528,
+              "reason": "Transcript cue for npc chaos at 19\u201322s: \"An NPC just stole my car!\"; supported by measured scene change at 20s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.761905,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "npc_theft",
+                "event_index": 0,
+                "temporal_iou": 0.761905,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "dialogue_punchline",
+          "split": "development",
+          "description": "Invented dialogue followed by an explicit funny-dialogue cue; no claim the text is objectively funny.",
+          "predictions": [
+            {
+              "start": 10.0,
+              "end": 36.0,
+              "category": "funny_dialogue",
+              "score": 0.5518,
+              "confidence": 0.7298,
+              "reason": "Transcript cue for funny dialogue at 23\u201326s: \"I cannot stop laughing.\"."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.615385,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "insurance_punchline",
+                "event_index": 0,
+                "temporal_iou": 0.615385,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "roleplay_default_off",
+          "split": "development",
+          "description": "Ordinary fictional roleplay traffic stop excluded by the default creator policy.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "roleplay_explicit_opt_in",
+          "split": "development",
+          "description": "The same traffic stop is eligible only when the creator enables roleplay.",
+          "predictions": [
+            {
+              "start": 11.0,
+              "end": 33.0,
+              "category": "roleplay",
+              "score": 0.604,
+              "confidence": 0.7078,
+              "reason": "Transcript cue for roleplay at 19\u201323s: \"This traffic stop is part of our roleplay scene.\"; supported by measured scene change at 20s, measured audio spike at 20s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.772727,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "roleplay_stop",
+                "event_index": 0,
+                "temporal_iou": 0.772727,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "loud_noise_negative",
+          "split": "development",
+          "description": "A loud synthetic tone and a scene cut are not evidence of a game event.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "irrelevant_speech_negative",
+          "split": "development",
+          "description": "Unrelated fictional grocery-list speech over a loud tone.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "no_media_transcript_only",
+          "split": "development",
+          "description": "Explicit collision text remains available when media analysis is unavailable; no model is required.",
+          "predictions": [
+            {
+              "start": 11.0,
+              "end": 32.0,
+              "category": "crash",
+              "score": 0.558,
+              "confidence": 0.738,
+              "reason": "Transcript cue for crash at 19\u201322s: \"We crashed into a truck.\"."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.761905,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "spoken_collision",
+                "event_index": 0,
+                "temporal_iou": 0.761905,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "untranscribed_crash_is_missed",
+          "split": "development",
+          "description": "Author annotation says a collision occurred, but only generic low-level signals reach the detector: a deliberate recall limitation.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 1,
+            "predictions": 0,
+            "annotated_events": 1,
+            "precision": null,
+            "recall": 0.0,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "no_inputs",
+          "split": "development",
+          "description": "No transcript, media, chat, or model yields no candidate.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "long_setup_boundary_limit",
+          "split": "development",
+          "description": "An unusually long setup tests completeness limits of a fixed lead-in; annotation is intentionally not optimized to detector padding.",
+          "predictions": [
+            {
+              "start": 11.0,
+              "end": 32.0,
+              "category": "crash",
+              "score": 0.666,
+              "confidence": 0.7898,
+              "reason": "Transcript cue for crash at 19\u201322s: \"We crashed into a truck.\"; supported by measured scene change at 20s, measured audio spike at 20s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.571429,
+            "complete_events": 0,
+            "event_completeness_rate": 0.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "long_setup_collision",
+                "event_index": 0,
+                "temporal_iou": 0.571429,
+                "component_coverage": {
+                  "setup": 0.5,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": false
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "later_chase_secondary",
+          "split": "holdout",
+          "description": "A later police-chase cue with different timing and an extended quiet reaction.",
+          "predictions": [
+            {
+              "start": 30.0,
+              "end": 52.0,
+              "category": "chase",
+              "score": 0.6536,
+              "confidence": 0.7734,
+              "reason": "Transcript cue for chase at 38\u201342s: \"The cops are chasing me!\"; supported by measured scene change at 40s, measured audio spike at 40s."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.818182,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "later_chase",
+                "event_index": 0,
+                "temporal_iou": 0.818182,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "hypothetical_negative_secondary",
+          "split": "holdout",
+          "description": "A hypothetical collision is not an observed event despite noise and cuts.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        },
+        {
+          "case_id": "silent_npc_secondary",
+          "split": "holdout",
+          "description": "An NPC incident described in text when video and audio analysis are unavailable.",
+          "predictions": [
+            {
+              "start": 21.0,
+              "end": 43.0,
+              "category": "npc_chaos",
+              "score": 0.5518,
+              "confidence": 0.7298,
+              "reason": "Transcript cue for npc chaos at 29\u201333s: \"That NPC just stole my car.\"."
+            }
+          ],
+          "metrics": {
+            "true_positives": 1,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 1,
+            "annotated_events": 1,
+            "precision": 1.0,
+            "recall": 1.0,
+            "matched_mean_temporal_iou": 0.818182,
+            "complete_events": 1,
+            "event_completeness_rate": 1.0,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": [
+              {
+                "prediction_index": 0,
+                "event_id": "later_npc_theft",
+                "event_index": 0,
+                "temporal_iou": 0.818182,
+                "component_coverage": {
+                  "setup": 1.0,
+                  "payoff": 1.0,
+                  "reaction": 1.0
+                },
+                "complete": true
+              }
+            ]
+          }
+        },
+        {
+          "case_id": "unrelated_late_noise_secondary",
+          "split": "holdout",
+          "description": "An unrelated sound near the end cannot establish a GTA event.",
+          "predictions": [],
+          "metrics": {
+            "true_positives": 0,
+            "false_positives": 0,
+            "false_negatives": 0,
+            "predictions": 0,
+            "annotated_events": 0,
+            "precision": null,
+            "recall": null,
+            "matched_mean_temporal_iou": null,
+            "complete_events": 0,
+            "event_completeness_rate": null,
+            "duplicate_predictions": 0,
+            "duplicate_rate": 0.0,
+            "overlapping_prediction_pairs": 0,
+            "matches": []
+          }
+        }
+      ]
+    }
+  },
+  "source_sha256": "6f021d8f653afd20693958757b976ebbabc49e9e14d2982e4ca1005d6723c2cc"
+}

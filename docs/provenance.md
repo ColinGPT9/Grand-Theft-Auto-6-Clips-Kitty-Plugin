@@ -1,73 +1,56 @@
-# Hackathon provenance and submission notes
+# Hackathon provenance
 
-Prepared 2026-10-24. The display name requested by the owner is **Grand
-Theft Auto 6 Clips Kitty Plugin**. The owner renamed the repository to
-`ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`; GitHub API verification
-confirmed the new identity on 2026-10-25. Verify the immutable release
-commit before submitting or generating a registry entry.
+Updated 2026-10-25. Project: **Grand Theft Auto 6 Clips Kitty Plugin**,
+a standalone MIT SDK pipeline.
 
-## Existing work
+## Existing foundation
 
-Clips Kitty, its MIT Python SDK, game-events scaffold, media/signal helpers,
-local model abstraction, host job queue, source acquisition, analysis,
-rendering/captions, publishing, Watched Channels/feed monitoring, marketplace,
-and the supplied connected-account/Twitch work existed in the workspace
-before this plugin task. They are reused foundations, not newly authored
-plugin features. `clips-studio` HEAD was
-`33fe54b45415e525910038a1571bf362f00db2b0`; it had substantial uncommitted
-connected-account/Twitch changes when this task began. Do not attribute
-that dirty baseline to new plugin work or overwrite it.
+Clips Kitty, its MIT SDK, acquisition, transcription, models, rendering,
+captions, history, publishing, marketplace and account infrastructure are
+reused foundations. The initial plugin baseline is commit `4200ade`,
+version 0.1.0, with 147 tests. Host Twitch support merged in clips-studio #182;
+publishing/Discord integration merged in #186. Tested host baseline:
+`5b87c6a7da509e3f34a8dfbefc031258107e439a`.
+Do not represent the whole application as new plugin work.
 
-## New work in this task
+## Work in this continuation
 
-- Original standalone GTA event taxonomy, evidence-based detection and
-  bounded scoring, source-dependent RP, setup/payoff timing, duplicate
-  prevention, SDK stage adapters, and fixtures/tests, as present in the
-  final source and test report.
-- Independent requirements and research records, actual authorized REA
-  use, dependency/model audit, evaluation protocol, release checklist,
-  demo instructions, and a catalog-schema-based listing draft.
-- New local host additions include `stream_workflows/`,
-  `server/stream_workflows_api.py`, `scripts/demo_gta_plugin.py`, their docs
-  and tests, plus VOD-native clip operations added to the existing
-  `connected_accounts/twitch.py`. These remain host-licensed work and are
-  separate from the pre-existing connected-account baseline. Final host
-  diffs identify the exact additional changes. Provider mocks and synthetic
-  rendering checks do not establish real Twitch or Discord operation.
+The 0.2.0 diff adds original context rejection, utterance preservation,
+setup/reaction association, distinct-event handling, explanations, review-only
+truncation safeguards, fixtures and measured regressions.
+The independent implementation context used only clean functional requirements,
+original plugin/SDK source and fictional fixtures. Dirty-room notes and
+competitor implementations were not implementation inputs.
 
-The list describes task scope, not proof of hackathon eligibility. Verify
-the official submission window and record the actual creation dates,
-commits, substantial new functionality, and allowed use of pre-existing
-code under the current rules. Neither the user's stated deadline nor a
-local clock establishes the official window.
+Separate host work supplies the necessary generic approved-digest Discord
+adapter and startup wiring. A generic export example replaces a GTA-named
+host demo; GTA instructions live here. Host work remains host-licensed.
+Credentials, Discord and rendering stay in Clips Studio.
 
-## Codex record
+REA ran separately on authorized MIT source with partial static coverage.
+It did not inspect Eklipse's proprietary detector.
+[REA record](../research/rea-review.md) and
+[quality report](QUALITY_IMPROVEMENTS.md) record limits.
 
-Codex was used to inspect the real SDK, implement and review the plugin,
-write tests, inspect integration boundaries, investigate public sources,
-run REA on authorized open source, and prepare documentation. Separate
-research and implementation agents exchanged functional requirements.
-No proprietary competitor implementation was inspected or copied; the
-shared session is not described as a strict independent clean room.
+## Submission requirements
 
-Codex session ID: **not retrieved in this document**. Use the live session's
-`/status` or current documented interface, retain the actual identifier,
-and supply it in the final submission. Do not substitute a repository,
-REA Evidence ID, tool execution ID, or an invented value.
+The official [rules](https://twitchcon-codex.devpost.com/rules), checked
+2026-10-25, set the submission window to October 23–November 2, 2026,
+ending 2 PM Pacific. The entry must be new work during that window,
+use Codex and connect interactively to Twitch. Disclose reused foundations.
 
-## Submission record to complete
+Provide runnable source and setup instructions, a project/Codex-use description,
+the actual development session ID, and a public YouTube demo under three minutes
+showing Twitch operation and Codex development. Demo assets need permission.
+Open-source enhancements are allowed subject to licenses; organizers determine eligibility.
 
-| Item | Required evidence |
-| --- | --- |
-| Rules and eligibility | Official rules URL, retrieval date, verified window and restrictions |
-| Repository | Public source URL and immutable release commit with setup instructions |
-| Prior work | Existing host/SDK and dirty Twitch baseline disclosure above |
-| New work | Final plugin files, tests, and separately identified host changes |
-| Codex use | Concise explanation and actual session ID |
-| Demonstration | Public video under three minutes, rights-cleared assets, actual working features |
-| Twitch interaction | Real account connection, viewer participation, and useful result |
-| Catch-up delivery | Real Discord message with verified playable Twitch link |
-| Quality claims | Actual rubric results on authorized footage; none inferred from synthetic tests |
+The [official FAQ](https://twitchcon-codex.devpost.com/resources) explains
+session-ID retrieval and judging access. No session ID was fabricated or
+replaced with a commit, REA identifier or tool-run ID.
 
-No hackathon submission, marketplace PR, message to another person, GitHub
-publication, or public video upload is performed by these documents.
+## Evidence boundaries
+
+Synthetic checks establish integration and authored regressions, not live
+service operation, real GTA quality, virality or GTA VI accuracy. Gameplay
+review, live account recording, public video and Devpost submission remain
+pending. No Store package or upload is part of this release.
