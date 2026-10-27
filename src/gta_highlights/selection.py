@@ -7,6 +7,7 @@ import math
 from dataclasses import replace
 
 from .detector import Highlight, _window
+from .scoring import score_nomination_review
 
 BUCKET_SECONDS = 10
 
@@ -36,13 +37,14 @@ def nomination_candidates(evidence, duration, config):
             continue
         peak = max(activity, key=lambda r: r.confidence).start
         start, end = _window(first, last, peak, duration, replace(config, lead_in=0, payoff=0))
-        score, confidence = 0.43, 0.35
+        breakdown = score_nomination_review(count, activity)
+        score, confidence = breakdown.score, breakdown.confidence
         if score < config.min_score or confidence < config.min_confidence:
             continue
         found.append(Highlight(start, end, peak, "viewer_nominated", score, confidence,
                      f"{count} mapped viewer nominations coincide with measured audio or motion in a 10s source bucket; event identity is unknown.",
                      tuple(nominations + activity), first, last,
-                     (("mapped_nominations_with_activity", score),), ("chat", "measured_activity"),
+                     breakdown.components, ("chat", "measured_activity"),
                      ("Viewer nomination review candidate; no gameplay event is identified.",), "Viewer nominated moment"))
     return found
 

@@ -1,4 +1,4 @@
-# Candidate 0.5.0: concise context and bounded dialogue review
+# Candidate 0.5.1: concise context and bounded dialogue review
 
 This candidate implements the behavior-only context/timing handoff using the
 existing plugin and SDK contract plus original fictional regressions. It makes
@@ -77,6 +77,31 @@ event. Disabled, unmapped, single or unrelated nominations cannot create this
 category. Nomination commands and aggregate counts are retained, not chat/user
 identities. The host may legitimately return unavailable nomination context.
 
+Version 0.5.1 corrects the initial constant nomination review priority of 43.
+Code inspection established that the host's find job does not supply its quality
+threshold in `limits.min_score`, the runner preserves the plugin's score, and
+Gaming applies its configured threshold after optional image review. A constant
+43 therefore made every neutral bucket ineligible at a host threshold of 55
+when image review left the score unchanged.
+
+Neutral review priority now combines an admissible mapped bucket with verified
+activity (0.25), saturating nomination concentration (up to 0.20), the strongest
+verified audio/motion measurement (up to 0.14), and independent audio/motion
+agreement (up to 0.10). Repeated measurements of one modality cannot inflate it.
+The resulting heuristic is independent of the host threshold and remains
+bounded by 0.69; evidence confidence remains conservative at 0.35 and no event
+identity is inferred. Weak buckets may fail either the plugin or host threshold;
+there is no threshold-dependent floor, guarantee of Library admission or quota.
+Explicit source-supported categories retain priority for the plugin's limited
+output slots. Gaming still owns final image review, filtering and sorting.
+
+An original fictional integration check used the actual host
+`runner.to_candidates` and `gaming.review` functions with image review disabled
+and minimum score 55. Two nominations with one strong modality scored 47 and
+were filtered; eight with one strong modality scored 58 and passed; two with
+both strong audio and motion scored 57 and passed; eight with weak motion
+scored 47 and were filtered. No media or model service was read by this check.
+
 The existing schema-2 explanation report gains a `dialogue_review` object and
 per-highlight `required_context`; existing fields remain available. Review
 metadata includes successful/attempted/failed windows, source-segment coverage,
@@ -90,7 +115,7 @@ Validation uses original fictional tests and generated synthetic media. The
 frozen tuning input and untouched holdout must be evaluated separately by the
 coordinator after this independent implementation; they were not read here.
 
-Local verification on Windows with Python 3.11 and the companion SDK timeout
+Initial 0.5.0 verification on Windows with Python 3.11 and the companion SDK timeout
 fix (`ced0d69`): `python -m pytest -o addopts= --disable-warnings` passed all
 319 tests, including original synthetic FFmpeg/SDK subprocess cases, in 4.39
 seconds. `python -m ruff check .` and `git diff --check` passed. SDK validation
@@ -98,3 +123,7 @@ accepted version 0.5.0 with three existing development-script import warnings
 in `evaluation/quality.py`, `evaluation/run.py` and `scripts/evaluate.py`; none
 concerns the runtime entry point or new modules. These checks do not establish
 quality on the coordinator's frozen tuning source or untouched holdout.
+
+The 0.5.1 integration correction passes 337 tests (18 additional original
+fictional regressions) in 4.21 seconds. Ruff and whitespace checks pass. SDK
+validation accepts 0.5.1 with the same three development-script warnings.

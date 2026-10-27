@@ -1,3 +1,10 @@
+## 0.5.1 (candidate)
+
+- Replace constant neutral nomination priority with a bounded evidence-derived score using nomination concentration, verified activity strength, and independent audio/motion agreement.
+- Preserve the two-nomination/coincident-activity gate, neutral labels, conservative evidence confidence and explicit source-category selection priority.
+- Add fictional SDK/filter-contract regressions and verify actual host Gaming score filtering at 55 without changing the host or targeting a threshold-based score floor.
+- Keep the initial 0.5.0 implementation frozen at c521ba5; no tuning/holdout output was supplied for this integration correction.
+
 ## 0.5.0 (candidate)
 
 - Discover deterministic events and grounded dialogue jointly before the clip limit.
