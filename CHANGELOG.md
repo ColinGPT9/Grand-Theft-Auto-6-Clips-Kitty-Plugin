@@ -1,3 +1,12 @@
+## 0.5.0 (candidate)
+
+- Discover deterministic events and grounded dialogue jointly before the clip limit.
+- Keep causal setup and complete reactions; prefer concise action alternatives with accurate neutral titles.
+- Review overlapping 32/28 transcript windows across the source with bounded optional-model time and honest coverage reports.
+- Persist only validated successful window outcomes in host-granted per-plugin cache storage; retain discovery without that capability.
+- Add conservative neutral viewer nominations only with two mapped nominations and same-bucket measured audio or motion.
+- Add original fictional context, timing, coverage, cache, timeout and nomination regressions. Host rendering and per-plugin model selection remain owned by the SDK.
+
 # Changelog
 
 ## 0.4.1 - 2026-10-26

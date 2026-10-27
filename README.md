@@ -142,12 +142,18 @@ through the host renderer.
 | `enabled_categories` | empty | All categories, or comma-separated IDs |
 | `roleplay_enabled` | true | Include source-supported GTA RP interactions |
 | `use_media` / `use_nominations` | true / true | Available supporting measurements/context |
-| `use_local_model` | true | Existing local-model corroboration and dialogue fallback |
+| `use_local_model` | true | Existing local-model corroboration and joint grounded dialogue discovery |
+| `dialogue_review_minutes` | 20 | Maximum optional review time, 0–20 minutes per invocation |
 | `trim_to_event` / `title_overlay` | false / false | Optional edit suggestions |
 | `write_report` | true | Local schema-2 explanation JSON |
 
 See [clipskitty.yaml](clipskitty.yaml). Unavailable inputs do not become
 fabricated observations.
+
+Candidate **0.5.0** adds joint discovery, concise source context, scalable
+32/28 dialogue review and neutral mapped nomination candidates. Its
+[implementation and limitations](docs/CONTEXT_TIMING_0_5.md) describe validated
+caching, elapsed-time budgets and backward-compatible report metadata.
 
 ## Verification and contest evidence
 

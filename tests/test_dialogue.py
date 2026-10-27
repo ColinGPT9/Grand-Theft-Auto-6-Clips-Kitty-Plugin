@@ -89,7 +89,7 @@ def test_category_count_duration_and_review_budget_are_respected(monkeypatch):
     assert not calls
     source = [Evidence(i * 3, i * 3 + 2, "transcript", 1, "The crew member answers the other character.") for i in range(150)]
     dialogue.find_dialogue(object(), source, 500, Config(), [])
-    assert len(calls) == 3 and all(k == {"json": True, "timeout": 15} for k in calls)
+    assert len(calls) == 6 and all(k == {"json": True, "timeout": 15} for k in calls)
     found, _notes = run(monkeypatch, config=Config(min_duration=1, max_duration=5))
     assert not found
 

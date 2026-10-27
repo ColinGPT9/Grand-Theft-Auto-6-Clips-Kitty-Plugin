@@ -13,7 +13,7 @@ from dataclasses import dataclass
 
 CATEGORIES = (
     "chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue",
-    "roleplay", "reaction", "milestone",
+    "roleplay", "reaction", "milestone", "viewer_nominated",
 )
 CATEGORY_LABELS = {
     "chase": "Chase",
@@ -25,6 +25,7 @@ CATEGORY_LABELS = {
     "roleplay": "Roleplay",
     "reaction": "Reaction",
     "milestone": "Mission progress",
+    "viewer_nominated": "Viewer nominated moment",
 }
 
 

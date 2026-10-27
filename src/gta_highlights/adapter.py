@@ -5,13 +5,16 @@
 from __future__ import annotations
 
 import json
+import time
 from dataclasses import replace
 
 from clipskitty_sdk import local_model
 
 from .detector import Config, detect
 from .observations import collect_evidence, enabled, finite, number_setting
+from .review import ReviewBudget
 from .scoring import Evidence
+from .selection import nomination_candidates, required_bounds, select_highlights
 from .taxonomy import CATEGORIES, CATEGORY_LABELS
 
 
@@ -47,13 +50,18 @@ def _config(job):
     )
 
 
-def _model_evidence(job, candidates, notes):
+def _model_evidence(job, candidates, notes, budget=None):
     if not enabled(job.settings, "use_local_model") or not candidates:
         return []
     rows = []
     for index, candidate in enumerate(candidates[:3], 1):
         candidate_id = f"candidate-{index}"
         source = [row.text for row in candidate.evidence if row.kind == "transcript"]
+        if not source:
+            continue
+        timeout = budget.timeout() if budget else 15
+        if timeout is None:
+            break
         supplied = {"candidate_id": candidate_id, "category": candidate.category,
                     "source_transcript": source, "source_start": candidate.start,
                     "source_end": candidate.end}
@@ -65,11 +73,15 @@ def _model_evidence(job, candidates, notes):
             "Candidate JSON: " + json.dumps(supplied, ensure_ascii=False)
         )
         try:
-            response = local_model.ask(job, prompt, json=True, timeout=15)
+            requested_at = time.monotonic()
+            response = local_model.ask(job, prompt, json=True, timeout=timeout)
+            if time.monotonic() > requested_at + timeout or (budget and time.monotonic() > budget.end):
+                notes.append("Optional corroboration arrived after its deadline; deterministic findings were retained.")
+                break
             if not isinstance(response, str) or len(response) > 4096:
                 continue
             answer = json.loads(response)
-        except (local_model.LocalModelError, OSError, ValueError, TypeError):
+        except (local_model.LocalModelError, OSError, ValueError, TypeError, RecursionError):
             notes.append("Optional local-model corroboration was unavailable; source-based detection was retained.")
             break
         if not isinstance(answer, dict) or set(answer) != {"candidate_id", "category", "supported", "confidence"}:
@@ -97,6 +109,8 @@ def _notes(highlight):
             break
     selected = any(row.source == "source-grounded local-model dialogue selection" for row in highlight.evidence)
     basis = "Model judgement of source dialogue" if selected else "Category follows transcript cues"
+    if highlight.category == "viewer_nominated":
+        basis = "Mapped nominations with coincident measured activity; event identity unknown"
     notes.append(f"{basis}: {CATEGORY_LABELS[highlight.category]}; heuristic score {highlight.score * 100:.1f}/100, evidence confidence {highlight.confidence:.0%}."[:160])
     names = {"video_motion": "sampled frame difference", "video_scene_change": "large sampled frame difference",
              "video_color_change": "mean brightness change", "audio_spike": "LUFS spike above local median",
@@ -115,7 +129,8 @@ def _contains_supported_action(highlight, start=None, end=None):
     """Require the complete supporting utterance, not inferred visual timing."""
     first = highlight.start if start is None else start
     last = highlight.end if end is None else end
-    return first <= highlight.action_start + 1e-6 and last >= highlight.action_end - 1e-6
+    required_start, required_end = required_bounds(highlight)
+    return first <= required_start + 1e-6 and last >= required_end - 1e-6
 
 
 def _host_support(moment, highlight):
@@ -137,7 +152,7 @@ def _host_support(moment, highlight):
     return bonus, components
 
 
-def _write_report(job, highlights, notes):
+def _write_report(job, highlights, notes, review=None):
     if not enabled(job.settings, "write_report"):
         return
     source_info = {}
@@ -155,11 +170,12 @@ def _write_report(job, highlights, notes):
             pass
     payload = {"schema_version": 2, "timeline_basis": "source_media", "vod_alignment": "unverified",
                "source": source_info,
-               "notes": notes, "highlights": [
+               "notes": notes, "dialogue_review": review or {}, "highlights": [
         {"start": item.start, "end": item.end, "peak": item.peak, "category": item.category,
          "score": item.score, "confidence": item.confidence, "reason": item.reason,
          "title": item.title,
          "supported_utterance": {"start": item.action_start, "end": item.action_end},
+         "required_context": dict(zip(("start", "end"), required_bounds(item), strict=True)),
          "score_components": dict(item.score_components),
          "available_modalities": list(item.available_modalities),
          "review_warnings": list(item.review_warnings),
@@ -179,22 +195,30 @@ def _write_report(job, highlights, notes):
 def main(job):
     """Run only the stages the SDK job requested; finish through its contract."""
     try:
+        started = time.monotonic()
         config = _config(job)
         trim = enabled(job.settings, "trim_to_event")
         title_overlay = enabled(job.settings, "title_overlay")
         job.progress(0.05, "Reading source transcript and measured signals")
         evidence, duration, notes = collect_evidence(job)
-        highlights = detect(evidence, duration, config)
-        corroboration = _model_evidence(job, highlights, notes)
-        if corroboration:
-            evidence.extend(corroboration)
-            highlights = detect(evidence, duration, config)
+        budget = ReviewBudget(job, started)
+        # Discovery has no output-count quota: all evidence types compete only
+        # after grounded discovery and deduplication have completed.
+        discovery = replace(config, max_highlights=max(1, len(evidence) * len(CATEGORIES)))
+        highlights = detect(evidence, duration, discovery) if config.max_highlights else []
         dialogue = []
-        if not highlights and enabled(job.settings, "use_local_model") and (job.wants("find") or job.moments):
+        if enabled(job.settings, "use_local_model") and (job.wants("find") or job.moments):
             from .dialogue import find_dialogue
 
-            dialogue = find_dialogue(job, evidence, duration, config, notes)
-            highlights = dialogue
+            dialogue = find_dialogue(job, evidence, duration, config, notes, budget)
+        # Spend constrained review time on discovery before asking the model
+        # to corroborate cues the deterministic detector already supports.
+        corroboration = _model_evidence(job, highlights, notes, budget)
+        if corroboration:
+            evidence.extend(corroboration)
+            highlights = detect(evidence, duration, discovery)
+        nominations = nomination_candidates(evidence, duration, config) if enabled(job.settings, "use_nominations", True) else []
+        highlights = select_highlights(highlights + dialogue + nominations, config.max_highlights)
         job.progress(0.8, "Scoring supported GTA moments")
         found = rated = understood = edited = 0
         if job.wants("find"):
@@ -213,12 +237,12 @@ def main(job):
             nearby = [row for row in evidence if _overlaps(row, moment)]
             # Detection must be supported by an event cue inside this handed
             # moment; a neighboring event's padded window is insufficient.
-            candidates = detect(nearby, duration, replace(config, max_highlights=max(1, config.max_highlights)))
-            if not candidates:
-                candidates = [item for item in dialogue if _contains_supported_action(item, moment.start, moment.end)]
+            candidates = detect(nearby, duration, discovery)
+            candidates += [item for item in dialogue + nominations if _contains_supported_action(item, moment.start, moment.end)]
+            candidates = select_highlights(candidates, 1)
             if not candidates:
                 continue
-            highlight = max(candidates, key=lambda item: (item.score, item.confidence))
+            highlight = candidates[0]
             if job.wants("rate"):
                 bonus, host_components = _host_support(moment, highlight)
                 reason = highlight.reason
@@ -246,7 +270,7 @@ def main(job):
                         actions.append("adds the selected event category as a title")
                     suggestion.reason("; ".join(actions).capitalize() + ".")
                     edited += 1
-        _write_report(job, highlights, notes)
+        _write_report(job, highlights, notes, budget.report())
         summary = f"Found {found}, rated {rated}, explained {understood}, suggested edits for {edited} supported GTA moment(s)."
         if notes:
             summary += " " + " ".join(dict.fromkeys(notes))

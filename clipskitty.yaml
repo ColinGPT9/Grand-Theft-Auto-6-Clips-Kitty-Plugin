@@ -2,7 +2,7 @@
 manifest_version: 1
 id: colingpt9/gta-vi-highlights
 name: Grand Theft Auto 6 Clips Kitty Plugin
-version: 0.4.1
+version: 0.5.0
 kind: pipeline
 capability: highlight_detection
 description: >
@@ -21,7 +21,7 @@ run:
 execution: local
 inputs: [video, transcript, moments]
 outputs: [ranges, context, ratings, edits]
-events: [chase, crash, stunt, combat, npc_chaos, funny_dialogue, roleplay, reaction, milestone]
+events: [chase, crash, stunt, combat, npc_chaos, funny_dialogue, roleplay, reaction, milestone, viewer_nominated]
 games: [grand-theft-auto-vi, grand-theft-auto-v]
 settings:
   min_score:
@@ -93,6 +93,12 @@ settings:
     type: boolean
     default: true
     title: Use the existing local model for review and grounded dialogue
+  dialogue_review_minutes:
+    type: number
+    default: 20
+    minimum: 0
+    maximum: 20
+    title: Maximum minutes for optional model review per invocation
   trim_to_event:
     type: boolean
     default: false
