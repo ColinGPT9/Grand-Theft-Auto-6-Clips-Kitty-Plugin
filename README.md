@@ -150,7 +150,7 @@ through the host renderer.
 See [clipskitty.yaml](clipskitty.yaml). Unavailable inputs do not become
 fabricated observations.
 
-Candidate **0.5.1** adds joint discovery, concise source context, scalable
+Candidate **0.5.2** adds joint discovery, concise source context, scalable
 32/28 dialogue review and neutral mapped nomination candidates. Its
 [implementation and limitations](docs/CONTEXT_TIMING_0_5.md) describe validated
 caching, elapsed-time budgets and backward-compatible report metadata.

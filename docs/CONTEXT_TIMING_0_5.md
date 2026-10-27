@@ -1,4 +1,4 @@
-# Candidate 0.5.1: concise context and bounded dialogue review
+# Candidate 0.5.2: concise context and bounded dialogue review
 
 This candidate implements the behavior-only context/timing handoff using the
 existing plugin and SDK contract plus original fictional regressions. It makes
@@ -67,6 +67,14 @@ entries cause fresh requests. Timeouts, late answers, malformed JSON and
 unsupported proposals are retried on a later invocation rather than cached as
 empty discoveries. Chat identities are never copied into cache or reports.
 
+Version 0.5.2 validates each proposal independently after validating the complete
+response envelope. A malformed sibling cannot discard another source-grounded
+exchange. Malformed/ambiguous JSON or an invalid top-level schema still rejects
+the entire response. A partially invalid response can supply valid proposals,
+but is never written to the successful-window cache. All-invalid responses
+remain failures rather than valid empty discoveries; both can be retried later.
+An actually valid empty response remains cacheable.
+
 Only the SDK's permitted, host-mapped Twitch aggregate nomination context is
 read. A neutral `viewer_nominated` candidate requires at least two mapped
 nominations and verified audio-spike or motion evidence in the same derived
@@ -106,6 +114,16 @@ The existing schema-2 explanation report gains a `dialogue_review` object and
 per-highlight `required_context`; existing fields remain available. Review
 metadata includes successful/attempted/failed windows, source-segment coverage,
 cache hits/misses, elapsed seconds, configured budget and budget exhaustion.
+`reviewed_windows` and source coverage count only fully validated window
+responses. `partial_windows` is a subset of failed windows that still yielded
+independently validated proposals. `validated_proposals` counts source-valid
+proposal occurrences before score filtering and joint deduplication. Fixed
+`validation_failures` category counts distinguish response JSON/schema,
+proposal fields, source IDs, causal order, category/strength, quote grounding
+and context/boundary failures. `cache_validation_failures` separately explains
+discarded corrupt cache entries. Rejected transcript/model content is never
+copied into these diagnostics. The finish summary also includes partial-window
+and aggregate validation failure counts.
 Coverage describes validated windows, not recognition accuracy or exhaustive
 semantic event discovery. Review notes also reach the SDK's finish summary.
 Per-plugin model selection continues through the SDK; no model name, remote
@@ -127,3 +145,7 @@ quality on the coordinator's frozen tuning source or untouched holdout.
 The 0.5.1 integration correction passes 337 tests (18 additional original
 fictional regressions) in 4.21 seconds. Ruff and whitespace checks pass. SDK
 validation accepts 0.5.1 with the same three development-script warnings.
+
+The 0.5.2 partial-response correction passes 358 tests (21 additional original
+fictional regressions) in 4.29 seconds. Ruff and whitespace checks pass. SDK
+validation accepts 0.5.2 with the same three development-script warnings.

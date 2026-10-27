@@ -2,7 +2,7 @@
 manifest_version: 1
 id: colingpt9/gta-vi-highlights
 name: Grand Theft Auto 6 Clips Kitty Plugin
-version: 0.5.1
+version: 0.5.2
 kind: pipeline
 capability: highlight_detection
 description: >

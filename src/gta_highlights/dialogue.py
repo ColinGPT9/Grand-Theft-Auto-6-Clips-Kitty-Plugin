@@ -30,6 +30,14 @@ _IDLE = re.compile(r"\b(?:just (?:waiting|driving|travelling|traveling)|nothing 
                    r"(?:loading|load) screen|(?:open|opening|in) (?:the )?menu|back to driving)\b", re.I)
 
 
+class _ValidationFailure(ValueError):
+    """A stable aggregate category; never include model/source content."""
+
+    def __init__(self, category):
+        self.category = category
+        super().__init__(category)
+
+
 def _words(text):
     text = unicodedata.normalize("NFKC", text).casefold().replace("\u2019", "'")
     return tuple(re.findall(r"\w+(?:'\w+)?", text))
@@ -45,16 +53,16 @@ def _decode(answer):
         result = {}
         for key, value in pairs:
             if key in result:
-                raise ValueError("duplicate JSON key")
+                raise _ValidationFailure("response_schema")
             result[key] = value
         return result
     if not isinstance(answer, str) or len(answer) > 20000:
-        raise ValueError("invalid model response")
+        raise _ValidationFailure("response_format")
     data = json.loads(answer, object_pairs_hook=unique)
     if not isinstance(data, dict) or set(data) != {"exchanges"} or not isinstance(data["exchanges"], list):
-        raise ValueError("invalid exchanges schema")
+        raise _ValidationFailure("response_schema")
     if len(data["exchanges"]) > 6:
-        raise ValueError("too many exchanges")
+        raise _ValidationFailure("response_schema")
     return data["exchanges"]
 
 
@@ -101,30 +109,32 @@ def _window_order(chunks, rows, evidence):
 def _proposal(proposal, ids, rows, allowed, declared_rp, duration, config):
     """Reject unsupported boundaries, categories, quotes and discontinuous scenes."""
     if not isinstance(proposal, dict) or set(proposal) != _FIELDS:
-        raise ValueError("invalid proposal fields")
+        raise _ValidationFailure("proposal_fields")
     identifiers = [proposal.get(key) for key in ("start_id", "payoff_id", "end_id")]
     if any(not isinstance(i, str) or not re.fullmatch(r"s\d{1,6}", i) for i in identifiers):
-        raise ValueError("invalid source ID")
+        raise _ValidationFailure("source_ids")
     first, payoff, last = (int(i[1:]) for i in identifiers)
-    if any(i not in ids for i in (first, payoff, last)) or not first < payoff <= last:
-        raise ValueError("IDs outside window or causal order")
+    if any(i not in ids for i in (first, payoff, last)):
+        raise _ValidationFailure("source_ids")
+    if not first < payoff <= last:
+        raise _ValidationFailure("causal_order")
     strength, category, quote = (proposal.get(key) for key in ("strength", "category", "quote"))
     if (type(strength) is not int or strength not in (4, 5)
             or not isinstance(category, str) or category not in allowed):
-        raise ValueError("unsupported category or strength")
+        raise _ValidationFailure("category_strength")
     if not isinstance(quote, str) or not 12 <= len(quote) <= 500 or not _quoted_in(quote, rows[payoff].text[:500]):
-        raise ValueError("ungrounded payoff quote")
+        raise _ValidationFailure("quote_grounding")
     selected = rows[first:last + 1]
     if any(r.confidence <= 0 for r in selected) or _ROUTINE.search(" ".join(row.text for row in selected)):
-        raise ValueError("unsupported routine or uncertain dialogue")
+        raise _ValidationFailure("routine_or_uncertain")
     if not declared_rp and not any(_SCENE.search(row.text) for row in rows[max(0, first-2):last+3]):
-        raise ValueError("no source game context")
+        raise _ValidationFailure("game_context")
     # A fade is harmless; a sustained interval with no source utterance is not
     # evidence connecting two topics. Dense quiet speech is retained in full.
     if any(b.start - a.end >= 12 for a, b in zip(selected, selected[1:], strict=False)):
-        raise ValueError("discontinuous exchange")
+        raise _ValidationFailure("discontinuity")
     if any(row.end-row.start >= 12 and _IDLE.search(row.text) for row in selected[1:-1]):
-        raise ValueError("sustained low-information interval between exchanges")
+        raise _ValidationFailure("discontinuity")
     # ASR can divide one response across segments. Preserve an explicit
     # grammatical continuation instead of rewarding a clipped short proposal.
     while last+1 in ids and rows[last+1].start-rows[last].end <= 2 and re.search(
@@ -133,11 +143,37 @@ def _proposal(proposal, ids, rows, allowed, declared_rp, duration, config):
         last += 1
     start, end = rows[first].start, rows[last].end
     if not 0 <= start < end <= duration or end - start > config.max_duration:
-        raise ValueError("exchange exceeds source or host duration")
+        raise _ValidationFailure("duration")
     if end-start > 60 and (last-first < 4 or any(b.start-a.end > 5 for a, b in
                           zip(rows[first:last], rows[first+1:last+1], strict=True))):
-        raise ValueError("exceptional duration lacks contiguous necessary turns")
+        raise _ValidationFailure("exceptional_context")
     return first, payoff, last, strength, category
+
+
+def _validate_response(answer, ids, rows, allowed, declared_rp, duration, config):
+    """Validate the envelope once, then retain each independently grounded item."""
+    try:
+        proposals = _decode(answer)
+    except _ValidationFailure as error:
+        return [], {error.category: 1}
+    except RecursionError:
+        return [], {"response_depth": 1}
+    except (ValueError, TypeError):
+        return [], {"response_json": 1}
+    valid, failures = [], {}
+    for proposal in proposals:
+        try:
+            valid.append(_proposal(proposal, ids, rows, allowed, declared_rp, duration, config))
+        except _ValidationFailure as error:
+            failures[error.category] = failures.get(error.category, 0) + 1
+        except (ValueError, TypeError, RecursionError):
+            failures["proposal_fields"] = failures.get("proposal_fields", 0) + 1
+    return valid, failures
+
+
+def _add_failures(target, failures):
+    for category, count in failures.items():
+        target[category] = target.get(category, 0) + count
 
 
 def _highlight(valid, rows, duration, config):
@@ -226,12 +262,12 @@ def find_dialogue(job, evidence, duration, config, notes, budget=None):
         key = digest({"identity": identity, "ids": ids}) if persistent else None
         cached = read_cache(key, directory) if key else None
         if cached is not None:
-            try:
-                # Cache is untrusted disk input. A corrupted/old response must
-                # become a fresh request, never a permanent invalid outcome.
-                [_proposal(p, ids, rows, allowed, declared_rp, duration, config) for p in _decode(cached)]
-            except (ValueError, TypeError, RecursionError):
+            # Cache is untrusted disk input. A corrupted/partially invalid
+            # response must become a fresh request, never a cached partial hit.
+            valid, failures = _validate_response(cached, ids, rows, allowed, declared_rp, duration, config)
+            if failures:
                 budget.stats["invalid_cache_entries"] += 1
+                _add_failures(budget.stats["cache_validation_failures"], failures)
                 cached = None
         if cached is None:
             budget.stats["cache_misses"] += 1
@@ -252,29 +288,36 @@ def find_dialogue(job, evidence, duration, config, notes, budget=None):
         else:
             budget.stats["cache_hits"] += 1
             answer = cached
-        try:
-            proposals = _decode(answer)
-            valid = [_proposal(p, ids, rows, allowed, declared_rp, duration, config) for p in proposals]
-        except (ValueError, TypeError, RecursionError):
+        valid, failures = _validate_response(answer, ids, rows, allowed, declared_rp, duration, config)
+        budget.stats["validated_proposals"] += len(valid)
+        if failures:
             budget.stats["failed_windows"] += 1
-            notes.append("Optional dialogue response failed source/schema validation; it was not cached.")
-            continue
-        if cached is None and key:
-            write_cache(key, answer, directory)
-        budget.stats["reviewed_windows"] += 1
-        covered.update(ids)
+            budget.stats["partial_windows"] += bool(valid)
+            _add_failures(budget.stats["validation_failures"], failures)
+        else:
+            if cached is None and key:
+                write_cache(key, answer, directory)
+            budget.stats["reviewed_windows"] += 1
+            covered.update(ids)
+        # A bad sibling cannot remove independently validated source evidence.
+        # Partial/all-invalid outcomes never enter the successful-window cache
+        # or full-window coverage, so later invocations can review them again.
         found.extend(h for v in valid if (h := _highlight(v, rows, duration, config)) is not None)
         progress = getattr(job, "progress", None)
         if callable(progress):
-            progress(0.1 + 0.6 * budget.stats["reviewed_windows"] / len(chunks),
-                     f"Reviewed {budget.stats['reviewed_windows']}/{len(chunks)} dialogue windows")
+            checked = budget.stats["reviewed_windows"] + budget.stats["failed_windows"]
+            progress(0.1 + 0.6 * checked / len(chunks),
+                     f"Checked {checked}/{len(chunks)} dialogue windows; {budget.stats['partial_windows']} partial")
     budget.stats.update(covered_segments=len(covered), coverage_fraction=round(len(covered)/len(rows), 6))
     if budget.end <= time.monotonic():
         budget.stats["budget_exhausted"] = True
     report = budget.report()
-    notes.append(f"Dialogue review: {report['reviewed_windows']}/{len(chunks)} windows, "
+    rejected = ", ".join(f"{category}={count}" for category, count in sorted(report["validation_failures"].items())) or "none"
+    notes.append(f"Dialogue review: {report['reviewed_windows']}/{len(chunks)} fully validated windows, "
+                 f"{report['partial_windows']} partial; {report['validated_proposals']} grounded proposals; "
                  f"{len(covered)}/{len(rows)} source segments; cache {report['cache_hits']} hits/{report['cache_misses']} misses; "
                  f"{report['elapsed_seconds']:g}s elapsed; budget exhausted={report['budget_exhausted']}. "
+                 f"Validation failures: {rejected}. Partial/invalid windows are not cached or counted as full coverage. "
                  "Window coverage is not exhaustive semantic event recognition.")
     # Joint ranking and suppression occur in the adapter, after all discovery.
     return found

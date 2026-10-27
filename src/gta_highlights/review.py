@@ -37,7 +37,8 @@ class ReviewBudget:
         self.end = min(self.started + self.maximum, self.host_end)
         self.stats = {"schema_version": SCHEMA_VERSION, "total_windows": 0, "reviewed_windows": 0,
                       "attempted_windows": 0, "failed_windows": 0, "cache_hits": 0, "cache_misses": 0,
-                      "invalid_cache_entries": 0,
+                      "invalid_cache_entries": 0, "partial_windows": 0, "validated_proposals": 0,
+                      "validation_failures": {}, "cache_validation_failures": {},
                       "covered_segments": 0, "total_segments": 0, "coverage_fraction": 0.0,
                       "budget_seconds": self.maximum, "budget_exhausted": False,
                       "deadline_basis": "manifest_30_minutes_with_reserve"}

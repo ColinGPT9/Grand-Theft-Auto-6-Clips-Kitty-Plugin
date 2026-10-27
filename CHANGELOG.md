@@ -1,3 +1,10 @@
+## 0.5.2 (candidate)
+
+- Preserve each fully source-validated dialogue proposal when an otherwise readable response contains invalid siblings.
+- Keep malformed top-level and all-invalid responses rejected; never cache partial/invalid outcomes or convert them to valid empties.
+- Report partial windows, validated proposals and aggregate failure categories without logging rejected source/model content; count only fully validated windows toward full-window coverage.
+- Add original fictional mixed-response, cache-retry, all-invalid, malformed-envelope and diagnostic-privacy regressions. Frozen 0.5.1 remains intact.
+
 ## 0.5.1 (candidate)
 
 - Replace constant neutral nomination priority with a bounded evidence-derived score using nomination concentration, verified activity strength, and independent audio/motion agreement.
