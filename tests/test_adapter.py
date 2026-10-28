@@ -232,7 +232,7 @@ def test_mapped_audience_nominations_are_bounded_support_only(tmp_path):
     evidence, _, _ = collect_evidence(job)
     chat = [row for row in evidence if row.kind == "chat"]
     assert len(chat) == 1 and chat[0].start == 31
-    assert chat[0].tags == ("!clip", "!chaos")
+    assert chat[0].tags == ("!clip", "!chaos", "count:4")
     empty = job_at(tmp_path / "empty", [event(text="Ordinary driving today.")])
     empty.accounts = job.accounts
     adapter.main(empty)

@@ -1,3 +1,26 @@
+## 0.5.2 (candidate)
+
+- Preserve each fully source-validated dialogue proposal when an otherwise readable response contains invalid siblings.
+- Keep malformed top-level and all-invalid responses rejected; never cache partial/invalid outcomes or convert them to valid empties.
+- Report partial windows, validated proposals and aggregate failure categories without logging rejected source/model content; count only fully validated windows toward full-window coverage.
+- Add original fictional mixed-response, cache-retry, all-invalid, malformed-envelope and diagnostic-privacy regressions. Frozen 0.5.1 remains intact.
+
+## 0.5.1 (candidate)
+
+- Replace constant neutral nomination priority with a bounded evidence-derived score using nomination concentration, verified activity strength, and independent audio/motion agreement.
+- Preserve the two-nomination/coincident-activity gate, neutral labels, conservative evidence confidence and explicit source-category selection priority.
+- Add fictional SDK/filter-contract regressions and verify actual host Gaming score filtering at 55 without changing the host or targeting a threshold-based score floor.
+- Keep the initial 0.5.0 implementation frozen at c521ba5; no tuning/holdout output was supplied for this integration correction.
+
+## 0.5.0 (candidate)
+
+- Discover deterministic events and grounded dialogue jointly before the clip limit.
+- Keep causal setup and complete reactions; prefer concise action alternatives with accurate neutral titles.
+- Review overlapping 32/28 transcript windows across the source with bounded optional-model time and honest coverage reports.
+- Persist only validated successful window outcomes in host-granted per-plugin cache storage; retain discovery without that capability.
+- Add conservative neutral viewer nominations only with two mapped nominations and same-bucket measured audio or motion.
+- Add original fictional context, timing, coverage, cache, timeout and nomination regressions. Host rendering and per-plugin model selection remain owned by the SDK.
+
 # Changelog
 
 ## 0.4.1 - 2026-10-26
