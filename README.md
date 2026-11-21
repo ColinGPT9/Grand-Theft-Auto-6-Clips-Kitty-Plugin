@@ -19,6 +19,16 @@ desktop app that makes vertical clips from stream VODs.
    click **Install** again.
 5. When it says **Ready.**, click **Done**.
 
+> **On Clips Kitty 2.1.0** the plugin isn't in the Marketplace yet; it arrives
+> with the next update. Until then, install it once by hand: at the bottom of
+> **Marketplace › Browse**, click **For developers: install a pipeline you're
+> writing**. Under **From GitHub or another Git host**, enter:
+>
+> - **Repository:** `https://github.com/ColinGPT9/Grand-Theft-Auto-6-Clips-Kitty-Plugin`
+> - **Commit (all 40 characters):** `20fa9e761c4343f0cf023f211ae7f4e8ac689f53`
+>
+> Click **Look at it before installing**, then **Install**.
+
 ## Use it
 
 1. On the Dashboard, paste the link to your stream VOD.
