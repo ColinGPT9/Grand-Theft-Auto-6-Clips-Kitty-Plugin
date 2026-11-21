@@ -2,7 +2,7 @@
 manifest_version: 1
 id: colingpt9/gta-vi-highlights
 name: Grand Theft Auto 6 Clips Kitty Plugin
-version: 0.5.2
+version: 0.5.3
 kind: pipeline
 capability: highlight_detection
 description: >
@@ -111,7 +111,7 @@ settings:
     type: boolean
     default: true
     title: Save a local explanation report alongside this job
-permissions: [video.read, transcript.read, ffmpeg, ollama, twitch.context.read]
+permissions: [video.read, transcript.read, ffmpeg, ollama]
 network: []
 sends: []
 requirements: {gpu: none, os: [windows, macos, linux]}
