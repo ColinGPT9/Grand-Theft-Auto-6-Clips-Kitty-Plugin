@@ -8,7 +8,7 @@
     "model": "ollama/gemma4:e4b",
     "min_score": 55,
     "max_clips": 2,
-    "layout": "existing automatic Gaming YOLO/OpenCV detector",
+    "layout": "Automatic Gaming layout in original jobs 1-26; user-selected Gaming picker (half, webcam box) for official xQc VOD jobs 32 and 33",
     "captions": "enabled except both already-captioned Spanish arms",
     "transcript": "actual cached local Whisper, identical per pair"
   },
@@ -24,9 +24,9 @@
     "src/main.py": "cc19c658b605a0f69ba1ad9261ecb7037e396d013b928c12c37caa8e52577b05"
   },
   "review_video": {
-    "sha256": "5a36e2fd59710bbfd853e39e48e36cbd898b8a0fb0f4b4fc7b751eca385ef452",
-    "duration": 179.021333,
-    "bytes": 37357546,
+    "sha256": "12fb30c970bbf0dc05bc4c5c34f6d1e794a42fe06d1ce66942a61d4970b845ed",
+    "duration": 167.021333,
+    "bytes": 13337407,
     "video": [
       {
         "codec_name": "h264",
@@ -42,9 +42,8 @@
     "Small development sample; not blind or statistically representative.",
     "Prototype runs are included for traceability, not release claims.",
     "Model sampling and shared isolated history can affect reruns.",
-    "First diagnostic arm titles included arm labels; later pairs used identical titles.",
     "Transcript and title grounding does not verify humor or physical events.",
-    "No same-raw-VOD hosted Eklipse test; full watermarked edited reference is not recall ground truth.",
+    "No same-raw-VOD hosted Eklipse test; previously explored edited references are not detector ground truth.",
     "No direct verified TikTok/Instagram test, GTA VI footage, live Twitch/OAuth or Discord message test.",
     "Earlier Crulfy silent-background incident remains missed."
   ],
@@ -492,6 +491,38 @@
           "mcp_export_sha256": "83d30b19282914d5b26fe4b4cd2623aaf6457fe15d94def8b5b944d37126026f"
         }
       ]
+    }
+  ],
+  "follow_up_jobs": [
+    {
+      "jobs": [
+        32,
+        33
+      ],
+      "source": "Official xQc NoPixel V Twitch VOD 2880410519, excerpt 03:43:00-03:48:00",
+      "source_sha256": "C3E4A274081B3AD5AB9F26888EA1384F6FDFA38F97B3C414475B27B4E2D6C8C1",
+      "layout": "same user-selected Gaming picker, half webcam/game",
+      "gaming_clips_s": [
+        [
+          100.3,
+          124.5
+        ],
+        [
+          125.0,
+          143.9
+        ]
+      ],
+      "gta_0_4_1_clips_s": [
+        [
+          0.0,
+          20.8
+        ],
+        [
+          239.34,
+          263.66
+        ]
+      ],
+      "human_review": "Gaming found the police dialogue; GTA missed it and returned two generic Creator reaction picks."
     }
   ]
 }

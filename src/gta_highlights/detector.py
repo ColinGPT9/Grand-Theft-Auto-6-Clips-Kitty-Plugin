@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import math
 import re
+from bisect import bisect_left, bisect_right
 from collections.abc import Iterable
 from dataclasses import dataclass, replace
 
@@ -269,6 +270,17 @@ def _context_window(rows, anchors, core_start, core_end, first, last, duration, 
     next_action = min((row.start for row in action_rows if row.start >= core_end), default=duration)
     # Keep a distinct later event out of this incident's aftermath.
     last = max(core_end, min(last, next_action))
+    setup_rows = [row for row in others if row.end <= core_start and core_start-row.end <= 3
+                  and row.start >= core_start-max(12, config.lead_in)
+                  and re.search(r"\?|\b(?:why|what|how|watch|look|ready|let me|try this)\b", row.text, re.I)
+                  and not classify_text(row.text, roleplay_enabled=config.roleplay_enabled)]
+    if setup_rows:
+        # A source question/action premise is a better boundary than padding
+        # into the preamble before it. Never begin midway through that premise.
+        setup = max(setup_rows, key=lambda row: row.start)
+        if core_end-setup.start <= config.max_duration:
+            first = setup.start
+    reactions = []
     for row in others:
         cues = classify_text(row.text, roleplay_enabled=config.roleplay_enabled)
         if (not cues and row.end <= core_start and core_start - row.end <= 3
@@ -280,12 +292,27 @@ def _context_window(rows, anchors, core_start, core_end, first, last, duration, 
                 and row.start < next_action and row.end <= next_action):
             if row.end - first <= config.max_duration:
                 last = max(last, row.end)
+                reactions.append(row)
             else:
                 warnings.append("Relevant reaction cannot fit the requested duration; review boundaries.")
+    if reactions:
+        # End at the complete meaningful reaction, rather than spending the
+        # entire allowance on recovery after the payoff has finished.
+        last = max(core_end, max(row.end for row in reactions))
+    recovery = [row.start for row in others if core_end <= row.start < last
+                and re.search(r"\b(?:back to driving|keep driving|driving to|open(?:ing)? (?:the )?menu|"
+                              r"load(?:ing)? screen|wait for (?:the )?respawn|back to (?:the )?menu|"
+                              r"nothing (?:is )?happening|just (?:waiting|travelling|traveling))\b", row.text, re.I)]
+    if recovery and not any(row.start >= min(recovery) for row in reactions):
+        last = max(core_end, min(last, min(recovery)))
     if core_end - core_start > config.max_duration:
         warnings.append("Supported action exceeds the requested maximum duration; action is truncated and requires review.")
     if first > core_start or last < core_end:
         warnings.append("Selected window does not contain the full supported action; review required.")
+    if last-first > 45:
+        warnings.append("Long candidate reviewed for removable padding; source utterances define retained context.")
+    if last-first > 60:
+        warnings.append(f"Exceptional duration preserves the supported {core_end-core_start:g}s utterance and identified setup/reaction; review required.")
     if last - first < min(config.min_duration, duration):
         first = max(0.0, last - min(config.min_duration, duration))
         if last - first < min(config.min_duration, duration):
@@ -320,12 +347,16 @@ def detect(evidence: list[Evidence], duration: float, config: Config | None = No
     # complete event by silently clamping its supplied action interval.
     rows = tuple(sorted({row for row in evidence if row.start < duration and row.end <= duration and row.confidence > 0}, key=_evidence_key))
     modalities = tuple(sorted({"video" if row.kind.startswith("video_") else "audio" if row.kind == "audio_spike" else row.kind for row in rows}))
+    transcript_by_end = sorted((row for row in rows if row.kind == "transcript"), key=lambda row: row.end)
+    transcript_ends = [row.end for row in transcript_by_end]
     seeds: dict[str, list[_Seed]] = {}
     for row in rows:
         if row.kind != "transcript":
             continue
-        prior = [other for other in rows if other.kind == "transcript" and other != row
-                 and other.end <= row.start and row.start - other.end <= 2]
+        # ASR context is local. Index end times instead of repeatedly scanning
+        # all sampled media/transcript rows in multi-hour recordings.
+        prior = [other for other in transcript_by_end[
+            bisect_left(transcript_ends, row.start-2):bisect_right(transcript_ends, row.start)] if other != row]
         preceding = max(prior, key=_evidence_key) if prior else None
         if (preceding is not None and not classify_text(preceding.text, roleplay_enabled=config.roleplay_enabled)
                 and not classify_text(preceding.text + " " + row.text, roleplay_enabled=config.roleplay_enabled)):

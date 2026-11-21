@@ -147,7 +147,7 @@ def test_empty_input_has_no_cues():
 
 
 def test_category_list_is_stable_and_complete():
-    assert CATEGORIES == ("chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue", "roleplay", "reaction", "milestone")
+    assert CATEGORIES == ("chase", "crash", "stunt", "combat", "npc_chaos", "funny_dialogue", "roleplay", "reaction", "milestone", "viewer_nominated")
 
 
 @pytest.mark.parametrize("text", ["Mission passed!", "We completed the heist.", "Final wave cleared!",

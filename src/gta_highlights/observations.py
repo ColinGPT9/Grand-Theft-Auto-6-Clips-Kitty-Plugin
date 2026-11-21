@@ -99,19 +99,22 @@ def _nominations(job, duration, notes):
         offset = finite(nomination.get("offset_seconds"))
         count = finite(nomination.get("count"))
         commands = nomination.get("commands")
-        if offset is None or not 0 <= offset < duration or count is None or count < 1 or not isinstance(commands, dict):
+        if (offset is None or not 0 <= offset < duration or count is None or count < 1
+                or not count.is_integer() or not isinstance(commands, dict)):
             continue
         accepted = []
+        accepted_count = 0
         for name in ("clip", "chaos", "funny"):
             amount = finite(commands.get(name, commands.get("!" + name, 0)))
-            if amount is not None and amount > 0:
+            if amount is not None and amount > 0 and amount.is_integer():
                 accepted.append("!" + name)
+                accepted_count += int(amount)
         if not accepted:
             continue
         # A host-mapped !chaos/!funny command is a nomination, never a claim
         # that chaos or humor was observed at that source time.
         rows.append(Evidence(offset, offset, "chat", min(1.0, 0.5 + math.log1p(count) / 10),
-                             "clip that (mapped audience nomination)", tuple(accepted),
+                             "clip that (mapped audience nomination)", tuple(accepted) + (f"count:{min(int(count), accepted_count)}",),
                              "host-mapped audience signals", True))
     return rows
 

@@ -6,7 +6,7 @@ desktop app that makes vertical clips from stream VODs.
 
 ![Installing the GTA 6 plugin from the Clips Kitty Marketplace, then adding a stream video with Gaming / Reaction and picking the plugin as the Gaming detector](docs/media/setup.gif)
 
-**Version 0.4.1** · plugin ID `colingpt9/gta-vi-highlights` · free and open source (MIT)
+**Version 0.5.3** · plugin ID `colingpt9/gta-vi-highlights` · free and open source (MIT)
 
 ## Install
 
@@ -14,7 +14,7 @@ desktop app that makes vertical clips from stream VODs.
 2. On the **Browse** tab, type `GTA 6` into the search box (or use the
    **Gaming** filter).
 3. Find the card **Grand Theft Auto 6 Clips Kitty Plugin**. It shows
-   `colingpt9 · 0.4.1` and **✓ Official · made by the Clips Kitty project**.
+   `colingpt9 · 0.5.3` and **✓ Official · made by the Clips Kitty project**.
 4. Click **Details**, then **Install**. In the **Install a pipeline** window,
    click **Install** again.
 5. When it says **Ready.**, click **Done**.
@@ -67,7 +67,6 @@ checks it against changes in picture and sound. It picks:
 - mission and heist wins, and finished survival runs
 - roleplay scenes (traffic stops, arrests and the like)
 - funny back-and-forth dialogue, with the setup and the payoff
-- moments your viewers nominated, when Clips Kitty has that data
 
 Each clip keeps the setup before the moment and your reaction after it, and
 never cuts off the sentence that proves the moment happened.
@@ -100,6 +99,7 @@ in the job's pipeline settings:
 | `roleplay_enabled` | true | Include roleplay scenes |
 | `use_media` / `use_nominations` | true / true | Use picture and sound changes, and viewer nominations |
 | `use_local_model` | true | Use the local AI model |
+| `dialogue_review_minutes` | 20 | Most minutes the local AI model spends looking for dialogue (0–20) |
 | `trim_to_event` / `title_overlay` | false / false | Suggest trims and a short on-video label |
 | `write_report` | true | Save a report explaining each pick |
 
@@ -124,7 +124,7 @@ python -m pytest
 python -m clipskitty_sdk install .   # with Clips Kitty running
 ```
 
-The plugin only reads the video, transcript and permitted stream context. It has
+The plugin only reads the video and its transcript. It has
 no network access and sends nothing anywhere; Clips Kitty does all rendering and
 publishing. More detail: [evaluation method](docs/EVALUATION.md),
 [quality measurements](docs/QUALITY_IMPROVEMENTS.md),
@@ -132,7 +132,7 @@ publishing. More detail: [evaluation method](docs/EVALUATION.md),
 
 ## Changes
 
-0.4.1 is the current release. See the [changelog](CHANGELOG.md) for every
+0.5.3 is the current release. See the [changelog](CHANGELOG.md) for every
 version.
 
 ## Licence and credits

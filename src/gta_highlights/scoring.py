@@ -3,9 +3,9 @@
 """Evidence records and conservative, explainable highlight scores.
 
 The score is a ranking heuristic, not a calibrated probability of an event.
-Repeated measurements of one type cannot inflate it. A transcript event cue
-is required by the detector; frame differences and volume never identify game
-objects or game events on their own.
+Repeated measurements of one type cannot inflate it. Identified event categories
+require source transcript cues; a separate neutral nomination review score can
+rank mapped buckets without identifying game objects or gameplay events.
 """
 
 from __future__ import annotations
@@ -151,4 +151,31 @@ def score_evidence(evidence: Iterable[Evidence], *, semantic_confidence: float =
     return ScoreBreakdown(round(score, 4), round(confidence, 4), tuple((name, round(value, 4)) for name, value in components))
 
 
-__all__ = ["EVIDENCE_KINDS", "MEDIA_KINDS", "Evidence", "ScoreBreakdown", "is_nomination", "score_evidence"]
+def score_nomination_review(count: int, activity: Iterable[Evidence]) -> ScoreBreakdown:
+    """Rank a mapped review bucket; this is not confidence in a GTA event.
+
+    The caller supplies a host-mapped aggregate count from the same source
+    bucket. Concentrated nominations saturate, repeated measurements count once,
+    and agreement between audio and motion adds more support than either alone.
+    No host quality threshold enters this calculation.
+    """
+    if isinstance(count, bool) or not isinstance(count, int) or count < 2:
+        return ScoreBreakdown(0.0, 0.0)
+    strongest = {"audio_spike": 0.0, "video_motion": 0.0}
+    for row in activity:
+        if row.verified and row.kind in strongest:
+            strongest[row.kind] = max(strongest[row.kind], row.confidence)
+    primary, secondary = max(strongest.values()), min(strongest.values())
+    if primary <= 0:
+        return ScoreBreakdown(0.0, 0.0)
+    components = (("mapped_bucket_with_activity", 0.25),
+                  ("nomination_concentration", 0.20 * (1 - math.exp(-(count-1)/2))),
+                  ("verified_activity_strength", 0.14 * primary),
+                  ("audio_motion_agreement", 0.10 * secondary))
+    # Preserve conservative evidence confidence: stronger review priority does
+    # not establish an event's identity or factual gameplay description.
+    return ScoreBreakdown(round(sum(value for _, value in components), 4), 0.35,
+                          tuple((name, round(value, 4)) for name, value in components))
+
+
+__all__ = ["EVIDENCE_KINDS", "MEDIA_KINDS", "Evidence", "ScoreBreakdown", "is_nomination", "score_evidence", "score_nomination_review"]
